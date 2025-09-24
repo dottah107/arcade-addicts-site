@@ -67,6 +67,11 @@
     header h1{display:flex;align-items:center;gap:10px}
     header h1 .logo{height:32px;width:auto;display:block}
     @media (max-width:640px){ header h1 .logo{height:28px} }
+/* subtle cyan glow on logo */
+header h1 .logo{
+  filter: drop-shadow(0 0 6px rgba(0,255,255,.55));
+}
+
   </style>
 
   <!-- Structured data: tournaments for rich results -->
