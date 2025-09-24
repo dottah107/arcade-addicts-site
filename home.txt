@@ -149,7 +149,7 @@
 
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <h3 id="contact-title">📬 Contact</h3>
-      <p>Email: <a href="mailto:arcadeaddicts07@gmail.com">arcadeaddicts@gmail.com</a></p>
+      <p>Email: <a href="mailto:arcadeaddicts07@gmail.com">info@arcadeaddicts@gmail.com</a></p>
     </section>
   </main>
 
