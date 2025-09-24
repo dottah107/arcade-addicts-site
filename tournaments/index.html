@@ -46,6 +46,14 @@
     .winners th{background:#0e0e0e}
     .winners tr:last-child td{border-bottom:none}
     footer{text-align:center;padding:20px;color:#bbb}
+    /* Brighter cover images + lighter overlay */
+.card.bg::before{
+  filter: brightness(.80) contrast(1.05) saturate(1.1); /* was .45 */
+}
+.card.bg::after{
+  background: linear-gradient(to top, rgba(0,0,0,.30), rgba(0,0,0,.12) 40%, rgba(0,0,0,0));
+}
+
   </style>
 
   <!-- Structured data: tournaments -->
