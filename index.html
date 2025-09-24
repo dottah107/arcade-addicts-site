@@ -63,15 +63,13 @@
     footer{text-align:center;padding:20px;font-size:.85rem;background:var(--panel);border-top:2px solid var(--accent)}
     @media (max-width:640px){ .hero h2{font-size:1.8rem} header h1{font-size:1rem} }
 
-    /* Logo inside the H1 (replaces the emoji) */
+    /* Logo inside the H1 (with neon glow) */
     header h1{display:flex;align-items:center;gap:10px}
-    header h1 .logo{height:32px;width:auto;display:block}
+    header h1 .logo{height:32px;width:auto;display:block;filter: drop-shadow(0 0 6px rgba(0,255,255,.55));}
     @media (max-width:640px){ header h1 .logo{height:28px} }
-/* subtle cyan glow on logo */
-header h1 .logo{
-  filter: drop-shadow(0 0 6px rgba(0,255,255,.55));
-}
 
+    /* Make Discord link pop */
+    .lounge a{ color: var(--accent); text-decoration: underline; }
   </style>
 
   <!-- Structured data: tournaments for rich results -->
@@ -108,7 +106,6 @@ header h1 .logo{
     <section class="hero">
       <h2>Level Up. Lock In. Win Big.</h2>
       <p>Join our elite shooter & fighter game tournaments for a shot at glory and prizes.</p>
-      <!-- Hooked up to /register/ -->
       <a class="btn" href="/register/" aria-label="Register for Arcade Addicts tournaments">Register Now</a>
     </section>
 
@@ -128,13 +125,11 @@ header h1 .logo{
     </section>
 
     <section class="lounge" id="lounge">
-  <h3>🕹️ Player Lounge</h3>
-  <p>Meet teammates, share clips, and find scrims.</p>
-  <p>Join us on Discord:
-    <a href="/discord/" target="_blank" rel="noopener">discord.gg/7001</a>
-  </p>
-</section>
-
+      <h3>🕹️ Player Lounge</h3>
+      <p>Meet teammates, share clips, and find scrims.</p>
+      <p>Join us on Discord:
+        <a href="/discord/" target="_blank" rel="noopener">discord.gg/YOURCODE</a>
+      </p>
     </section>
 
     <section class="contact" id="contact" aria-labelledby="contact-title">
@@ -148,4 +143,3 @@ header h1 .logo{
   </footer>
 </body>
 </html>
-
