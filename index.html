@@ -3,158 +3,188 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arcade Addicts | Home</title>
-
-  <!-- Performance -->
+  <title>2-Player Lounge | Arcade Addicts</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-  <!-- SEO -->
-  <meta name="description" content="Join elite shooter & fighter game tournaments. Win cash prizes at Arcade Addicts. Register now." />
-  <link rel="canonical" href="https://arcade-addicts.com/">
-
-  <!-- Icons + social image -->
+  <meta name="description" content="Find a sparring partner fast. Post your LFM and match up for 1v1, duos, or 3v3 scrims." />
   <link rel="icon" href="/assets/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-
-  <!-- Social cards -->
-  <meta property="og:title" content="Arcade Addicts — Level Up. Lock In. Win Big.">
-  <meta property="og:description" content="Shooter & fighter game tournaments with cash prizes. Register now.">
-  <meta property="og:url" content="https://arcade-addicts.com/">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://arcade-addicts.com/assets/og-banner.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
-
   <style>
-    :root{
-      --bg:#000; --panel:#0f0f0f; --panel-2:#111; --text:#fff; --accent:#0ff; --muted:#1a1a1a;
-      --focus: 2px dashed #0ff;
-    }
+    :root{ --bg:#000; --panel:#0f0f0f; --panel-2:#111; --text:#fff; --accent:#0ff; --muted:#1a1a1a; }
     *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;}
     a{color:inherit;text-decoration:none}
-    a:focus-visible, button:focus-visible{outline:var(--focus); outline-offset:3px}
-    .skip-link{position:absolute;left:-999px;top:auto}
-    .skip-link:focus{left:10px;top:10px;background:#000;color:#0ff;padding:8px 10px;z-index:1000}
-
-    header{background:var(--panel);padding:20px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--accent)}
-    header h1{font-family:'Press Start 2P',cursive;color:var(--accent);font-size:1.25rem;margin:0}
-    nav a{margin:0 10px;padding:6px 8px;border-radius:6px}
-    nav a:hover{background:#111}
-
-    .hero{text-align:center;padding:96px 20px;background:linear-gradient(to bottom right,#111,#222)}
-    .hero h2{font-size:2.25rem;color:var(--accent);margin:0 0 10px}
-    .hero p{font-size:1.125rem;max-width:720px;margin:0 auto 20px}
-    .btn{display:inline-block;background:var(--accent);color:#000;border:none;padding:12px 22px;font-size:1rem;font-weight:700;cursor:pointer;border-radius:10px}
-    .btn:hover{filter:brightness(0.9)}
-    .btn:active{transform:translateY(1px)}
-
-    .tournaments{padding:40px 20px;background:var(--panel-2)}
-    .tournaments h3{font-size:1.75rem;text-align:center;color:var(--accent);margin:0 0 24px}
-    .tournament-list{max-width:900px;margin:auto;display:grid;gap:14px}
-    .tournament-item{background:var(--muted);padding:18px;border-left:5px solid var(--accent);border-radius:10px}
-    .tournament-item time{opacity:.8}
-
-    .contact, .lounge{padding:40px 20px;max-width:900px;margin:0 auto}
-    footer{text-align:center;padding:20px;font-size:.85rem;background:var(--panel);border-top:2px solid var(--accent)}
-    @media (max-width:640px){ .hero h2{font-size:1.8rem} header h1{font-size:1rem} }
-
-    /* Logo inside the H1 (with neon glow) */
-    header h1{display:flex;align-items:center;gap:10px}
-    header h1 .logo{height:32px;width:auto;display:block;filter: drop-shadow(0 0 6px rgba(0,255,255,.55));}
-    @media (max-width:640px){ header h1 .logo{height:28px} }
-
-    /* Make Discord link pop */
-    .lounge a{ color: var(--accent); text-decoration: underline; }
-.discord-embed{
-  margin-top:12px;
-  border:1px solid #1b1b1b;
-  border-radius:12px;
-  overflow:hidden;
-  background:#0f0f0f;
-}
-
+    header{background:var(--panel);padding:20px;border-bottom:3px solid var(--accent);display:flex;justify-content:space-between;align-items:center}
+    header h1{display:flex;align-items:center;gap:10px;margin:0;font-family:'Press Start 2P',cursive;color:var(--accent);font-size:1.1rem}
+    header h1 .logo{height:28px;width:auto;display:block;filter: drop-shadow(0 0 6px rgba(0,255,255,.55));}
+    .nav a{margin:0 10px;padding:6px 8px;border-radius:6px}
+    .nav a:hover{background:#111}
+    .hero{text-align:center;padding:72px 20px;background:linear-gradient(to bottom right,#111,#222)}
+    .hero h2{font-size:2rem;color:var(--accent);margin:0 0 8px}
+    .hero p{opacity:.9;max-width:760px;margin:0 auto}
+    main{max-width:1100px;margin:30px auto;padding:0 20px;display:grid;gap:16px}
+    .row{display:grid;grid-template-columns:1fr;gap:16px}
+    @media (min-width:980px){ .row{grid-template-columns:2fr 1fr} }
+    .card{background:var(--panel-2);border:1px solid #1b1b1b;border-radius:12px;padding:18px}
+    h3{margin:0 0 10px;color:var(--accent)}
+    label{display:block;margin:8px 0 4px}
+    input, select, textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #222;background:#0c0c0c;color:#fff}
+    .btn{display:inline-block;background:var(--accent);color:#000;border:none;padding:10px 18px;font-size:1rem;font-weight:700;cursor:pointer;border-radius:10px}
+    .btn:hover{filter:brightness(.9)}
+    .muted{opacity:.85}
+    .grid{display:grid;gap:10px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:6px 10px;border-radius:999px;background:rgba(0,255,255,.12);border:1px solid rgba(0,255,255,.35);font-size:.9rem}
+    .switch{display:inline-flex;align-items:center;gap:8px;margin:8px 0}
+    .switch input{width:auto}
+    iframe{border:0;width:100%;min-height:480px;border-radius:12px}
+    .small{font-size:.9rem}
+    footer{text-align:center;padding:20px;color:#bbb}
+    .kbd{background:#111;border:1px solid #333;border-bottom-width:3px;border-radius:6px;padding:2px 6px;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:.9em}
   </style>
-
-  <!-- Structured data: tournaments for rich results -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Organization",
-    "name":"Arcade Addicts",
-    "url":"https://arcade-addicts.com",
-    "event":[
-      {"@type":"VideoGameTournament","name":"COD: Warzone","startDate":"2025-09-28","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register"},"award":"$500 Grand Prize"},
-      {"@type":"VideoGameTournament","name":"Tekken 8","startDate":"2025-10-05","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register"},"award":"$750 Champion Purse"},
-      {"@type":"VideoGameTournament","name":"Mortal Kombat 1","startDate":"2025-10-12","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register"},"award":"$1000 Fatality Showdown"}
-    ]
-  }
-  </script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <header role="banner">
-    <h1>
-      <img src="/assets/logo.png" alt="" class="logo"> Arcade Addicts
-    </h1>
-    <nav aria-label="Primary">
-  <a href="/">Home</a>
-  <a href="/tournaments/">Tournaments</a>
-  <a href="#lounge">Lounge</a>
-  <a href="#contact">Contact</a>
-</nav>
-
+  <header>
+    <a href="/" aria-label="Back to home">← Home</a>
+    <h1><img src="/assets/logo.png" alt="" class="logo"> 2-Player Lounge</h1>
+    <nav class="nav">
+      <a href="/tournaments/">Tournaments</a>
+      <a href="/lounge/" aria-current="page">Lounge</a>
+      <a href="/register/" class="btn">Register</a>
+    </nav>
   </header>
 
-  <main id="main">
-    <section class="hero">
-      <h2>Level Up. Lock In. Win Big.</h2>
-      <p>Join our elite shooter & fighter game tournaments for a shot at glory and prizes.</p>
-      <a class="btn" href="/register/" aria-label="Register for Arcade Addicts tournaments">Register Now</a>
-    </section>
+  <section class="hero">
+    <h2>Find a partner fast</h2>
+    <p>Build your LFM (looking-for-match) message and post it in our Discord Lounge. Match up for 1v1, duos, or 3v3.</p>
+    <div class="chips" style="justify-content:center;margin-top:10px">
+      <span class="chip">1v1</span>
+      <span class="chip">Duos</span>
+      <span class="chip">3v3</span>
+      <span class="chip">Crossplay</span>
+      <span class="chip">ET timezone</span>
+    </div>
+  </section>
 
-    <section class="lounge" id="lounge">
-  <h3>🕹️ Player Lounge</h3>
-  <p>Meet teammates, share clips, and find scrims.</p>
+  <main>
+    <div class="row">
+      <section class="card">
+        <h3>Quick LFM message</h3>
+        <div class="grid">
+          <div>
+            <label for="game">Game</label>
+            <select id="game">
+              <option>Tekken 8</option>
+              <option>MK1</option>
+              <option>Street Fighter 6</option>
+              <option>Dragon Ball FighterZ</option>
+              <option>Fortnite</option>
+              <option>NBA 2K26</option>
+              <option>Warzone</option>
+              <option>Other…</option>
+            </select>
+          </div>
+          <div>
+            <label for="mode">Mode</label>
+            <select id="mode">
+              <option>1v1</option>
+              <option>2v2</option>
+              <option>3v3</option>
+              <option>Duos</option>
+            </select>
+          </div>
+          <div>
+            <label for="platform">Platform</label>
+            <select id="platform">
+              <option>PS</option>
+              <option>Xbox</option>
+              <option>PC</option>
+              <option>Crossplay</option>
+            </select>
+          </div>
+          <div>
+            <label for="tag">Your tag / ID</label>
+            <input id="tag" placeholder="Gamertag#1234" />
+          </div>
+          <div>
+            <label for="notes">Notes (optional)</label>
+            <input id="notes" placeholder="Wired only / east coast / 3 games" />
+          </div>
+        </div>
+        <div class="switch">
+          <input type="checkbox" id="avail">
+          <label for="avail">I’m available now</label>
+        </div>
+        <p class="small muted">Tip: press <span class="kbd">Enter</span> to copy the message.</p>
+        <p><button class="btn" id="copyBtn">Copy LFM message</button> <a class="btn" href="/discord/" target="_blank" rel="noopener">Open Discord</a></p>
+        <pre id="preview" class="small" style="white-space:pre-wrap;background:#0b0b0b;border:1px solid #1b1b1b;border-radius:10px;padding:12px;margin-top:10px"></pre>
+      </section>
 
-  <!-- Join link (keeps working even if widget is off) -->
-  <p>Join us on Discord:
-    <a href="/discord/" target="_blank" rel="noopener">https://discord.gg/f9XT8eRx5M</a>
-  </p>
+      <aside class="card">
+        <h3>Discord Lounge</h3>
+        <p class="muted">Post your LFM in <strong>#2-player-lounge</strong> on our Discord.</p>
+        <p><a class="btn" href="https://discord.gg/f9XT8eRx5M" target="_blank" rel="noopener">Join Discord</a></p>
+        <iframe src="https://discord.com/widget?id=1420241118494199810&theme=dark" allowtransparency="true"
+          sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+        <p class="small muted">If the widget doesn’t load, enable the <em>Server Widget</em> in Discord → Server Settings.</p>
+      </aside>
+    </div>
 
-  <!-- Live Discord embed -->
-  <div class="discord-embed">
-    <iframe
-      src="https://discord.com/widget?id=1420241118494199810&theme=dark"
-      width="100%" height="420" allowtransparency="true" frameborder="0"
-      sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
-    </iframe>
-  </div>
-</section>
-
-
-    <section class="lounge" id="lounge">
-  <h3>🕹️ Player Lounge</h3>
-  <p>Meet teammates, share clips, and find scrims.</p>
-  <p>Join us on Discord:
-    <a href="/discord/" target="_blank" rel="noopener">https://discord.gg/f9XT8eRx5M</a>
-  </p>
-</section>
-
-
-    <section class="contact" id="contact" aria-labelledby="contact-title">
-      <h3 id="contact-title">📬 Contact</h3>
-      <p>Email: <a href="mailto:arcadeaddicts07@gmail.com">info@arcadeaddicts@gmail.com</a></p>
+    <section class="card">
+      <h3>How matching works (simple)</h3>
+      <ol>
+        <li>Use the form to build your LFM message and copy it.</li>
+        <li>Paste it into <strong>#2-player-lounge</strong> on Discord.</li>
+        <li>When you match, react with ✅ on your post to signal “found”.</li>
+      </ol>
     </section>
   </main>
 
-  <footer>
-    &copy; 2025 Arcade Addicts — Built for Gamers by Gamers
-  </footer>
+  <footer>&copy; 2025 Arcade Addicts — <a href="mailto:arcadeaddicts07@gmail.com">arcadeaddicts07@gmail.com</a></footer>
+
+  <script>
+    const $ = sel => document.querySelector(sel);
+    const fields = ['game','mode','platform','tag','notes','avail'];
+    function build(){
+      const game = $('#game').value;
+      const mode = $('#mode').value;
+      const plat = $('#platform').value;
+      const tag = $('#tag').value || 'tag?';
+      const notes = $('#notes').value.trim();
+      const avail = $('#avail').checked ? ' (AVAILABLE NOW)' : '';
+      const msg = `[LFM] ${mode} — ${game} — ${plat}${avail}\n` +
+                  `Tag: ${tag}${notes ? '\nNotes: ' + notes : ''} \n` +
+                  `Timezone: ET | Arcade Addicts`;
+      $('#preview').textContent = msg;
+      localStorage.setItem('lounge2p', JSON.stringify({
+        game,mode,platform:plat,tag,notes,avail:$('#avail').checked
+      }));
+      return msg;
+    }
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener(el.type === 'checkbox' ? 'change':'input', build);
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') copy(); });
+    $('#copyBtn').addEventListener('click', copy);
+    function copy(){
+      const text = build();
+      navigator.clipboard.writeText(text).then(()=>{
+        $('#copyBtn').textContent = 'Copied!';
+        setTimeout(()=>$('#copyBtn').textContent='Copy LFM message', 1200);
+      });
+    }
+    // restore
+    try{
+      const saved = JSON.parse(localStorage.getItem('lounge2p')||'{}');
+      if(saved.game) $('#game').value = saved.game;
+      if(saved.mode) $('#mode').value = saved.mode;
+      if(saved.platform) $('#platform').value = saved.platform;
+      if(saved.tag) $('#tag').value = saved.tag;
+      if(saved.notes) $('#notes').value = saved.notes;
+      if(typeof saved.avail === 'boolean') $('#avail').checked = saved.avail;
+    }catch(e){}
+    build();
+  </script>
 </body>
 </html>
