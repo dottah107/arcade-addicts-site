@@ -55,10 +55,11 @@
     .contact, .lounge{padding:40px 20px;max-width:900px;margin:0 auto}
     footer{text-align:center;padding:20px;font-size:.85rem;background:var(--panel);border-top:2px solid var(--accent)}
     @media (max-width:640px){ .hero h2{font-size:1.8rem} header h1{font-size:1rem} }
-/* Logo inside the H1 */
-header h1{display:flex;align-items:center;gap:10px}
-.logo{height:32px;width:auto;display:block}
-@media (max-width:640px){ .logo{height:28px} }
+
+    /* Logo inside the H1 (replaces the emoji) */
+    header h1{display:flex;align-items:center;gap:10px}
+    header h1 .logo{height:32px;width:auto;display:block}
+    @media (max-width:640px){ header h1 .logo{height:28px} }
   </style>
 
   <!-- Structured data: tournaments for rich results -->
@@ -80,22 +81,20 @@ header h1{display:flex;align-items:center;gap:10px}
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header role="banner">
-  <h1 class="sr-only">🎮 Arcade Addicts</h1>
-  <a class="brand" href="/">
-    <img src="/assets/logo.png" alt="Arcade Addicts logo" width="160" height="auto" />
-  </a>
-  <nav aria-label="Primary">
-    <a href="#">Home</a>
-    <a href="#tournaments">Tournaments</a>
-    <a href="#lounge">Lounge</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
-
+    <h1>
+      <img src="/assets/logo.png" alt="" class="logo"> Arcade Addicts
+    </h1>
+    <nav aria-label="Primary">
+      <a href="#">Home</a>
+      <a href="#tournaments">Tournaments</a>
+      <a href="#lounge">Lounge</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
   <main id="main">
     <section class="hero">
-      <h2>Level Up. Lock In. WIN BIGGER.</h2>
+      <h2>Level Up. Lock In. Win Big.</h2>
       <p>Join our elite shooter & fighter game tournaments for a shot at glory and prizes.</p>
       <a class="btn" href="/register" aria-label="Register for Arcade Addicts tournaments">Register Now</a>
     </section>
