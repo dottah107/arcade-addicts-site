@@ -67,11 +67,6 @@
     header h1{display:flex;align-items:center;gap:10px}
     header h1 .logo{height:32px;width:auto;display:block}
     @media (max-width:640px){ header h1 .logo{height:28px} }
-/* subtle cyan glow on logo */
-header h1 .logo{
-  filter: drop-shadow(0 0 6px rgba(0,255,255,.55));
-}
-
   </style>
 
   <!-- Structured data: tournaments for rich results -->
@@ -108,7 +103,8 @@ header h1 .logo{
     <section class="hero">
       <h2>Level Up. Lock In. Win Big.</h2>
       <p>Join our elite shooter & fighter game tournaments for a shot at glory and prizes.</p>
-      <a class="btn" href="/register" aria-label="Register for Arcade Addicts tournaments">Register Now</a>
+      <!-- Hooked up to /register/ -->
+      <a class="btn" href="/register/" aria-label="Register for Arcade Addicts tournaments">Register Now</a>
     </section>
 
     <section class="tournaments" id="tournaments">
@@ -142,3 +138,4 @@ header h1 .logo{
   </footer>
 </body>
 </html>
+
