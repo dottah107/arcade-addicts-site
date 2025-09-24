@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <meta name="description" content="Upcoming tournaments at Arcade Addicts — Warzone, Tekken 8, MK1, SF6, Valorant, and Fortnite. Register now for cash prizes." />
+  <meta name="description" content="Upcoming tournaments at Arcade Addicts — Warzone, Tekken 8, MK1, SF6, Dragon Ball FighterZ, and Fortnite. Register now for cash prizes." />
   <link rel="canonical" href="https://arcade-addicts.com/tournaments/">
   <link rel="icon" href="/assets/favicon.ico">
   <style>
@@ -47,6 +47,22 @@
     .winners tr:last-child td{border-bottom:none}
     footer{text-align:center;padding:20px;color:#bbb}
   </style>
+
+  <!-- Structured data: tournaments -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"ItemList",
+    "itemListElement":[
+      {"@type":"VideoGameTournament","name":"COD: Warzone","startDate":"2025-09-28","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$500 Grand Prize","url":"https://arcade-addicts.com/tournaments/#warzone"},
+      {"@type":"VideoGameTournament","name":"Tekken 8","startDate":"2025-10-05","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$750 Champion Purse","url":"https://arcade-addicts.com/tournaments/#tekken8"},
+      {"@type":"VideoGameTournament","name":"Mortal Kombat 1","startDate":"2025-10-12","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$1000 Fatality Showdown","url":"https://arcade-addicts.com/tournaments/#mk1"},
+      {"@type":"VideoGameTournament","name":"Street Fighter 6","startDate":"2025-10-19","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$600 Top Pot","url":"https://arcade-addicts.com/tournaments/#sf6"},
+      {"@type":"VideoGameTournament","name":"Dragon Ball FighterZ","startDate":"2025-10-26","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$1200 Champion Purse","url":"https://arcade-addicts.com/tournaments/#dbfz"},
+      {"@type":"VideoGameTournament","name":"Fortnite Duos","startDate":"2025-11-02","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$800 Victory Purse","url":"https://arcade-addicts.com/tournaments/#fortnite"}
+    ]
+  }
+  </script>
 </head>
 <body>
   <header>
@@ -65,6 +81,7 @@
 
   <main>
     <div class="grid">
+      <!-- Warzone -->
       <article class="card bg" id="warzone" style="--bg-img:url('/assets/covers/warzone.jpg')">
         <h3><a href="/tournaments/warzone/">COD: Warzone</a></h3>
         <div class="badges"><span class="tag">Duos</span><span class="tag">Crossplay</span></div>
@@ -78,6 +95,7 @@
         <p><a class="btn" href="/register/?t=Warzone">Register for Warzone</a> <a href="/tournaments/warzone/">View full rules →</a></p>
       </article>
 
+      <!-- Tekken 8 -->
       <article class="card bg" id="tekken8" style="--bg-img:url('/assets/covers/tekken8.jpg')">
         <h3><a href="/tournaments/tekken8/">Tekken 8</a></h3>
         <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
@@ -91,6 +109,7 @@
         <p><a class="btn" href="/register/?t=Tekken%208">Register for Tekken 8</a> <a href="/tournaments/tekken8/">View full rules →</a></p>
       </article>
 
+      <!-- MK1 -->
       <article class="card bg" id="mk1" style="--bg-img:url('/assets/covers/mk1.jpg')">
         <h3><a href="/tournaments/mk1/">Mortal Kombat 1</a></h3>
         <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
@@ -104,6 +123,7 @@
         <p><a class="btn" href="/register/?t=Mortal%20Kombat%201">Register for MK1</a> <a href="/tournaments/mk1/">View full rules →</a></p>
       </article>
 
+      <!-- Street Fighter 6 -->
       <article class="card bg" id="sf6" style="--bg-img:url('/assets/covers/sf6.jpg')">
         <h3><a href="/tournaments/sf6/">Street Fighter 6</a></h3>
         <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
@@ -117,19 +137,21 @@
         <p><a class="btn" href="/register/?t=Street%20Fighter%206">Register for SF6</a> <a href="/tournaments/sf6/">View full rules →</a></p>
       </article>
 
-      <article class="card bg" id="valorant" style="--bg-img:url('/assets/covers/valorant.jpg')">
-        <h3><a href="/tournaments/valorant/">Valorant 5v5</a></h3>
-        <div class="badges"><span class="tag">5v5</span><span class="tag">Bo3</span></div>
-        <div class="meta"><time datetime="2025-10-26">Sun, Oct 26, 2025</time> · <span class="prize">$1200 Team Bounty</span></div>
+      <!-- Dragon Ball FighterZ (replaces Valorant) -->
+      <article class="card bg" id="dbfz" style="--bg-img:url('/assets/covers/dragonball-fighterz.jpg')">
+        <h3><a href="/tournaments/dbfz/">Dragon Ball FighterZ</a></h3>
+        <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
+        <div class="meta"><time datetime="2025-10-26">Sun, Oct 26, 2025</time> · <span class="prize">$1200 Champion Purse</span></div>
         <details><summary>Payout breakdown</summary>
           <ul><li>1st: $720 (60%)</li><li>2nd: $360 (30%)</li><li>3rd: $120 (10%)</li></ul>
         </details>
         <details><summary>Rules / Format</summary>
-          <ul><li>Map veto via standard pick/ban.</li><li>Coaches off during live rounds.</li><li>Pause limited to tech issues.</li></ul>
+          <ul><li>FT3 throughout; FT5 Grand Finals.</li><li>Character lock per set; loser may switch.</li><li>Wired strongly recommended.</li></ul>
         </details>
-        <p><a class="btn" href="/register/?t=Valorant%205v5">Register for Valorant</a> <a href="/tournaments/valorant/">View full rules →</a></p>
+        <p><a class="btn" href="/register/?t=Dragon%20Ball%20FighterZ">Register for DBFZ</a> <a href="/tournaments/dbfz/">View full rules →</a></p>
       </article>
 
+      <!-- Fortnite -->
       <article class="card bg" id="fortnite" style="--bg-img:url('/assets/covers/fortnite.jpg')">
         <h3><a href="/tournaments/fortnite/">Fortnite Duos</a></h3>
         <div class="badges"><span class="tag">Duos</span><span class="tag">Crossplay</span></div>
