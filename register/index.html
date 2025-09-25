@@ -43,7 +43,11 @@
   <main>
     <h2>Sign up for a tournament</h2>
     <p class="muted">Submitting will open your email app and send us your registration.</p>
-    <form action="mailto:arcadeaddicts07@gmail.com?subject=Tournament%20Registration%20Request" method="post" enctype="text/plain">
+    <form action="https://formsubmit.co/arcadeaddicts07@gmail.com" method="POST" >
+  <input type="hidden" name="_subject" value="Tournament Registration">
+<input type="hidden" name="_autoresponse" value="Thanks for registering with Arcade Addicts — you’re in! We’ll email bracket and check-in details soon.">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="/register/success.html">
       <div class="row">
         <div class="col"><label for="name">Full name</label><input id="name" name="Name" required></div>
         <div class="col"><label for="gamer">Gamer tag</label><input id="gamer" name="GamerTag" required></div>
@@ -90,6 +94,7 @@ document.getElementById("game")?.value = map[key] || raw;
 </script>
 </body>
 </html>
+
 
 
 
