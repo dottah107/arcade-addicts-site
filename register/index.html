@@ -64,6 +64,7 @@
         <div class="col"><label for="name">Full name</label><input id="name" name="Name" required></div>
         <div class="col"><label for="gamer">Gamer tag</label><input id="gamer" name="GamerTag" required></div>
         <div class="col"><label for="email">Email</label><input id="email" type="email" name="Email" required></div>
+        <div class="col"><label for="password">Password</label><input id="password" type="password" name="Password" minlength="6" required></div>
         <div class="col"><label for="discord">Discord</label><input id="discord" name="Discord" placeholder="username#0000"></div>
         <div class="col"><label for="game">Tournament</label>
           <select id="game" name="Tournament" required>
@@ -104,8 +105,59 @@ const key = raw.toLowerCase().replace(/%20|[\s-]/g,"");  // normalize
 const map = {warzone:"Warzone", tekken8:"Tekken 8", mk1:"Mortal Kombat 1", nba2k26:"NBA 2K26"};
 document.getElementById("game")?.value = map[key] || raw;
 </script>
+<script>
+/* AA_MANDATORY_AUTH */
+(function(){
+  const URL='https://xvhkwyhncuivsfwfmvbg.supabase.co', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8';
+  function boot(){
+    if (!window.supabase) return;
+    const sb = supabase.createClient(URL, KEY);
+    const form = document.querySelector('form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e)=>{
+      const email = document.getElementById('email')?.value?.trim();
+      const pw    = document.getElementById('password')?.value || '';
+      if (!email || !pw) return; // HTML 'required' will show
+
+      e.preventDefault();
+
+      try {
+        // Try to sign up first
+        let { error } = await sb.auth.signUp({ email, password: pw });
+
+        // If user exists, try sign-in
+        if (error && /exists|already/i.test(error.message || '')) {
+          const r = await sb.auth.signInWithPassword({ email, password: pw });
+          if (r.error) throw r.error;
+        } else if (error && !/confirm|verify/i.test(error.message || '')) {
+          // If it's not a "confirm your email" message, treat as fatal
+          throw error;
+        }
+        // Attach Supabase UID (if available) to the submission
+        const got = await sb.auth.getUser();
+        if (got?.data?.user?.id) {
+          let uid = document.getElementById('supabase_uid');
+          if (!uid) {
+            uid = document.createElement('input');
+            uid.type='hidden'; uid.name='supabase_uid'; uid.id='supabase_uid';
+            form.appendChild(uid);
+          }
+          uid.value = got.data.user.id;
+        }
+        // Proceed to send registration to FormSubmit
+        form.submit();
+      } catch (err) {
+        alert('Account error: ' + (err?.message || err));
+      }
+    });
+  }
+  if (document.readyState !== 'loading') boot(); else document.addEventListener('DOMContentLoaded', boot);
+})();
+</script>
 </body>
 </html>
+
 
 
 
