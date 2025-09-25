@@ -197,10 +197,12 @@
     if(btn&&nav){btn.addEventListener('click',()=>{const o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o);});}
   </script>
   <script>
-    'serviceWorker' in navigator && navigator.serviceWorker.register('/sw.js');
+    'serviceWorker' in navigator && (()=>{const b=document.querySelector('base')?.href||'/arcade-addicts-site/';navigator.serviceWorker.register(new URL('sw.js', b))})();
   </script>
 </body>
 </html>
+
+
 
 
 
