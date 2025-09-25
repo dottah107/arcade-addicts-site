@@ -42,20 +42,12 @@
 
   <main>
     <h2>Sign up for a tournament</h2>
-    <p class="muted">Submitting will open your email app and send us your registration.</p>
-    <div id="aa-auth-add" style="background:#111;border:1px solid #1b1b1b;border-radius:12px;padding:18px;margin:16px 0">
-  <h3 style="margin:0 0 8px;color:#0ff">Create an account (optional)</h3>
-  <p class="note">Use your email above and set a password to access your Member page later.</p>
-  <div class="row">
-    <div class="col full">
-      <label for="aa-pw">Password</label>
-      <input id="aa-pw" type="password" minlength="6" placeholder="Min 6 characters">
+    <p class="muted">Your account is created when you submit. You will be redirected to a success page.</p>
     </div>
-  </div>
   <button class="btn" type="button" id="aa-signup">Create account</button>
   <p id="aa-msg" class="note"></p>
 </div>
- action="https://formsubmit.co/arcadeaddicts07@gmail.com" method="POST" >
+ <form action="https://formsubmit.co/arcadeaddicts07@gmail.com" method="POST" >
   <input type="hidden" name="_subject" value="Tournament Registration">
 <input type="hidden" name="_autoresponse" value="Thanks for registering with Arcade Addicts — you’re in! We’ll email bracket and check-in details soon.">
 <input type="hidden" name="_captcha" value="false">
@@ -157,6 +149,7 @@ document.getElementById("game")?.value = map[key] || raw;
 </script>
 </body>
 </html>
+
 
 
 
