@@ -77,6 +77,21 @@
       overflow:hidden;
       background:#0f0f0f;
     }
+    /* Left-align the bottom sections (Lounge teaser, Tournaments teaser, Contact) */
+.lounge, #home-tournaments, .contact{
+  max-width: none;
+  margin: 0;
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Ensure headings & paragraphs are left-aligned */
+.lounge h3, #home-tournaments h3, .contact h3,
+.lounge p,  #home-tournaments p,  .contact p {
+  text-align: left;
+}
+
   </style>
 
   <!-- Structured data: tournaments for rich results -->
