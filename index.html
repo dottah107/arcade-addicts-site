@@ -70,14 +70,13 @@
 
     /* Make Discord link pop */
     .lounge a{ color: var(--accent); text-decoration: underline; }
-.discord-embed{
-  margin-top:12px;
-  border:1px solid #1b1b1b;
-  border-radius:12px;
-  overflow:hidden;
-  background:#0f0f0f;
-}
-
+    .discord-embed{
+      margin-top:12px;
+      border:1px solid #1b1b1b;
+      border-radius:12px;
+      overflow:hidden;
+      background:#0f0f0f;
+    }
   </style>
 
   <!-- Structured data: tournaments for rich results -->
@@ -103,12 +102,11 @@
       <img src="/assets/logo.png" alt="" class="logo"> Arcade Addicts
     </h1>
     <nav aria-label="Primary">
-  <a href="/">Home</a>
-  <a href="/tournaments/">Tournaments</a>
-  <a href="#lounge">Lounge</a>
-  <a href="#contact">Contact</a>
-</nav>
-
+      <a href="/">Home</a>
+      <a href="/tournaments/">Tournaments</a>
+      <a href="/lounge/">Lounge</a><!-- now goes to its own page -->
+      <a href="#contact">Contact</a>
+    </nav>
   </header>
 
   <main id="main">
@@ -118,43 +116,26 @@
       <a class="btn" href="/register/" aria-label="Register for Arcade Addicts tournaments">Register Now</a>
     </section>
 
-    <section class="lounge" id="lounge">
-  <h3>🕹️ Player Lounge</h3>
-  <p>Meet teammates, share clips, and find scrims.</p>
-
-  <!-- Join link (keeps working even if widget is off) -->
-  <p>Join us on Discord:
-    <a href="/discord/" target="_blank" rel="noopener">https://discord.gg/f9XT8eRx5M</a>
-  </p>
-
-  <!-- Live Discord embed -->
-  <div class="discord-embed">
-    <iframe
-      src="https://discord.com/widget?id=1420241118494199810&theme=dark"
-      width="100%" height="420" allowtransparency="true" frameborder="0"
-      sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
-    </iframe>
-  </div>
-</section>
-
-
-    <section class="lounge" id="lounge">
-  <h3>🕹️ Player Lounge</h3>
-  <p>Meet teammates, share clips, and find scrims.</p>
-  <p>Join us on Discord:
-    <a href="/discord/" target="_blank" rel="noopener">https://discord.gg/f9XT8eRx5M</a>
-  </p>
-</section>
-
+    <!-- Simple teaser + button that routes to the standalone Lounge page -->
+    <section class="lounge" id="about-lounge">
+      <h3>🕹️ Player Lounge</h3>
+      <p>Find partners fast and match up for scrims on our Lounge page.</p>
+      <p><a class="btn" href="/lounge/">Open the 2-Player Lounge</a></p>
+    </section>
 
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <h3 id="contact-title">📬 Contact</h3>
-      <p>Email: <a href="mailto:arcadeaddicts07@gmail.com">info@arcadeaddicts@gmail.com</a></p>
+      <p>Email: <a href="mailto:arcadeaddicts07@gmail.com">arcadeaddicts07@gmail.com</a></p>
     </section>
   </main>
 
   <footer>
     &copy; 2025 Arcade Addicts — Built for Gamers by Gamers
   </footer>
+
+  <!-- Optional: redirect any old #lounge links to the new page -->
+  <script>
+    if (location.hash === '#lounge') location.replace('/lounge/');
+  </script>
 </body>
 </html>
