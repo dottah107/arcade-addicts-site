@@ -11,8 +11,7 @@
 h1{margin:0 0 12px;color:var(--accent)} label{display:block;margin:10px 0 6px;font-weight:600}
 input{width:100%;padding:12px;border-radius:10px;border:1px solid #222;background:#0b0b0b;color:#fff}
 .btn{width:100%;margin-top:12px;padding:12px;border-radius:12px;font-weight:800;border:none;cursor:pointer;background:var(--accent);color:#000}
-.muted{opacity:.8}
-#status{margin-top:10px;min-height:1.2em;color:#f99;font-weight:600}
+.muted{opacity:.8} #status{margin-top:10px;min-height:1.2em;color:#f99;font-weight:600}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head><body>
@@ -20,7 +19,7 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid #222;backgroun
   <h1>Reset your password</h1>
   <div id="status"></div>
 
-  <!-- Stage A: request a reset link -->
+  <!-- A) ask for a reset email -->
   <form id="request" class="card">
     <label for="email">Email</label>
     <input id="email" type="email" autocomplete="email" required>
@@ -28,7 +27,7 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid #222;backgroun
     <p class="muted" style="margin-top:8px">We’ll email a secure link. Open it on this device.</p>
   </form>
 
-  <!-- Stage B: set a new password (after clicking email) -->
+  <!-- B) landed from email: set a new password -->
   <form id="setpw" class="card" style="display:none">
     <label for="pw">New password (min 6)</label>
     <input id="pw" type="password" minlength="6" required>
@@ -45,11 +44,9 @@ const sb  = supabase.createClient("https://xvhkwyhncuivsfwfmvbg.supabase.co","ey
 const $   = (id)=>document.getElementById(id);
 const msg = (m)=>{ $("status").textContent = m||""; };
 
-// Show correct stage
 const hash = location.hash || "";
 const isRecovery = hash.includes("type=recovery");
 
-// If coming from the email, ensure the recovery session is set, then show set-password form
 (async()=>{
   if(isRecovery){
     try{
@@ -65,17 +62,15 @@ const isRecovery = hash.includes("type=recovery");
   }
 })();
 
-// Stage A: send reset email (redirects back to /reset/)
 $("send").onclick = async (e)=>{
   e.preventDefault();
   const email = $("email").value.trim();
   if(!email){ msg("Enter your email."); return; }
   const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + "/reset/" });
   if(error){ msg(error.message); return; }
-  msg("Reset link sent. Check your email, then come back here using that link.");
+  msg("Reset link sent. Check your email, then return here using that link.");
 };
 
-// Stage B: save new password
 $("save").onclick = async (e)=>{
   e.preventDefault();
   const pw  = $("pw").value;
