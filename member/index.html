@@ -1,0 +1,45 @@
+﻿<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Member | Arcade Addicts</title>
+<style>body{background:#000;color:#fff;font:16px/1.5 system-ui;margin:0;display:grid;place-items:center;min-height:100vh}
+.card{max-width:520px;width:92%;padding:22px;border:1px solid #161616;background:#0f0f0f;border-radius:14px}
+h1{margin:0 0 10px;color:#0ff;font-weight:800}
+label{display:block;margin:10px 0 6px}
+input{width:100%;padding:10px;border-radius:10px;border:1px solid #222;background:#0c0c0c;color:#fff}
+.row{display:flex;gap:10px;margin-top:12px}
+.btn{padding:10px;border-radius:10px;border:0;font-weight:800;cursor:pointer}
+.primary{background:#0ff;color:#000}.ghost{background:transparent;color:#0ff;border:2px solid #0ff}
+small{opacity:.85}</style>
+<div class="card">
+  <h1>Member Area</h1>
+  <p id="hello"><small>Loading…</small></p>
+  <label>Gamertag</label>
+  <input id="tag" placeholder="Gamertag#1234">
+  <div class="row" style="justify-content:space-between">
+    <button class="btn primary" id="save">Save</button>
+    <button class="btn ghost" id="logout">Sign out</button>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const sb = supabase.createClient("https://xvhkwyhncuivsfwfmvbg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8");
+  (async () => {
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) { location.href = '/login/'; return; }
+    const name = user.user_metadata?.gamertag || user.email;
+    document.getElementById('hello').textContent = 'Welcome, ' + name;
+    document.getElementById('save').onclick = async () => {
+      const gamertag = document.getElementById('tag').value.trim();
+      const { error } = await sb.auth.updateUser({ data: { gamertag }});
+      if (error) alert(error.message); else {
+        document.getElementById('hello').textContent = 'Welcome, ' + (gamertag || user.email);
+        alert('Saved');
+      }
+    };
+    document.getElementById('logout').onclick = async () => {
+      await sb.auth.signOut();
+      location.href = '/login/';
+    };
+  })();
+</script>
+

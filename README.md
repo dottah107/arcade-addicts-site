@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/22556684/README.md)
 # Arcade Addicts — Cloudflare Pages Setup
 
 This repo is ready for Cloudflare Pages. Steps:
