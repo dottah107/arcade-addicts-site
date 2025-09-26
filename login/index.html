@@ -84,7 +84,27 @@ const show = (m)=>{ const el=$("msg"); if(el){ el.textContent=m||""; } };
   });
 })();
 </script>
+<script>
+(function(){
+  if(!window.supabase) return;
+  var sb = window.sb || supabase; // your page already created the client
+  var a  = document.getElementById("reset");
+  if(!a) return;
+  a.addEventListener("click", async function(e){
+    e.preventDefault();
+    var email = (document.getElementById("email")||{}).value||"";
+    email = email.trim();
+    if(!email){ alert("Enter your email first."); return; }
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: location.origin + "/change-password/"
+    });
+    if(error){ alert(error.message); return; }
+    alert("Reset link sent. Check your email.");
+  });
+})();
+</script>
 </body></html>
+
 
 
 
