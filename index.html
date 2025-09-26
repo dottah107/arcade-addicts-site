@@ -74,7 +74,16 @@
     footer.site{background:var(--panel);border-top:2px solid var(--accent);padding:28px 0;font-size:.95rem}
     .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px} @media (max-width:900px){.foot-grid{grid-template-columns:1fr}}
     .muted{color:var(--sub)}
-  </style>
+  
+  /* tournaments background */
+  #tournaments{
+    position:relative;
+    background:
+      linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+      var(--tour-bg) center/cover no-repeat fixed;
+  }
+  #tournaments > * { position: relative; z-index: 1; }
+</style>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Organization","name":"Arcade Addicts","url":"https://arcade-addicts.com","logo":"https://arcade-addicts.com/assets/logo.png","sameAs":["https://www.tiktok.com/@dottah107"]}
   </script>
@@ -88,81 +97,24 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header role="banner">
-  <div class="wrap"><div class="row">
-    <a class="brand" href="/" aria-label="Arcade Addicts home">
-      <img src="/assets/logo.png" alt=""><span class="wordmark">Arcade Addicts</span>
-    </a>
-
-    <!-- 3-lines button -->
-    <button class="hamburger" aria-controls="aa-nav" aria-expanded="false" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div></div>
-
-  <!-- AA: mobile hamburger menu -->
-  <nav id="aa-nav" aria-label="Primary">
-    <div class="wrap">
-      <a href="/login/">Login</a>
-      <a href="/">Home</a>
-      <a href="/tournaments/">Tournaments</a>
-      <a href="/lounge/">Lounge</a>
-      <a href="/register/">Register</a>
-      <a href="/pay/">Pay</a>
-      <a href="/discord/">Discord</a>
-      <a href="/#contact">Contacts</a>
-    </div>
-  </nav>
-
-  <style>
-    /* show dropdown only on small screens + prevent page scroll when open */
-    .aa-no-scroll { overflow: hidden; }
-    @media (max-width: 860px){
-      .hamburger{ display:inline-block; position:relative; z-index:10001 }
-      #aa-nav{ display:none; position:fixed; top:72px; left:0; right:0; background:#0f0f0f;
-               border-bottom:1px solid #222; z-index:10000 }
-      #aa-nav.open{ display:block }
-      #aa-nav .wrap{ display:grid; gap:10px; padding:14px 18px }
-      #aa-nav a{ display:block; text-decoration:none; font-weight:800; color:#fff }
-    }
-  </style>
-
-  <script>
-  (function(){
-    var btn = document.querySelector('.hamburger');
-    var nav = document.getElementById('aa-nav');
-    if(!btn || !nav) return;
-
-    // make ARIA reflect the target
-    btn.setAttribute('aria-controls','aa-nav');
-
-    function toggle(open){
-      var willOpen = (open === undefined) ? !nav.classList.contains('open') : !!open;
-      nav.classList.toggle('open', willOpen);
-      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-      document.body.classList.toggle('aa-no-scroll', willOpen);
-    }
-
-    btn.addEventListener('click', function(){ toggle(); });
-
-    // close when a menu link is tapped
-    nav.addEventListener('click', function(e){
-      if(e.target.tagName === 'A'){ toggle(false); }
-    });
-
-    // close on ESC
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape') toggle(false);
-    });
-
-    // close when clicking outside
-    document.addEventListener('click', function(e){
-      if(!nav.contains(e.target) && !btn.contains(e.target)) toggle(false);
-    });
-  })();
-  </script>
-  <!-- /AA -->
-</header>
-
+    <div class="wrap"><div class="row">
+      <a class="brand" href="/" aria-label="Arcade Addicts home"><img src="/assets/logo.png" alt=""><span class="wordmark">Arcade Addicts</span></a>
+      <button class="hamburger" aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span><span></span><span></span></button>
+      `<nav id="nav" aria-label="Primary">
+  <div class="wrap">
+    
+    <a href="/login/">Login</a>
+    <a href="home/">Home</a>
+    <a href="/tournaments/"">Tournaments</a>
+    <a href="/lounge/"">Lounge</a>
+    <a href="/register/"">Register</a>
+    <a href="/pay/"">Pay</a>
+    <a href="/discord/"">Discord</a>
+    <a href="#contact">Contacts</a>
+  </div>
+</nav>
+    </div></div>
+  </header>
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
@@ -179,7 +131,7 @@
       <span class="pill">$1,000 MK1 Showdown</span><span class="pill">Weekly Brackets</span><span class="pill">Squad Finder</span><span class="pill">North Carolina</span><span class="pill">Cash Prizes</span><span class="pill">Tekken 8</span><span class="pill">Warzone</span><span class="pill">NBA 2K26</span>
     </div></div></div>
 
-    <section class="wrap" aria-labelledby="tournaments-title">
+    <section class="wrap" aria-labelledby="tournaments-title" id="tournaments" style="--tour-bg:url('/assets/og-banner.jpg')">
       <h2 class="section-title" id="tournaments-title">🎯 Upcoming Tournaments</h2>
       <p class="sub">Secure your spot — free entry. Winners take cash.</p>
       <div class="grid" role="list">
