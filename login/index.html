@@ -30,7 +30,7 @@ small.muted{color:#9ab}
       <button id="signin" class="btn primary">Sign in</button>
       <div class="switch"><a id="showSignup" class="inline" href="#">Create an account</a></div>
       <div id="msg"></div>
-      <small class="muted">Forgot password? <a class="inline" href="#" id="reset">Email me a reset link</a></small>
+      <small class="muted">Forgot password? <a class="inline" href="/reset/">Reset your password</a></small>
     </div>
 
     <div id="signup" class="card" style="margin-top:14px;display:none">
@@ -75,14 +75,7 @@ const show = (m)=>{ const el=$("msg"); if(el){ el.textContent=m||""; } };
     show("Check your email to verify your account, then sign in.");
   };
 
-  $("reset").onclick = async (e)=>{
-    e.preventDefault();
-    const email = $("email").value.trim();
-    if(!email){ show("Enter your email first."); return; }
-    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + "/reset/" });
-    if(error){ show(error.message); return; }
-    show("Reset link sent if that email exists.");
-  };
+  
 
   // Enter key submits
   ["email","pw","up_email","up_pw"].forEach(function(id){
@@ -92,4 +85,5 @@ const show = (m)=>{ const el=$("msg"); if(el){ el.textContent=m||""; } };
 })();
 </script>
 </body></html>
+
 
