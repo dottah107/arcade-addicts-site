@@ -91,20 +91,46 @@
     <div class="wrap"><div class="row">
       <a class="brand" href="/" aria-label="Arcade Addicts home"><img src="/assets/logo.png" alt=""><span class="wordmark">Arcade Addicts</span></a>
       <button class="hamburger" aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span><span></span><span></span></button>
-      `<nav id="nav" aria-label="Primary">
+      <!-- AA: mobile hamburger menu -->
+<nav id="aa-nav" aria-label="Primary">
   <div class="wrap">
-    
     <a href="/login/">Login</a>
-    <a href="home/">Home</a>
-    <a href="/tournaments/"">Tournaments</a>
-    <a href="/lounge/"">Lounge</a>
-    <a href="/register/"">Register</a>
-    <a href="/pay/"">Pay</a>
-    <a href="/discord/"">Discord</a>
-    <a href="#contact">Contacts</a>
+    <a href="/">Home</a>
+    <a href="/tournaments/">Tournaments</a>
+    <a href="/lounge/">Lounge</a>
+    <a href="/register/">Register</a>
+    <a href="/pay/">Pay</a>
+    <a href="/discord/">Discord</a>
+    <a href="/#contact">Contacts</a>
   </div>
 </nav>
-    </div></div>
+<style>
+/* show this dropdown only on small screens */
+@media (max-width: 860px){
+  #aa-nav{display:none; position:fixed; top:72px; left:0; right:0; background:#0f0f0f; border-bottom:1px solid #222; z-index:9999}
+  #aa-nav.open{display:block}
+  #aa-nav .wrap{display:grid; gap:10px; padding:14px 18px}
+  #aa-nav a{display:block; text-decoration:none; font-weight:800; color:#fff}
+}
+</style>
+<script>
+/* toggle the dropdown when the 3-line button is tapped */
+(function(){
+  var btn = document.querySelector('.hamburger');   // your existing 3-lines button
+  var nav = document.getElementById('aa-nav');
+  if(!btn || !nav) return;
+  btn.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  // close menu after choosing a link
+  nav.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){ nav.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+  });
+})();
+</script>
+<!-- /AA -->
+
   </header>
 
   <main id="main">
@@ -201,6 +227,7 @@
       </div>
     </div></footer></body>
 </html>
+
 
 
 
