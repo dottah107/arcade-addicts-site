@@ -30,7 +30,7 @@ small.muted{color:#9ab}
       <button id="signin" class="btn primary">Sign in</button>
       <div class="switch"><a id="showSignup" class="inline" href="#">Create an account</a></div>
       <div id="msg"></div>
-      <small class="muted">Forgot password? <a id="reset" class="inline" href="#">Reset your password</a></small>
+      <small class="muted">Forgot password? <a class="inline" href="/reset/">Reset your password</a></small>
     </div>
 
     <div id="signup" class="card" style="margin-top:14px;display:none">
@@ -85,6 +85,7 @@ const show = (m)=>{ const el=$("msg"); if(el){ el.textContent=m||""; } };
 })();
 </script>
 </body></html>
+
 
 
 

@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reset Password • Arcade Addicts</title>
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--surface:#0f0f0f;--muted:#161616;--text:#fff;--accent:#00FFFF;--radius:14px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:520px;margin:64px auto;padding:0 16px}
+h1{margin:0 0 12px;color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--muted);border-radius:var(--radius);padding:18px}
+label{display:block;margin:10px 0 6px;font-weight:600}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid #222;background:#0b0b0b;color:#fff}
+.btn{width:100%;margin-top:12px;padding:12px;border-radius:12px;font-weight:800;border:none;cursor:pointer;background:var(--accent);color:#000}
+.muted{opacity:.8}
+#status{margin-top:10px;min-height:1.2em;color:#f99;font-weight:600}
+a{color:var(--accent);text-decoration:none}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Reset your password</h1>
+    <div id="status"></div>
+
+    <!-- A) Request a reset email -->
+    <form id="request" class="card">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" required>
+      <button id="send" class="btn">Send reset link</button>
+      <p class="muted" style="margin-top:8px">We’ll email a secure link. Open it on this device.</p>
+    </form>
+
+    <!-- B) Landed from email: set a new password -->
+    <form id="setpw" class="card" style="display:none">
+      <label for="pw">New password (min 6)</label>
+      <input id="pw" type="password" minlength="6" required>
+      <label for="pw2">Confirm password</label>
+      <input id="pw2" type="password" minlength="6" required>
+      <button id="save" class="btn">Save password</button>
+    </form>
+
+    <p class="muted" style="margin-top:10px"><a href="/login/">Back to login</a></p>
+  </div>
+
+  <script>
+    const sb = supabase.createClient("https://xvhkwyhncuivsfwfmvbg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8");
+    const $  = (id)=>document.getElementById(id);
+    const msg= (m)=>{ $("status").textContent = m || ""; };
+
+    // If arriving via email (hash has type=recovery), show Stage B and set session
+    (async ()=>{
+      const h = location.hash || "";
+      if (h.includes("type=recovery")) {
+        try {
+          const p  = new URLSearchParams(h.slice(1));
+          const at = p.get("access_token");
+          const rt = p.get("refresh_token");
+          if (at && rt) await sb.auth.setSession({ access_token: at, refresh_token: rt });
+        } catch (_) {}
+        $("request").style.display = "none";
+        $("setpw").style.display   = "block";
+      }
+    })();
+
+    // A) Send reset email (links back to /reset/#...)
+    $("send").onclick = async (e)=>{
+      e.preventDefault();
+      const email = $("email").value.trim();
+      if (!email) { msg("Enter your email."); return; }
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + "/reset/" });
+      if (error) { msg(error.message); return; }
+      msg("Reset link sent. Check your email and open the link here.");
+    };
+
+    // B) Save new password
+    $("save").onclick = async (e)=>{
+      e.preventDefault();
+      const pw  = $("pw").value, pw2 = $("pw2").value;
+      if (pw.length < 6) { msg("Password must be at least 6 characters."); return; }
+      if (pw !== pw2)    { msg("Passwords do not match."); return; }
+      const { error } = await sb.auth.updateUser({ password: pw });
+      if (error) { msg(error.message); return; }
+      msg("Password updated. Redirecting to login…");
+      setTimeout(()=>location.href="/login/", 900);
+    };
+  </script>
+</body>
+</html>
