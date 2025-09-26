@@ -93,6 +93,17 @@
     {"@type":"VideoGameTournament","name":"Tekken 8","startDate":"2025-10-05","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"VirtualLocation","url":"https://arcade-addicts.com/tournaments/tekken-8"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/"},"award":"$750 Champion Purse"},
     {"@type":"VideoGameTournament","name":"Mortal Kombat 1","startDate":"2025-10-12","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"VirtualLocation","url":"https://arcade-addicts.com/tournaments/mk1"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/"},"award":"$1,000 Fatality Showdown"}]}
   </script>
+<script>
+/* AA_RECOVERY_SHIM: redirect Supabase recovery links to /reset/ */
+(function(){
+  try{
+    var h = location.hash || '';
+    if (h.indexOf('type=recovery') > -1 && (location.pathname==='/' || location.pathname==='/index.html')) {
+      location.replace('/reset/' + h);  // keep the tokens
+    }
+  } catch(e){}
+})();
+</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -213,6 +224,7 @@
       </div>
     </div></footer></body>
 </html>
+
 
 
 
