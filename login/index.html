@@ -27,6 +27,7 @@ small.muted{color:#9ab}
       <input id="email" type="email" autocomplete="email" required>
       <label for="pw">Password</label>
       <input id="pw" type="password" minlength="6" autocomplete="current-password" required>
+<p><a id="reset" class="inline" href="#">Reset your password</a></p>
       <button id="signin" class="btn primary">Sign in</button>
       <div class="switch"><a id="showSignup" class="inline" href="#">Create an account</a></div>
       <div id="msg"></div>
@@ -101,7 +102,30 @@ const show = (m)=>{ const el=$("msg"); if(el){ el.textContent=m||""; } };
   });
 })();
 </script>
+<!-- AA_RESET_TO_RESET_V1 -->
+<script>
+(function(){
+  try{
+    if(!window.supabase){ return; }
+    var sb = window.sb || supabase;
+    var $ = function(id){ return document.getElementById(id); };
+    var link = document.getElementById("reset");
+    if(!link) return;
+    link.addEventListener("click", async function(e){
+      e.preventDefault();
+      var email = ($("email") && $("email").value || "").trim();
+      if(!email){ alert("Enter your email first."); return; }
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: location.origin + "/reset/"
+      });
+      if(error){ alert("Reset error: " + error.message); return; }
+      alert("Reset link sent. Check your inbox/spam.");
+    });
+  }catch(e){}
+})();
+</script>
 </body></html>
+
 
 
 
