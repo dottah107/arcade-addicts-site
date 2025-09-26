@@ -197,8 +197,29 @@
   <script>
     'serviceWorker' in navigator && (()=>{const b=document.querySelector('base')?.href||'/arcade-addicts-site/';navigator.serviceWorker.register(new URL('sw.js', b))})();
   </script>
+<script>
+/* AA_MENU_INJECT */
+(function(){
+  var items = [
+    ['Login','/login/'],
+    ['Home','/'],
+    ['Tournaments','/tournaments/'],
+    ['Lounge','/lounge/'],
+    ['Register','/register/'],
+    ['Pay','/pay/'],
+    ['Discord','/discord/'],
+    ['Contacts','#contact']
+  ];
+  var nav = document.getElementById('nav');
+  if (!nav) return;
+  var wrap = nav.querySelector('.wrap');
+  if (!wrap) { wrap = document.createElement('div'); wrap.className='wrap'; nav.appendChild(wrap); }
+  wrap.innerHTML = items.map(function(x){ return '<a href="'+x[1]+'">'+x[0]+'</a>'; }).join('');
+})();
+</script>
 </body>
 </html>
+
 
 
 
