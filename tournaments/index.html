@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -36,18 +36,12 @@
   <link rel="manifest" href="/manifest.webmanifest">
 
   <style>
-    :root{
-      --bg:#000000; --panel:#0b0b0b; --surface:#0f0f0f; --muted:#161616;
-      --text:#ffffff; --sub:#c8f8ff; --accent:#00FFFF; --radius:16px; --max:1100px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    :root{ --bg:#000000; --panel:#0b0b0b; --surface:#0f0f0f; --muted:#161616; --text:#ffffff; --sub:#c8f8ff; --accent:#00FFFF; --radius:16px; --max:1100px; }
+    *{box-sizing:border-box} html,body{height:100%}
     body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
     a{color:inherit;text-decoration:none}
     a:focus-visible,button:focus-visible{outline:2px dashed var(--accent);outline-offset:4px}
-    img{max-width:100%;display:block}
-    img[loading="lazy"]{content-visibility:auto}
-
+    img{max-width:100%;display:block} img[loading="lazy"]{content-visibility:auto}
     .skip-link{position:absolute;left:-999px;top:auto}
     .skip-link:focus{left:12px;top:12px;background:#000;padding:.6rem .8rem;border-radius:10px;z-index:1000}
 
@@ -57,216 +51,113 @@
     .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
     .brand img{height:36px;width:auto;filter:drop-shadow(0 0 8px rgba(0,255,255,.55))}
     .brand .wordmark{font-family:'Press Start 2P',cursive;font-size:1.05rem;color:var(--accent)}
-    nav a{padding:8px 12px;border-radius:10px}
-    nav a:hover{background:var(--muted)}
+    nav a{padding:8px 12px;border-radius:10px} nav a:hover{background:var(--muted)}
     .hamburger{display:none;background:none;border:none;padding:8px;border-radius:10px}
     .hamburger span{display:block;width:26px;height:2px;background:var(--text);margin:6px 0}
-
-    @media (max-width:860px){
-      .hamburger{display:inline-block}
+    @media (max-width:860px){ .hamburger{display:inline-block}
       #nav{display:none;position:fixed;inset:72px 0 auto 0;background:var(--panel);border-bottom:1px solid var(--muted)}
-      #nav.open{display:block}
-      #nav .wrap{display:grid;gap:8px;padding:14px 20px}
-      #nav a{display:block}
-    }
+      #nav.open{display:block} #nav .wrap{display:grid;gap:8px;padding:14px 20px} #nav a{display:block} }
 
     .hero{position:relative;isolation:isolate;padding:96px 0 64px;overflow:hidden;text-align:center}
-    .hero:before{
-      content:"";position:absolute;inset:-20% -10% auto -10%;height:120%;z-index:-1;
+    .hero:before{content:"";position:absolute;inset:-20% -10% auto -10%;height:120%;z-index:-1;
       background:radial-gradient(1200px 600px at 50% -10%, rgba(0,255,255,.25), transparent 60%),
-                 radial-gradient(800px 400px at 80% 10%, rgba(0,163,163,.28), transparent 60%);
-      filter:blur(30px);
-    }
+                 radial-gradient(800px 400px at 80% 10%, rgba(0,163,163,.28), transparent 60%); filter:blur(30px);}
     .kicker{color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:.14em}
     .hero h1{font-family:'Press Start 2P',cursive;color:var(--accent);font-size:2.25rem;margin:.6rem 0 0}
     .hero p{max-width:760px;margin:14px auto 28px;font-size:1.125rem}
     .cta{display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center}
     .btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#000;font-weight:800;border:none;padding:14px 20px;border-radius:14px;cursor:pointer}
-    .btn:hover{filter:brightness(.95)}
-    .btn.secondary{background:transparent;color:var(--accent);border:2px solid var(--accent)}
-
+    .btn:hover{filter:brightness(.95)} .btn.secondary{background:transparent;color:var(--accent);border:2px solid var(--accent)}
     .marquee{border-block:1px solid var(--muted);background:linear-gradient(90deg,#030303,#0a0a0a);padding:10px 0;overflow:hidden}
     .marquee .track{display:flex;gap:32px;animation:scroll 22s linear infinite;white-space:nowrap}
     .pill{border:1px solid var(--muted);border-radius:999px;padding:8px 14px;font-weight:600;color:var(--sub)}
-    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-    section{padding:56px 0}
+    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}
+    } section{padding:56px 0}
     .section-title{font-size:1.75rem;color:var(--accent);text-align:center;margin:0 0 20px}
     .sub{color:var(--sub);text-align:center;margin:0 0 26px}
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    @media (max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.grid{grid-template-columns:1fr}}
+    @media (max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}} @media (max-width:640px){.grid{grid-template-columns:1fr}}
     .card{background:var(--surface);border:1px solid var(--muted);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:10px}
-    .card h3{margin:0;font-size:1.1rem}
-    .meta{font-size:.95rem;color:var(--sub)}
-    .prize{font-weight:800}
+    .card h3{margin:0;font-size:1.1rem} .meta{font-size:.95rem;color:var(--sub)} .prize{font-weight:800}
     .card footer{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
-
-    .lounge{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
-    @media (max-width:900px){.lounge{grid-template-columns:1fr}}
+    .lounge{display:grid;grid-template-columns:1.2fr .8fr;gap:20px} @media (max-width:900px){.lounge{grid-template-columns:1fr}}
     .panel{background:var(--surface);border:1px solid var(--muted);border-radius:var(--radius);padding:18px}
-
     .cta-band{background:linear-gradient(180deg,#001b1b,transparent);border-top:1px solid var(--muted);border-bottom:1px solid var(--muted)}
     .cta-band .inner{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center}
-
     footer.site{background:var(--panel);border-top:2px solid var(--accent);padding:28px 0;font-size:.95rem}
-    .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px}
-    @media (max-width:900px){.foot-grid{grid-template-columns:1fr}}
+    .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px} @media (max-width:900px){.foot-grid{grid-template-columns:1fr}}
     .muted{color:var(--sub)}
   </style>
 
-  <!-- Structured data: Organization -->
   <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Organization",
-    "name":"Arcade Addicts",
-    "url":"https://arcade-addicts.com",
-    "logo":"https://arcade-addicts.com/assets/logo.png",
-    "sameAs":["https://www.tiktok.com/@dottah107"]
-  }
+  {"@context":"https://schema.org","@type":"Organization","name":"Arcade Addicts","url":"https://arcade-addicts.com","logo":"https://arcade-addicts.com/assets/logo.png","sameAs":["https://www.tiktok.com/@dottah107"]}
   </script>
-
-  <!-- Structured data: Upcoming Tournaments -->
   <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"ItemList",
-    "name":"Upcoming Tournaments",
-    "itemListElement":[
-      {
-        "@type":"VideoGameTournament",
-        "name":"COD: Warzone",
-        "startDate":"2025-09-28",
-        "eventStatus":"https://schema.org/EventScheduled",
-        "location":{"@type":"VirtualLocation","url":"https://arcade-addicts.com/tournaments/warzone"},
-        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/"},
-        "award":"$500 Grand Prize"
-      },
-      {
-        "@type":"VideoGameTournament",
-        "name":"Tekken 8",
-        "startDate":"2025-10-05",
-        "eventStatus":"https://schema.org/EventScheduled",
-        "location":{"@type":"VirtualLocation","url":"https://arcade-addicts.com/tournaments/tekken-8"},
-        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/"},
-        "award":"$750 Champion Purse"
-      },
-      {
-        "@type":"VideoGameTournament",
-        "name":"Mortal Kombat 1",
-        "startDate":"2025-10-12",
-        "eventStatus":"https://schema.org/EventScheduled",
-        "location":{"@type":"VirtualLocation","url":"https://arcade-addicts.com/tournaments/mk1"},
-        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/"},
-        "award":"$1,000 Fatality Showdown"
-      }
-    ]
-  }
+  {"@context":"https://schema.org","@type":"ItemList","name":"Upcoming Tournaments","itemListElement":[
+    {"@type":"VideoGameTournament","name":"COD: Warzone","startDate":"2025-09-28","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"VirtualLocation","url":"https://arcade-addicts.com/tournaments/warzone"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/"},"award":" Grand Prize"},
+    {"@type":"VideoGameTournament","name":"Tekken 8","startDate":"2025-10-05","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"VirtualLocation","url":"https://arcade-addicts.com/tournaments/tekken-8"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/"},"award":" Champion Purse"},
+    {"@type":"VideoGameTournament","name":"Mortal Kombat 1","startDate":"2025-10-12","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"VirtualLocation","url":"https://arcade-addicts.com/tournaments/mk1"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/"},"award":",000 Fatality Showdown"}]}
   </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header role="banner">
-    <div class="wrap">
-      <div class="row">
-        <a class="brand" href="/" aria-label="Arcade Addicts home">
-          <img src="/assets/logo.png" alt="">
-          <span class="wordmark">Arcade Addicts</span>
-        </a>
-
-        <button class="hamburger" aria-controls="nav" aria-expanded="false" aria-label="Menu">
-          <span></span><span></span><span></span>
-        </button>
-
-        <nav id="nav" aria-label="Primary">
-          <div class="wrap">
-            <a href="/">Home</a>
-            <a href="/tournaments/">Tournaments</a>
-            <a href="/lounge/">Lounge</a>
-            <a href="/register/">Register</a>
-            <a href="#contact">Contact</a>
-          </div>
-        </nav>
-      </div>
-    </div>
+    <div class="wrap"><div class="row">
+      <a class="brand" href="/" aria-label="Arcade Addicts home"><img src="/assets/logo.png" alt=""><span class="wordmark">Arcade Addicts</span></a>
+      <button class="hamburger" aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span><span></span><span></span></button>
+      <nav id="nav" aria-label="Primary">
+        <div class="wrap">
+          <a href="/">Home</a>
+          <a href="/tournaments/">Tournaments</a>
+          <a href="/lounge/">Lounge</a>
+          <a href="/register/">Register</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </div></div>
   </header>
 
   <main id="main">
-    <!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="wrap">
         <p class="kicker">NORTH CAROLINA • EST. 2025</p>
         <h1 id="hero-title">Level Up. Lock In. Win Big.</h1>
         <p>Weekly brackets for MK1, Tekken 8, Warzone, NBA 2K — cash prizes and bragging rights. Lock in your slot now and meet your squad in the Player Lounge.</p>
-        <div class="cta">
-          <a class="btn" href="/register/" aria-label="Register for Arcade Addicts tournaments">Register Now</a>
-          <a class="btn secondary" href="/lounge/" aria-label="Enter the Player Lounge">Enter Lounge</a>
-        </div>
+        <div class="cta"><a class="btn" href="/register/">Register Now</a><a class="btn secondary" href="/lounge/">Enter Lounge</a></div>
       </div>
     </section>
 
-    <!-- MARQUEE -->
-    <div class="marquee" aria-hidden="true">
-      <div class="wrap">
-        <div class="track">
-          <span class="pill">$1,000 MK1 Showdown</span>
-          <span class="pill">Weekly Brackets</span>
-          <span class="pill">Squad Finder</span>
-          <span class="pill">North Carolina</span>
-          <span class="pill">Cash Prizes</span>
-          <span class="pill">Tekken 8</span>
-          <span class="pill">Warzone</span>
-          <span class="pill">NBA 2K26</span>
-          <span class="pill">$1,000 MK1 Showdown</span>
-          <span class="pill">Weekly Brackets</span>
-          <span class="pill">Squad Finder</span>
-          <span class="pill">North Carolina</span>
-          <span class="pill">Cash Prizes</span>
-          <span class="pill">Tekken 8</span>
-          <span class="pill">Warzone</span>
-          <span class="pill">NBA 2K26</span>
-        </div>
-      </div>
-    </div>
+    <div class="marquee" aria-hidden="true"><div class="wrap"><div class="track">
+      <span class="pill">,000 MK1 Showdown</span><span class="pill">Weekly Brackets</span><span class="pill">Squad Finder</span><span class="pill">North Carolina</span><span class="pill">Cash Prizes</span><span class="pill">Tekken 8</span><span class="pill">Warzone</span><span class="pill">NBA 2K26</span>
+      <span class="pill">,000 MK1 Showdown</span><span class="pill">Weekly Brackets</span><span class="pill">Squad Finder</span><span class="pill">North Carolina</span><span class="pill">Cash Prizes</span><span class="pill">Tekken 8</span><span class="pill">Warzone</span><span class="pill">NBA 2K26</span>
+    </div></div></div>
 
-    <!-- TOURNAMENTS -->
     <section class="wrap" aria-labelledby="tournaments-title">
       <h2 class="section-title" id="tournaments-title">🎯 Upcoming Tournaments</h2>
       <p class="sub">Secure your spot — free entry. Winners take cash.</p>
       <div class="grid" role="list">
         <article class="card" role="listitem">
           <h3>COD: Warzone</h3>
-          <div class="meta"><time datetime="2025-09-28">Sun • Sep 28, 2025</time> • <span class="prize">$500 Grand Prize</span></div>
+          <div class="meta"><time datetime="2025-09-28">Sun • Sep 28, 2025</time> • <span class="prize"> Grand Prize</span></div>
           <p>Trios kill race — best 3 lobbies count. Anti-cheat enforced.</p>
-          <footer>
-            <a class="btn" href="/register/">Register</a>
-            <a class="btn secondary" href="/tournaments/warzone">Details</a>
-          </footer>
+          <footer><a class="btn" href="/register/">Register</a><a class="btn secondary" href="/tournaments/warzone">Details</a></footer>
         </article>
         <article class="card" role="listitem">
           <h3>Tekken 8</h3>
-          <div class="meta"><time datetime="2025-10-05">Sun • Oct 5, 2025</time> • <span class="prize">$750 Champion Purse</span></div>
+          <div class="meta"><time datetime="2025-10-05">Sun • Oct 5, 2025</time> • <span class="prize"> Champion Purse</span></div>
           <p>Double elimination, BO3 sets until Finals (BO5). PC & PS5 pools.</p>
-          <footer>
-            <a class="btn" href="/register/">Register</a>
-            <a class="btn secondary" href="/tournaments/tekken-8">Details</a>
-          </footer>
+          <footer><a class="btn" href="/register/">Register</a><a class="btn secondary" href="/tournaments/tekken-8">Details</a></footer>
         </article>
         <article class="card" role="listitem">
           <h3>Mortal Kombat 1</h3>
-          <div class="meta"><time datetime="2025-10-12">Sun • Oct 12, 2025</time> • <span class="prize">$1,000 Fatality Showdown</span></div>
+          <div class="meta"><time datetime="2025-10-12">Sun • Oct 12, 2025</time> • <span class="prize">,000 Fatality Showdown</span></div>
           <p>Single elimination — finalists on stream. Community vote for MVP.</p>
-          <footer>
-            <a class="btn" href="/register/">Register</a>
-            <a class="btn secondary" href="/tournaments/mk1">Details</a>
-          </footer>
+          <footer><a class="btn" href="/register/">Register</a><a class="btn secondary" href="/tournaments/mk1">Details</a></footer>
         </article>
       </div>
     </section>
 
-    <!-- LOUNGE -->
     <section class="wrap" aria-labelledby="lounge-title">
       <h2 class="section-title" id="lounge-title">🕹️ Player Lounge</h2>
       <p class="sub">Find partners fast. Post LFG, scrim schedules, and clips.</p>
@@ -275,23 +166,15 @@
           <h3>Meet, Match, & Scrim</h3>
           <p>Jump into the Lounge to squad up, set scrims, and share tech. Mods keep it clean so you can focus on winning.</p>
           <p><strong>Discord:</strong> <a href="https://discord.gg/f9XT8eRx5M" target="_blank" rel="noopener">Join our server</a></p>
-          <div class="cta" style="margin-top:10px">
-            <a class="btn" href="/lounge/">Open Lounge</a>
-            <a class="btn secondary" href="https://discord.gg/f9XT8eRx5M" target="_blank" rel="noopener">Join Discord</a>
-          </div>
+          <div class="cta" style="margin-top:10px"><a class="btn" href="/lounge/">Open Lounge</a><a class="btn secondary" href="https://discord.gg/f9XT8eRx5M" target="_blank" rel="noopener">Join Discord</a></div>
         </div>
         <div class="panel">
           <h3>Rules at a Glance</h3>
-          <ul>
-            <li>No cheating, smurfing, or exploiting — instant DQ.</li>
-            <li>Be on time; 10-minute grace, then forfeit.</li>
-            <li>Respect players & admins. Keep comms positive.</li>
-          </ul>
+          <ul><li>No cheating, smurfing, or exploiting — instant DQ.</li><li>Be on time; 10-minute grace, then forfeit.</li><li>Respect players & admins. Keep comms positive.</li></ul>
         </div>
       </div>
     </section>
 
-    <!-- CTA BAND -->
     <section class="cta-band" aria-labelledby="cta-title">
       <div class="wrap inner">
         <h2 id="cta-title" class="sr-only">Register Call to Action</h2>
@@ -301,7 +184,6 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section class="wrap" id="contact" aria-labelledby="contact-title">
       <h2 class="section-title" id="contact-title">📬 Contact</h2>
       <p class="sub">Questions about rules, formats, or sponsorships? Hit us up.</p>
@@ -316,10 +198,7 @@
   <footer class="site" role="contentinfo">
     <div class="wrap foot-grid">
       <div>
-        <div class="brand" style="margin-bottom:8px">
-          <img src="/assets/logo.png" alt="">
-          <span class="wordmark">Arcade Addicts</span>
-        </div>
+        <div class="brand" style="margin-bottom:8px"><img src="/assets/logo.png" alt=""><span class="wordmark">Arcade Addicts</span></div>
         <p class="muted">© 2025 Arcade Addicts — North Carolina</p>
         <p class="muted">Follow on TikTok: <a href="https://www.tiktok.com/@dottah107" target="_blank" rel="noopener">@dottah107</a></p>
       </div>
@@ -355,8 +234,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
