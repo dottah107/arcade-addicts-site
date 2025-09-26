@@ -362,16 +362,6 @@
   h2.addEventListener('click', function(){ location.href = '/tournaments/'; });
 })();
 </script>
-<script>
-/* AA_TOUR_FORCE: force all "Tournaments" links to /tournaments/ */
-(function(){
-  document.querySelectorAll("a").forEach(function(a){
-    var label=(a.textContent||"").trim().toLowerCase();
-    if(label==="tournaments"){ a.setAttribute("href","/tournaments/"); }
-  });
-})();
-</script>
 </body>
 </html>
-
 
