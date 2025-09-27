@@ -71,7 +71,28 @@ small.muted{color:var(--sub)}
 
   <!-- Your posts -->
   <div class="panel">
-    <h2 style="margin:0 0 10px">Your recent posts</h2>
+    <!-- AA_FRIENDS_UI -->
+<div class="panel" id="friends-box">
+  <h2 style="margin:0 0 10px">Friends</h2>
+
+  <div style="display:flex;gap:8px;margin:8px 0">
+    <input id="search" placeholder="Find players by username" style="flex:1;padding:10px;border-radius:10px;border:1px solid #222;background:#0b0b0b;color:#fff">
+    <button id="search-go" class="btn ghost">Search</button>
+  </div>
+
+  <div id="search-results"></div>
+
+  <h3 style="margin:14px 0 6px">Incoming requests</h3>
+  <div id="incoming"></div>
+
+  <h3 style="margin:14px 0 6px">Your friends</h3>
+  <div id="friends"></div>
+</div>
+
+<div class="panel">
+  <h2 style="margin:0 0 10px">Friends timeline</h2>
+  <div id="timeline" class="grid"></div>
+</div><h2 style="margin:0 0 10px">Your recent posts</h2>
     <div id="feed" class="grid" aria-live="polite"></div>
   </div>
 </div>
@@ -237,5 +258,6 @@ async function loadMine(user){
 })();
 </script>
 </body></html>
+
 
 
