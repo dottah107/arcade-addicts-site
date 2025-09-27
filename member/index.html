@@ -64,6 +64,7 @@ small.muted{color:var(--sub)}
     <textarea id="content" rows="3" placeholder="GGs! Pulled off a nasty combo"></textarea>
     <div class="row2" style="margin-top:10px">
       <button id="post" class="btn primary">Post</button>
+<div id="upStatus" class="muted" style="margin-top:8px"></div>
       <small class="muted">Uploads go to public bucket <code>highlights</code>.</small>
     </div>
   </div>
@@ -172,4 +173,69 @@ async function loadMine(user){
   await loadMine(user);
 })();
 </script>
+<!-- AA_UPLOAD_OVERRIDE -->
+<script>
+(function(){
+  var MAX_MB = 200;
+  var ALLOWED_VID = ['video/mp4','video/quicktime','video/webm'];
+  var $ = function(id){ return document.getElementById(id); };
+  var btn = $('post');
+  if(!btn) return;
+
+  if(!$('upStatus')){
+    var d = document.createElement('div'); d.id='upStatus'; d.className='muted'; d.style.marginTop='8px';
+    btn.insertAdjacentElement('afterend', d);
+  }
+  var status = $('upStatus');
+  var showMsg = function(m, ok){ if(status){ status.textContent = m||''; status.style.color = ok?'#9f9':'#f99'; } };
+
+  // Use existing client if present, else make one with your project creds
+  var sb = (window.sb && window.sb.auth && window.sb.storage) ? window.sb
+          : (typeof supabase!=='undefined' ? supabase.createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8') : null);
+
+  btn.onclick = async function(){
+    var file = ($('file')||{}).files ? $('file').files[0] : null;
+    var text = ($('content')||{}).value ? $('content').value.trim() : '';
+    if(!file && !text){ var e=document.getElementById('msg'); if(e) e.textContent='Add text or choose a file.'; return; }
+    if(!sb){ showMsg('Supabase client not found on page.'); return; }
+
+    if(file){
+      var mb = file.size/(1024*1024);
+      if(mb > MAX_MB){ showMsg('That file is '+mb.toFixed(1)+' MB. Max allowed is '+MAX_MB+' MB.'); return; }
+      if(file.type.startsWith('video/') && ALLOWED_VID.indexOf(file.type)===-1){
+        showMsg('Unsupported video. Use MP4/MOV/WebM (H.264/AAC).'); return;
+      }
+    }
+
+    showMsg(file ? 'Uploading' : 'Posting', true); btn.disabled = true;
+    try{
+      var me = (await sb.auth.getUser()).data.user;
+      var media_url=null, media_type=null;
+
+      if(file){
+        var ext = (file.name.split('.').pop()||'').toLowerCase();
+        var path = me.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.' + ext;
+        var up = await sb.storage.from('highlights').upload(path, file, { cacheControl:'3600', upsert:false, contentType:file.type||undefined });
+        if(up.error) throw up.error;
+        var pub = sb.storage.from('highlights').getPublicUrl(path);
+        media_url = pub.data.publicUrl;
+        media_type = file.type.startsWith('video/') ? 'video' : 'image';
+      }
+
+      var ins = await sb.from('posts').insert({ user_id: me.id, content: text||null, media_url, media_type });
+      if(ins.error) throw ins.error;
+
+      if($('file')) $('file').value='';
+      if($('content')) $('content').value='';
+      showMsg('Posted!', true);
+      if(typeof loadMine==='function'){ await loadMine(me); }
+    }catch(err){
+      showMsg(err.message || String(err));
+    }finally{
+      btn.disabled = false;
+    }
+  };
+})();
+</script>
 </body></html>
+
