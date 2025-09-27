@@ -176,7 +176,7 @@ async function loadMine(user){
 <!-- AA_UPLOAD_OVERRIDE -->
 <script>
 (function(){
-  var MAX_MB = 200;
+  var MAX_MB = 1024;
   var ALLOWED_VID = ['video/mp4','video/quicktime','video/webm'];
   var $ = function(id){ return document.getElementById(id); };
   var btn = $('post');
@@ -189,7 +189,6 @@ async function loadMine(user){
   var status = $('upStatus');
   var showMsg = function(m, ok){ if(status){ status.textContent = m||''; status.style.color = ok?'#9f9':'#f99'; } };
 
-  // Use existing client if present, else make one with your project creds
   var sb = (window.sb && window.sb.auth && window.sb.storage) ? window.sb
           : (typeof supabase!=='undefined' ? supabase.createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8') : null);
 
@@ -238,4 +237,5 @@ async function loadMine(user){
 })();
 </script>
 </body></html>
+
 
