@@ -143,7 +143,7 @@ small.muted{color:var(--sub)}
 </div>
 
 <script>
-const sb = supabase.createClient("https://xvhkwyhncuivsfwfmvbg.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8");
+const sb = supabase.createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8');
 const $ = (id)=>document.getElementById(id);
 const msg = (m)=>{ $("msg").textContent = m||""; $("ok").textContent=""; };
 const ok  = (m)=>{ $("ok").textContent  = m||""; $("msg").textContent=""; };
@@ -390,6 +390,7 @@ async function loadMine(user){
 })();
 </script>
 </body></html>
+
 
 
 
