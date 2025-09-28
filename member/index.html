@@ -92,7 +92,25 @@ small.muted{color:var(--sub)}
 <div class="panel">
   <h2 style="margin:0 0 10px">Friends timeline</h2>
   <div id="timeline" class="grid"></div>
-</div><h2 style="margin:0 0 10px">Your recent posts</h2>
+</div><section id="aa-friends" class="panel" style="margin:14px 0">
+  <h2 style="margin:0 0 10px">Friends</h2>
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+    <input id="aa-friend-email" placeholder="Add by email" style="flex:1;padding:10px;border-radius:10px;border:1px solid #222;background:#0b0b0b;color:#fff" />
+    <button id="aa-send" class="btn primary">Send request</button>
+  </div>
+  <div class="grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="panel">
+      <h3 style="margin:0 0 6px">Requests for you</h3>
+      <div id="aa-reqs"></div>
+    </div>
+    <div class="panel">
+      <h3 style="margin:0 0 6px">Your friends</h3>
+      <div id="aa-friend-list"></div>
+    </div>
+  </div>
+  <h3 style="margin:14px 0 6px">Friends posts</h3>
+  <div id="feed-friends" class="grid"></div>
+</section><h2 style="margin:0 0 10px">Your recent posts</h2>
     <div id="feed" class="grid" aria-live="polite"></div>
   </div>
 </div>
@@ -257,7 +275,95 @@ async function loadMine(user){
   };
 })();
 </script>
+<script>
+(function(){
+  if(!window.supabase){ console.warn('Supabase not loaded'); return; }
+  const sb = window.sb || supabase.createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8');
+  const $ = (id)=>document.getElementById(id);
+  const showMsg = (t)=>{ const el=document.getElementById('msg'); if(el) el.textContent=t||''; };
+
+  async function whoAmI(){ const { data:{ session } } = await sb.auth.getSession(); return session?.user||null; }
+
+  async function loadInbox(){
+    const box = aa-reqs; if(!box) return; box.innerHTML='Loading...';
+    const { data, error } = await sb.rpc('get_incoming_requests');
+    if(error){ box.textContent=error.message; return; }
+    const rows = data||[];
+    if(!rows.length){ box.innerHTML='<div class="muted">No pending requests.</div>'; return; }
+    box.innerHTML='';
+    rows.forEach(r=>{
+      const div=document.createElement('div'); div.className='item';
+      div.innerHTML = '<span class="who">'+(r.sender_email||r.sender)+'</span>'
+        + '<span><button class="btn sm ok" data-acc="'+r.id+'">Accept</button> '
+        + '<button class="btn sm no" data-dec="'+r.id+'">Decline</button></span>';
+      box.appendChild(div);
+    });
+    box.onclick=async (e)=>{
+      const idA=e.target?.getAttribute?.('data-acc');
+      const idD=e.target?.getAttribute?.('data-dec');
+      if(idA){
+        const { error } = await sb.rpc('accept_friend_request',{ p_id:Number(idA) });
+        if(error){ showMsg(error.message); return; }
+        await loadInbox(); await loadFriends(); await loadFriendsFeed();
+      } else if(idD){
+        const { error } = await sb.rpc('decline_friend_request',{ p_id:Number(idD) });
+        if(error){ showMsg(error.message); return; }
+        await loadInbox();
+      }
+    };
+  }
+
+  async function loadFriends(){
+    const wrap=aa-friend-list; if(!wrap) return; wrap.innerHTML='Loading...';
+    const { data, error } = await sb.rpc('get_my_friends');
+    if(error){ wrap.textContent=error.message; return; }
+    const rows=data||[];
+    if(!rows.length){ wrap.innerHTML='<div class="muted">No friends yet.</div>'; return; }
+    wrap.innerHTML='';
+    rows.forEach(r=>{
+      const div=document.createElement('div'); div.className='item';
+      div.innerHTML='<span class="who">'+(r.friend_email||r.friend_id)+'</span>'
+        + '<span class="muted">since '+new Date(r.since).toLocaleDateString()+'</span>';
+      wrap.appendChild(div);
+    });
+  }
+
+  async function sendByEmail(){
+    const inp=aa-friend-email; if(!inp) return;
+    const email=(inp.value||'').trim(); if(!email){ showMsg('Enter an email.'); return; }
+    const { error } = await sb.rpc('send_friend_request_by_email',{ p_email: email });
+    if(error){ showMsg(error.message); return; }
+    showMsg('Request sent to '+email+'.'); inp.value=''; await loadInbox();
+  }
+
+  async function loadFriendsFeed(){
+    const grid=feed-friends; if(!grid) return; grid.innerHTML='Loading...';
+    const { data, error } = await sb.rpc('get_friend_feed');
+    if(error){ grid.textContent=error.message; return; }
+    const posts=data||[]; if(!posts.length){ grid.innerHTML='<div class="muted">No posts yet.</div>'; return; }
+    grid.innerHTML='';
+    posts.forEach(p=>{
+      const card=document.createElement('div'); card.className='card';
+      if(p.media_url){
+        if((p.media_type||'').startsWith('video')){ const v=document.createElement('video'); v.controls=true; v.src=p.media_url; card.appendChild(v); }
+        else { const img=document.createElement('img'); img.src=p.media_url; img.alt=''; card.appendChild(img); }
+      }
+      const body=document.createElement('div'); body.className='body';
+      const safe=(s)=>String(s||'').replace(/[<>&]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]));
+      body.innerHTML=(p.content?('<p>'+safe(p.content)+'</p>'):'')+'<small class="time">'+new Date(p.created_at).toLocaleString()+'</small>';
+      card.appendChild(body); grid.appendChild(card);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', async ()=>{
+    const me=await whoAmI(); if(!me) return;
+    const sendBtn=aa-send; if(sendBtn) sendBtn.onclick=sendByEmail;
+    await loadInbox(); await loadFriends(); await loadFriendsFeed();
+  });
+})();
+</script>
 </body></html>
+
 
 
 
