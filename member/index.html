@@ -110,7 +110,34 @@ small.muted{color:var(--sub)}
   </div>
   <h3 style="margin:14px 0 6px">Friends posts</h3>
   <div id="feed-friends" class="grid"></div>
-</section><h2 style="margin:0 0 10px">Your recent posts</h2>
+</section><div class="panel" id="aa-friends">
+  <h2 style="margin:0 0 10px">Friends (beta)</h2>
+  <div style="display:grid;gap:10px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="aa-friend-email" type="email" placeholder="Friend email" style="flex:1;min-width:220px;padding:10px;border-radius:10px;border:1px solid #222;background:#0b0b0b;color:#fff">
+      <button id="aa-send-email" class="btn ghost">Send by Email</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="aa-friend-tag" type="text" placeholder="Friend gamertag" style="flex:1;min-width:220px;padding:10px;border-radius:10px;border:1px solid #222;background:#0b0b0b;color:#fff">
+      <button id="aa-send-tag" class="btn ghost">Send by Gamertag</button>
+    </div>
+
+    <div class="panel" style="margin-top:8px">
+      <h3 style="margin:0 0 8px">Incoming requests</h3>
+      <div id="aa-reqs" class="muted">Loading</div>
+    </div>
+
+    <div class="panel" style="margin-top:8px">
+      <h3 style="margin:0 0 8px">Your friends</h3>
+      <div id="aa-friend-list" class="muted">Loading</div>
+    </div>
+
+    <div class="panel" style="margin-top:8px">
+      <h3 style="margin:0 0 8px">Friends feed</h3>
+      <div id="feed-friends" class="grid"></div>
+    </div>
+  </div>
+</div><h2 style="margin:0 0 10px">Your recent posts</h2>
     <div id="feed" class="grid" aria-live="polite"></div>
   </div>
 </div>
@@ -363,6 +390,7 @@ async function loadMine(user){
 })();
 </script>
 </body></html>
+
 
 
 
