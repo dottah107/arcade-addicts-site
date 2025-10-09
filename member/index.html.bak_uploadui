@@ -110,54 +110,7 @@ small.muted{color:var(--sub)}
   <button id="logoutBtn" style="margin-top:16px;">Sign out</button>
 </section>
 <script src="/assets/social.js?v=1"></script>
-<section id="aa-upload-section" style="margin:24px 0;padding:12px;border:1px solid #333;border-radius:10px;">
-  <h3>My Content</h3>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-    <input id="aaTitle" placeholder="Title (optional)" style="padding:8px;flex:1;min-width:200px;">
-    <input id="aaFile" type="file" style="padding:8px;">
-    <button id="aaUploadBtn" style="padding:10px 14px;font-weight:600;cursor:pointer;">Upload</button>
-  </div>
-  <div id="aaUploadStatus" style="margin-top:8px;color:#0af;"></div>
-  <ul id="aaUploads" style="margin-top:12px;display:grid;gap:8px;padding-left:18px;"></ul>
-</section>
-<script>
-(async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) { location.href = "/login/"; return; }
-
-  async function renderUploads(){
-    try {
-      const list = await AA.listMyUploads();
-      const ul = document.getElementById('aaUploads'); ul.innerHTML = "";
-      list.forEach(item => {
-        const li = document.createElement('li');
-        li.innerHTML = <a href="" target="_blank"></a>;
-        ul.appendChild(li);
-      });
-    } catch(e) { console.error(e); }
-  }
-
-  document.getElementById('aaUploadBtn')?.addEventListener('click', async () => {
-    const file = document.getElementById('aaFile').files[0];
-    if (!file) return alert("Pick a file");
-    document.getElementById('aaUploadStatus').textContent = "Uploading...";
-    try {
-      await AA.uploadContent(file, document.getElementById('aaTitle').value);
-      document.getElementById('aaUploadStatus').textContent = "Uploaded!";
-      document.getElementById('aaFile').value = "";
-      document.getElementById('aaTitle').value = "";
-      renderUploads();
-    } catch(e) {
-      console.error(e);
-      document.getElementById('aaUploadStatus').textContent = e.message || "Upload failed";
-    }
-  });
-
-  renderUploads();
-})();
-</script>
 </body></html>
-
 
 
 
