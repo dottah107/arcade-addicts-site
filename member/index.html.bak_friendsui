@@ -156,73 +156,7 @@ small.muted{color:var(--sub)}
   renderUploads();
 })();
 </script>
-<section id="aa-friends-section" style="margin:24px 0;padding:12px;border:1px solid #333;border-radius:10px;">
-  <h3>Friends</h3>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-    <input id="aaFriendEmail" placeholder="Friend's email" style="padding:8px;flex:1;min-width:220px;">
-    <button id="aaSendReq" style="padding:10px 14px;font-weight:600;cursor:pointer;">Send Request</button>
-  </div>
-  <div style="display:flex;gap:24px;margin-top:12px;flex-wrap:wrap;">
-    <div style="min-width:260px;">
-      <h4>Incoming</h4>
-      <ul id="aaIncoming" style="display:grid;gap:8px;padding-left:18px;"></ul>
-    </div>
-    <div style="min-width:260px;">
-      <h4>Outgoing</h4>
-      <ul id="aaOutgoing" style="display:grid;gap:8px;padding-left:18px;"></ul>
-    </div>
-  </div>
-</section>
-<script>
-(async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) { location.href = "/login/"; return; }
-
-  async function renderIncoming(){
-    const list = await AA.listIncomingRequests();
-    const ul = document.getElementById('aaIncoming'); ul.innerHTML = "";
-    list.forEach(fr => {
-      const li = document.createElement('li');
-      li.textContent = From: ;
-      const a = document.createElement('button'); a.textContent = "Accept";
-      const d = document.createElement('button'); d.textContent = "Decline";
-      a.onclick = async () => { await AA.acceptRequest(fr.id); renderIncoming(); };
-      d.onclick = async () => { await AA.declineRequest(fr.id); renderIncoming(); };
-      li.append(" ", a, " ", d);
-      ul.appendChild(li);
-    });
-  }
-
-  async function renderOutgoing(){
-    const list = await AA.listOutgoingRequests();
-    const ul = document.getElementById('aaOutgoing'); ul.innerHTML = "";
-    list.forEach(fr => {
-      const li = document.createElement('li');
-      li.textContent = To:  ();
-      if (fr.status === "pending") {
-        const c = document.createElement('button'); c.textContent = "Cancel";
-        c.onclick = async () => { await AA.cancelRequest(fr.id); renderOutgoing(); };
-        li.append(" ", c);
-      }
-      ul.appendChild(li);
-    });
-  }
-
-  document.getElementById('aaSendReq')?.addEventListener('click', async () => {
-    const email = document.getElementById('aaFriendEmail').value;
-    if (!email) return alert("Enter email");
-    try {
-      await AA.sendFriendRequestByEmail(email);
-      alert("Request sent");
-      renderOutgoing();
-    } catch(e) { alert(e.message || "Could not send"); }
-  });
-
-  renderIncoming(); renderOutgoing();
-})();
-</script>
 </body></html>
-
 
 
 
