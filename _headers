@@ -1,3 +1,5 @@
-﻿/login/*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:;
-  Content-Security-Policy: connect-src 'self' https://xvhkwyhncuivsfwfmvbg.supabase.co https://*.supabase.co wss://*.supabase.co;
+﻿/*
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; frame-ancestors 'self'; form-action 'self';
+    script-src 'self'; style-src 'self' 'unsafe-inline';
+    img-src 'self' data: blob:; font-src 'self' data:;
+    connect-src 'self' https://xvhkwyhncuivsfwfmvbg.supabase.co https://*.supabase.co wss://*.supabase.co;
