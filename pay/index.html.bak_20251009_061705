@@ -108,10 +108,8 @@
     ['change','input'].forEach(e => document.body.addEventListener(e, updateButtons));
     updateButtons();
   </script>
-<script src="/assets/login-hook.js"></script>
 </body>
 </html>
-
 
 
 

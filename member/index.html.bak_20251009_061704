@@ -389,9 +389,7 @@ async function loadMine(user){
   });
 })();
 </script>
-<script src="/assets/login-hook.js"></script>
 </body></html>
-
 
 
 

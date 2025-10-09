@@ -32,6 +32,4 @@
     setTimeout(()=>{ location.href = "/login/"; }, 1600);
   })();
 </script>
-<script src="/assets/login-hook.js"></script>
 </body></html>
-

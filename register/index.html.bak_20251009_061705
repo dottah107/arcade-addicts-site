@@ -149,10 +149,8 @@ document.getElementById("game")?.value = map[key] || raw;
   if (document.readyState !== 'loading') boot(); else document.addEventListener('DOMContentLoaded', boot);
 })();
 </script>
-<script src="/assets/login-hook.js"></script>
 </body>
 </html>
-
 
 
 
