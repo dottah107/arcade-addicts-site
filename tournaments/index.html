@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tournaments | Arcade Addicts</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <meta name="description" content="Upcoming tournaments at Arcade Addicts — Warzone, Tekken 8, MK1, SF6, Dragon Ball FighterZ, NBA 2K26, and Fortnite. Register now for cash prizes." />
+  <link rel="canonical" href="https://arcade-addicts.com/tournaments/">
+  <link rel="icon" href="/assets/favicon.ico">
+  <style>
+    :root{ --bg:#000; --panel:#0f0f0f; --panel-2:#111; --text:#fff; --accent:#0ff; --muted:#1a1a1a; }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;}
+    a{color:inherit;text-decoration:none}
+    header{background:var(--panel);padding:20px;border-bottom:3px solid var(--accent);display:flex;justify-content:space-between;align-items:center}
+    header h1{display:flex;align-items:center;gap:10px;margin:0;font-family:'Press Start 2P',cursive;color:var(--accent);font-size:1.1rem}
+    header h1 .logo{height:28px;width:auto;display:block;filter: drop-shadow(0 0 6px rgba(0,255,255,.55));}
+    .nav a{margin:0 10px;padding:6px 8px;border-radius:6px}
+    .nav a:hover{background:#111}
+    .hero{text-align:center;padding:72px 20px;background:linear-gradient(to bottom right,#111,#222)}
+    .hero h2{font-size:2rem;color:var(--accent);margin:0 0 8px}
+    .hero p{opacity:.9;max-width:720px;margin:0 auto}
+    main{max-width:1100px;margin:30px auto;padding:0 20px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media (min-width:960px){ .grid{grid-template-columns:1fr 1fr} }
+    .card{position:relative;overflow:hidden;background:var(--panel-2);border-radius:12px;border:1px solid #1b1b1b;padding:18px;display:flex;flex-direction:column;gap:10px}
+    .card.bg::before{content:""; position:absolute; inset:0; background: var(--bg-img, none) center/cover no-repeat; filter: brightness(.80) contrast(1.05) saturate(1.1); transform: scale(1.06);}
+    .card.bg::after{content:""; position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,.30), rgba(0,0,0,.12) 40%, rgba(0,0,0,0));}
+    .card > *{ position:relative; z-index:1 }
+    .card h3{margin:0; font-size:1.25rem}
+    .meta{font-size:.95rem;opacity:.95}
+    .prize{font-weight:700;color:var(--accent)}
+    .badges{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{display:inline-block;font-size:.8rem;padding:4px 8px;border-radius:999px;background:rgba(0,255,255,.12);border:1px solid rgba(0,255,255,.35)}
+    .btn{display:inline-block;background:var(--accent);color:#000;border:none;padding:10px 18px;font-size:1rem;font-weight:700;cursor:pointer;border-radius:10px}
+    .btn:hover{filter:brightness(.9)}
+    details{background:rgba(0,0,0,.35);border:1px solid #1b1b1b;border-radius:10px;padding:10px}
+    details summary{cursor:pointer;font-weight:700;color:var(--accent)}
+    .winners{margin-top:36px}
+    .winners h2{color:var(--accent);margin-bottom:12px}
+    .winners table{width:100%;border-collapse:collapse;background:var(--panel-2);border:1px solid #1b1b1b;border-radius:12px;overflow:hidden}
+    .winners th, .winners td{padding:12px;border-bottom:1px solid #1b1b1b;text-align:left}
+    .winners th{background:#0e0e0e}
+    .winners tr:last-child td{border-bottom:none}
+    .countdown{font-weight:700; letter-spacing:.2px}
+  </style>
+
+  <!-- Structured data: tournaments -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"ItemList",
+    "itemListElement":[
+      {"@type":"VideoGameTournament","name":"COD: Warzone","startDate":"2025-09-28","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$500 Grand Prize","url":"https://arcade-addicts.com/tournaments/#warzone"},
+      {"@type":"VideoGameTournament","name":"Tekken 8","startDate":"2025-10-05","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$750 Champion Purse","url":"https://arcade-addicts.com/tournaments/#tekken8"},
+      {"@type":"VideoGameTournament","name":"Mortal Kombat 1","startDate":"2025-10-12","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$1000 Fatality Showdown","url":"https://arcade-addicts.com/tournaments/#mk1"},
+      {"@type":"VideoGameTournament","name":"Street Fighter 6","startDate":"2025-10-19","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$600 Top Pot","url":"https://arcade-addicts.com/tournaments/#sf6"},
+      {"@type":"VideoGameTournament","name":"Dragon Ball FighterZ","startDate":"2025-10-26","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$1200 Champion Purse","url":"https://arcade-addicts.com/tournaments/#dbfz"},
+      {"@type":"VideoGameTournament","name":"Fortnite Duos","startDate":"2025-11-02","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$800 Victory Purse","url":"https://arcade-addicts.com/tournaments/#fortnite"},
+      {"@type":"VideoGameTournament","name":"NBA 2K26","startDate":"2025-11-09","eventStatus":"https://schema.org/EventScheduled","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","url":"https://arcade-addicts.com/register/","availability":"https://schema.org/InStock"},"award":"$700 Clutch Cash","url":"https://arcade-addicts.com/tournaments/#nba2k26"}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <a href="/" aria-label="Back to home">← Home</a>
+    <h1><img src="/assets/logo.png" alt="" class="logo"> Tournaments</h1>
+    <nav class="nav">
+      <a href="/tournaments/" aria-current="page">Tournaments</a>
+      <a href="/register/" class="btn">Register</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Upcoming Tournaments</h2>
+    <p>Lock in your spot. New brackets every week. All times Eastern (ET).</p>
+  </section>
+
+  <main>
+    <div class="grid">
+      <!-- Warzone -->
+      <article class="card bg" id="warzone" style="--bg-img:url('/assets/covers/warzone.jpg')">
+        <h3><a href="/tournaments/warzone/">COD: Warzone</a></h3>
+        <div class="badges"><span class="tag">Duos</span><span class="tag">Crossplay</span></div>
+        <div class="meta"><time datetime="2025-09-28">Sun, Sept 28, 2025</time> · <span class="prize">$500 Grand Prize</span> · <span class="countdown" data-start="2025-09-28T18:00:00-04:00" aria-live="polite">—</span></div>
+        <details><summary>Payout breakdown</summary>
+          <ul><li>1st: $300 (60%)</li><li>2nd: $150 (30%)</li><li>3rd: $50 (10%)</li></ul>
+        </details>
+        <details><summary>Rules / Format</summary>
+          <ul><li>Check-in 30 min before start.</li><li>Best-of-3, highest combined kills wins. Ties → damage.</li><li>No VPNs or reverse boosting.</li><li>Disputes require VOD/clip.</li></ul>
+        </details>
+        <p><a class="btn" href="/register/?t=Warzone">Register for Warzone</a> <a href="/tournaments/warzone/">View full rules →</a></p>
+      </article>
+
+      <!-- Tekken 8 -->
+      <article class="card bg" id="tekken8" style="--bg-img:url('/assets/covers/tekken8.jpg')">
+        <h3><a href="/tournaments/tekken8/">Tekken 8</a></h3>
+        <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
+        <div class="meta"><time datetime="2025-10-05">Sun, Oct 5, 2025</time> · <span class="prize">$750 Champion Purse</span> · <span class="countdown" data-start="2025-10-05T18:00:00-04:00" aria-live="polite">—</span></div>
+        <details><summary>Payout breakdown</summary>
+          <ul><li>1st: $450 (60%)</li><li>2nd: $225 (30%)</li><li>3rd: $75 (10%)</li></ul>
+        </details>
+        <details><summary>Rules / Format</summary>
+          <ul><li>FT3 throughout; FT5 Grand Finals.</li><li>Character lock per set; loser may switch.</li><li>Random stage; rematch on agreement.</li></ul>
+        </details>
+        <p><a class="btn" href="/register/?t=Tekken%208">Register for Tekken 8</a> <a href="/tournaments/tekken8/">View full rules →</a></p>
+      </article>
+
+      <!-- MK1 -->
+      <article class="card bg" id="mk1" style="--bg-img:url('/assets/covers/mk1.jpg')">
+        <h3><a href="/tournaments/mk1/">Mortal Kombat 1</a></h3>
+        <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
+        <div class="meta"><time datetime="2025-10-12">Sun, Oct 12, 2025</time> · <span class="prize">$1000 Fatality Showdown</span> · <span class="countdown" data-start="2025-10-12T18:00:00-04:00" aria-live="polite">—</span></div>
+        <details><summary>Payout breakdown</summary>
+          <ul><li>1st: $600 (60%)</li><li>2nd: $300 (30%)</li><li>3rd: $100 (10%)</li></ul>
+        </details>
+        <details><summary>Rules / Format</summary>
+          <ul><li>FT3 throughout.</li><li>Tournament-legal stages only.</li><li>No macros/rapid-fire.</li></ul>
+        </details>
+        <p><a class="btn" href="/register/?t=Mortal%20Kombat%201">Register for MK1</a> <a href="/tournaments/mk1/">View full rules →</a></p>
+      </article>
+
+      <!-- Street Fighter 6 -->
+      <article class="card bg" id="sf6" style="--bg-img:url('/assets/covers/sf6.jpg')">
+        <h3><a href="/tournaments/sf6/">Street Fighter 6</a></h3>
+        <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
+        <div class="meta"><time datetime="2025-10-19">Sun, Oct 19, 2025</time> · <span class="prize">$600 Top Pot</span> · <span class="countdown" data-start="2025-10-19T18:00:00-04:00" aria-live="polite">—</span></div>
+        <details><summary>Payout breakdown</summary>
+          <ul><li>1st: $360 (60%)</li><li>2nd: $180 (30%)</li><li>3rd: $60 (10%)</li></ul>
+        </details>
+        <details><summary>Rules / Format</summary>
+          <ul><li>FT3 in winners/losers; FT5 Grand Finals.</li><li>Wired strongly recommended.</li><li>Stage random; color mods banned.</li></ul>
+        </details>
+        <p><a class="btn" href="/register/?t=Street%20Fighter%206">Register for SF6</a> <a href="/tournaments/sf6/">View full rules →</a></p>
+      </article>
+
+      <!-- Dragon Ball FighterZ -->
+      <article class="card bg" id="dbfz" style="--bg-img:url('/assets/covers/dragon-ball-fighterz.jpg')">
+        <h3><a href="/tournaments/dbfz/">Dragon Ball FighterZ</a></h3>
+        <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
+        <div class="meta"><time datetime="2025-10-26">Sun, Oct 26, 2025</time> · <span class="prize">$1200 Champion Purse</span> · <span class="countdown" data-start="2025-10-26T18:00:00-04:00" aria-live="polite">—</span></div>
+        <details><summary>Payout breakdown</summary>
+          <ul><li>1st: $720 (60%)</li><li>2nd: $360 (30%)</li><li>3rd: $120 (10%)</li></ul>
+        </details>
+        <details><summary>Rules / Format</summary>
+          <ul><li>FT3 throughout; FT5 Grand Finals.</li><li>Character lock per set; loser may switch.</li><li>Wired strongly recommended.</li></ul>
+        </details>
+        <p><a class="btn" href="/register/?t=Dragon%20Ball%20FighterZ">Register for DBFZ</a> <a href="/tournaments/dbfz/">View full rules →</a></p>
+      </article>
+
+      <!-- Fortnite -->
+      <article class="card bg" id="fortnite" style="--bg-img:url('/assets/covers/fortnite.jpg')">
+        <h3><a href="/tournaments/fortnite/">Fortnite Duos</a></h3>
+        <div class="badges"><span class="tag">Duos</span><span class="tag">Crossplay</span></div>
+        <div class="meta"><time datetime="2025-11-02">Sun, Nov 2, 2025</time> · <span class="prize">$800 Victory Purse</span> · <span class="countdown" data-start="2025-11-02T18:00:00-05:00" aria-live="polite">—</span></div>
+        <details><summary>Payout breakdown</summary>
+          <ul><li>1st: $480 (60%)</li><li>2nd: $240 (30%)</li><li>3rd: $80 (10%)</li></ul>
+        </details>
+        <details><summary>Rules / Format</summary>
+          <ul><li>Builds ON. Zero Build on request.</li><li>Best-of-3 lobby scoring.</li><li>Ties → most eliminations.</li></ul>
+        </details>
+        <p><a class="btn" href="/register/?t=Fortnite%20Duos">Register for Fortnite</a> <a href="/tournaments/fortnite/">View full rules →</a></p>
+      </article>
+
+      <!-- NBA 2K26 -->
+      <!-- NBA 2K26 -->
+<article class="card bg" id="nba2k26" style="--bg-img:url('/assets/covers/nba2k26.jpg')">
+  <h3><a href="/tournaments/nba2k26/">NBA 2K26</a></h3>
+  <div class="badges"><span class="tag">3v3</span><span class="tag">Crossplay</span></div>
+  <div class="meta">
+    <time datetime="2025-11-09">Sun, Nov 9, 2025</time> ·
+    <span class="prize">$700 Clutch Cash</span> ·
+    <span class="countdown" data-start="2025-11-09T18:00:00-05:00" aria-live="polite">—</span>
+  </div>
+  <details><summary>Payout breakdown</summary>
+    <ul><li>1st: $420 (60%)</li><li>2nd: $210 (30%)</li><li>3rd: $70 (10%)</li></ul>
+  </details>
+  <details><summary>Rules / Format</summary>
+    <ul>
+      <li>3v3 team format.</li>
+      <li>Crossplay enabled.</li>
+      <li>Standard teams unless both agree otherwise.</li>
+      <li>Wired connection strongly recommended.</li>
+    </ul>
+  </details>
+  <p>
+    <a class="btn" href="/register/?t=NBA%202K26">Register for NBA 2K26</a>
+    <a href="/tournaments/nba2k26/">View full rules →</a>
+  </p>
+</article>
+
+    </div>
+
+    <section class="winners" id="winners">
+      <h2>🏅 Past Winners</h2>
+      <table>
+        <thead><tr><th>Event</th><th>Date</th><th>1st</th><th>2nd</th><th>3rd</th></tr></thead>
+        <tbody>
+          <tr><td>Warzone Duos</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>Tekken 8</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>MK1</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>&copy; 2025 Arcade Addicts</footer>
+
+  <script>
+    // Countdown updater
+    const pads = n => n.toString().padStart(2, '0');
+    function updateCountdown(el){
+      const start = new Date(el.dataset.start);
+      const now = new Date();
+      const diff = start - now;
+      if (diff <= 0){
+        if (now - start < 3 * 60 * 60 * 1000){
+          el.textContent = "LIVE now";
+          el.style.color = "#00ffff";
+        } else {
+          el.textContent = "Finished";
+          el.style.opacity = .85;
+        }
+        return;
+      }
+      const s = Math.floor(diff/1000);
+      const d = Math.floor(s/86400);
+      const h = Math.floor((s%86400)/3600);
+      const m = Math.floor((s%3600)/60);
+      const sec = (s%60);
+      el.textContent = (d>0? d+"d ":"") + pads(h)+":"+pads(m)+":"+pads(sec);
+    }
+    function tick(){
+      document.querySelectorAll('.countdown[data-start]').forEach(updateCountdown);
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
