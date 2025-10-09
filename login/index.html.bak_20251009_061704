@@ -48,16 +48,3 @@ small{opacity:.8}</style>
 
 
 
-
-<script src="/assets/login-hook.js"></script>
-
-<script>
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('button, a, input[type="submit"], input[type="button"]');
-  if (!btn) return;
-  const txt = (btn.value || btn.textContent || '').trim().toLowerCase();
-  if (txt === 'sign in' || txt === 'signin' || txt === 'log in' || txt === 'login') {
-    console.log('DEBUG: Sign In clicked (inline)');
-  }
-});
-</script>

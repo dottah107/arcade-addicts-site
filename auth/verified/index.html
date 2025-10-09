@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Email verified • Arcade Addicts</title>
+<style>
+  body{margin:0;background:#000;color:#fff;font-family:system-ui,Inter,Segoe UI,Roboto,Arial,sans-serif;display:grid;place-items:center;height:100vh}
+  .card{background:#0f0f0f;border:1px solid #161616;border-radius:14px;padding:24px;max-width:520px}
+  h1{margin:0 0 8px;color:#00FFFF}
+  p{margin:0 0 10px;opacity:.9}
+  a.btn{display:inline-block;margin-top:10px;background:#00FFFF;color:#000;font-weight:800;padding:12px 16px;border-radius:12px;text-decoration:none}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head><body>
+  <div class="card">
+    <h1>You're verified!</h1>
+    <p>Thanks for confirming your email. You can continue to sign in.</p>
+    <a class="btn" href="/login/">Go to login</a>
+  </div>
+<script>
+  // Keep recovery/magic flows safe too: set session if the hash contains tokens.
+  const sb = supabase.createClient("https://xvhkwyhncuivsfwfmvbg.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8");
+  (async () => {
+    try{
+      const h = location.hash || "";
+      if (h.includes("access_token") && h.includes("refresh_token")) {
+        const p = new URLSearchParams(h.slice(1));
+        const access_token  = p.get("access_token");
+        const refresh_token = p.get("refresh_token");
+        if (access_token && refresh_token) { await sb.auth.setSession({ access_token, refresh_token }); }
+      }
+    }catch(e){}
+    // Nudge to /login after a short moment
+    setTimeout(()=>{ location.href = "/login/"; }, 1600);
+  })();
+</script>
+<script src="/assets/login-hook.js"></script>
+</body></html>
+

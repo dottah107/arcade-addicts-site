@@ -55,6 +55,4 @@ const show = m => { \msg.textContent = m || ''; };
   setTimeout(()=>location.href="/login/", 900);
 };
 </script>
-<script src="/assets/login-hook.js"></script>
 </body></html>
-
