@@ -44,12 +44,21 @@
     <h2>Register an Account</h2>
     </div>
   <p id="aa-msg" class="note"></p>
+<<<<<<< HEAD
 </div>
  <form id="reg" novalidate><div id="msg" style="margin:10px 0;color:#9f9;font-weight:700"></div>
   <input type="hidden" name="_subject" value="New Arcade Addicts registration (with credentials)">
 <input type="hidden" name="_template" value="table">
 <input type="hidden" name="_captcha" value="false">
 <input type="hidden" name="_next" value="/register/success.html">
+=======
+</div>
+ <form id="reg" novalidate><div id="msg" style="margin:10px 0;color:#9f9;font-weight:700"></div>
+  <input type="hidden" name="_subject" value="New Arcade Addicts registration (with credentials)">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="/register/success.html">
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
   <input type="hidden" name="_subject" value="Tournament Registration">
 <input type="hidden" name="_autoresponse" value="Thanks for registering with Arcade Addicts — you’re in! We’ll email bracket and check-in details soon.">
 <input type="hidden" name="_captcha" value="false">
@@ -57,7 +66,11 @@
       <div class="row">
         <div class="col"><label for="name">Full name</label><input id="name" name="Name" required></div>
         <div class="col"><label for="gamer">Gamer tag</label><input id="gamer" name="GamerTag" required></div>
+<<<<<<< HEAD
         <div class="col"><label for="email">Email</label><input id="email" type="email" name="Email" required></div>
+=======
+        <div class="col"><label for="email">Email</label><input id="email" type="email" name="Email" required></div>
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
         <div class="col"><label for="password">Password</label><input id="password" type="password" name="Password" minlength="6" required></div>
         <div class="col"><label for="discord">Discord</label><input id="discord" name="Discord" placeholder="username#0000"></div>
         <div class="col"><label for="game">Tournament</label>
@@ -98,7 +111,11 @@ const raw = new URLSearchParams(location.search).get("t") || "";
 const key = raw.toLowerCase().replace(/%20|[\s-]/g,"");  // normalize
 const map = {warzone:"Warzone", tekken8:"Tekken 8", mk1:"Mortal Kombat 1", nba2k26:"NBA 2K26"};
 document.getElementById("game")?.value = map[key] || raw;
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
 <script>
 /* AA_MANDATORY_AUTH */
 (function(){
@@ -148,6 +165,7 @@ document.getElementById("game")?.value = map[key] || raw;
   }
   if (document.readyState !== 'loading') boot(); else document.addEventListener('DOMContentLoaded', boot);
 })();
+<<<<<<< HEAD
 </script>
 </body>
 </html>
@@ -166,3 +184,23 @@ document.getElementById("game")?.value = map[key] || raw;
 
 
 
+=======
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf

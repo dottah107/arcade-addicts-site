@@ -1,5 +1,11 @@
 ﻿User-agent: *
 Allow: /
+<<<<<<< HEAD
 Sitemap: https://arcade-addicts.com/sitemap.xml
 
 # touch 2025-09-25T16:38:59
+=======
+Sitemap: https://arcade-addicts.com/sitemap.xml
+
+# touch 2025-09-25T16:38:59
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
