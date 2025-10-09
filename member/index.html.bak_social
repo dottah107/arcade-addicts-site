@@ -82,36 +82,7 @@ small.muted{color:var(--sub)}
 <!-- AA_UPLOAD_OVERRIDE -->
 
 <script defer src="/assets/login-hook.js?v=6"></script>
-<section id="aa-uploads" style="margin:24px 0;">
-  <h3>Upload content</h3>
-  <input id="upTitle" placeholder="Title (optional)" />
-  <input id="upFile" type="file" />
-  <button id="upBtn">Upload</button>
-  <div id="upStatus" style="margin-top:8px;"></div>
-  <ul id="myUploads" style="margin-top:12px;"></ul>
-</section>
-
-<section id="aa-friends" style="margin:24px 0;">
-  <h3>Friends</h3>
-  <div style="display:flex;gap:8px;align-items:center;">
-    <input id="friendEmail" placeholder="Friend's email" />
-    <button id="sendReq">Send Request</button>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
-    <div>
-      <h4>Incoming</h4>
-      <ul id="incoming"></ul>
-    </div>
-    <div>
-      <h4>Outgoing</h4>
-      <ul id="outgoing"></ul>
-    </div>
-  </div>
-  <button id="logoutBtn" style="margin-top:16px;">Sign out</button>
-</section>
-<script src="/assets/social.js?v=1"></script>
 </body></html>
-
 
 
 
