@@ -21,7 +21,7 @@
     if (!res.ok){ notify("Login failed: " + (await res.text().catch(()=>res.statusText))); return; }
     let data={}; try{ data = await res.json(); }catch(_){}
     if (data.token) try{ localStorage.setItem("aa_token", data.token) }catch(_){}
-    location.href = "/dashboard/";
+    location.href = "/members/";
   }
 
   // robust selectors (no form required)
@@ -40,8 +40,7 @@
     });
   }
 
-  async function handleLogin(e){
-    if (e) e.preventDefault();
+  async function handleLogin(e){ if(e){ e.preventDefault(); e.stopPropagation(); }
     const emailEl = getEmailEl();
     const passEl  = getPassEl();
     if (!emailEl || !passEl){ console.warn("Email/password inputs not found"); notify("Enter email and password."); return; }
@@ -52,7 +51,7 @@
     console.log("Sign In clicked → trying Supabase…");
     const sb = await supabaseLogin(em, pw);
     if (sb.used){
-      if (sb.ok){ location.href = "/dashboard/"; return; }
+      if (sb.ok){ location.href = "/members/"; return; }
       console.warn("Supabase login failed:", sb.msg);
     }
     console.log("Falling back to API /api/login");
@@ -82,3 +81,4 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 })();
+
