@@ -12,9 +12,7 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid #222;backgroun
 .btn{width:100%;margin-top:12px;padding:12px;border-radius:12px;font-weight:800;border:none;cursor:pointer;background:#00FFFF;color:#000}
 #msg{margin-top:10px;min-height:1.2em;font-weight:600}
 </style>
-
-<script src="/assets/vendor/supabase.min.js"></script>
-<script src="/assets/supabase-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head><body>
 <div class="wrap">
   <h1 style="color:#00FFFF;margin:0 0 12px">Set a new password</h1>
@@ -57,6 +55,4 @@ const show = m => { \msg.textContent = m || ''; };
   setTimeout(()=>location.href="/login/", 900);
 };
 </script>
-<script defer src="/assets/login-hook.js?v=6"></script>
 </body></html>
-

@@ -30,8 +30,6 @@
     .gateways{display:grid;gap:12px;margin-top:14px}
     .note{font-size:.9rem;color:#bbb;margin-top:10px}
   </style>
-<script src="/assets/vendor/supabase.min.js"></script>
-<script src="/assets/supabase-init.js"></script>
 </head>
 <body>
   <header>
@@ -79,8 +77,37 @@
   </main>
 
   <footer style="text-align:center;padding:20px;color:#bbb">&copy; 2025 Arcade Addicts</footer>
-  
-<script defer src="/assets/login-hook.js?v=6"></script>
+  <script>
+    const CASHTAG = "$arcadeaddicts07";   // e.g. "$ArcadeAddicts"
+    const STRIPE_LINKS = {
+      mk1:     "REPLACE_ME_MK1_STRIPE_LINK",
+      dbfz:    "REPLACE_ME_DBFZ_STRIPE_LINK",
+      nba2k26: "REPLACE_ME_NBA2K26_STRIPE_LINK",
+      warzone: "REPLACE_ME_WZ_STRIPE_LINK"
+    };
+    const params = new URLSearchParams(location.search);
+    const preT = params.get('t'); const preAmt = params.get('amt');
+    if (preT) document.getElementById('tournament').value = preT;
+    if (preAmt) document.getElementById('amount').value = preAmt;
+    const $ = s => document.querySelector(s);
+    const fmtAmt = () => Math.max(1, Math.round(Number($('#amount').value || 0)));
+    const cleanTag = () => (CASHTAG || "").replace(/^\$/, "");
+    function updateButtons(){
+      const slug = $('#tournament').value;
+      const email = ($('#email').value || '').trim();
+      const gamer = ($('#gamer').value || '').trim();
+      const amt = fmtAmt();
+      $('#cashappBtn').href = `https://cash.app/${cleanTag()}/${amt}`;
+      let base = STRIPE_LINKS[slug] || "#";
+      const qp = [];
+      if (email) qp.push("prefilled_email=" + encodeURIComponent(email));
+      const ref = slug + "|" + (gamer || "unknown");
+      qp.push("client_reference_id=" + encodeURIComponent(ref));
+      $('#appleBtn').href = base + (base.includes("?") ? "&" : "?") + qp.join("&");
+    }
+    ['change','input'].forEach(e => document.body.addEventListener(e, updateButtons));
+    updateButtons();
+  </script>
 </body>
 <<<<<<< HEAD
 </html>
@@ -95,4 +122,3 @@
 
 
 >>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
-

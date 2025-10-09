@@ -1,13 +1,12 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Valorant 5v5 Rules | Arcade Addicts</title>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NBA 2K26 Rules | Arcade Addicts</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <meta name="description" content="Valorant 5v5 rules, format, schedule, and eligibility for Arcade Addicts." />
+  <meta name="description" content="NBA 2K26 tournament rules, format, schedule, and eligibility for Arcade Addicts." />
   <link rel="icon" href="/assets/favicon.ico">
   <style>
     :root{ --bg:#000; --panel:#0f0f0f; --panel-2:#111; --text:#fff; --accent:#0ff; }
@@ -24,26 +23,24 @@
     .btn{display:inline-block;background:var(--accent);color:#000;border:none;padding:10px 18px;font-size:1rem;font-weight:700;cursor:pointer;border-radius:10px}
     footer{text-align:center;padding:20px;color:#bbb}
   </style>
-<script src="/assets/vendor/supabase.min.js"></script>
-<script src="/assets/supabase-init.js"></script>
 </head>
 <body>
   <header>
-    <a href="/tournaments/" aria-label="Back to tournaments">â† Tournaments</a>
-    <h1><img src="/assets/logo.png" alt="" class="logo"> Valorant 5v5 â€” Rules</h1>
-    <nav><a href="/register/" class="btn">Register</a></nav>
+    <a href="/tournaments/" aria-label="Back to tournaments">← Tournaments</a>
+    <h1><img src="/assets/logo.png" alt="" class="logo"> NBA 2K26 — Rules</h1>
+    <nav><a href="/register/?t=NBA%202K26" class="btn">Register</a></nav>
   </header>
 
   <main>
     <section>
-      <p><strong>Date:</strong> Sun, Oct 26, 2025 &nbsp; â€¢ &nbsp; <strong>Prize:</strong> $1200 Team Bounty &nbsp; â€¢ &nbsp; <strong>Format:</strong> 5v5, Bo3</p>
+      <p><strong>Date:</strong> Sun, Nov 9, 2025 &nbsp; • &nbsp; <strong>Prize:</strong> $700 Clutch Cash &nbsp; • &nbsp; <strong>Format:</strong> 1v1, Best-of-3</p>
     </section>
 
     <section>
       <h2>Eligibility</h2>
       <ul>
         <li>All players must be 13+ or have guardian consent.</li>
-        <li>North America preferred; worldwide allowed unless restricted by game publisher.</li>
+        <li>Wired connection strongly recommended for fair play.</li>
         <li>Cheating, exploiting, or account sharing results in immediate disqualification.</li>
       </ul>
     </section>
@@ -51,8 +48,10 @@
     <section>
       <h2>Format & Rules</h2>
       <ul>
+        <li>Standard teams only; no All-Time teams unless both agree.</li>
+        <li>Best-of-3 series; coin flip (or higher seed) chooses host in game 1.</li>
+        <li>Pause only on dead ball with opponent consent.</li>
         <li>Check-in opens 30 minutes before start time.</li>
-        <li>Admin decisions are final to keep things on schedule.</li>
         <li>Match disputes require clips/VOD with timestamps.</li>
       </ul>
     </section>
@@ -74,12 +73,19 @@
       </ul>
     </section>
 
-    <p><a class="btn" href="/register/?t=Valorant%205v5">Register for Valorant 5v5</a></p>
+    <p><a class="btn" href="/register/?t=NBA%202K26">Register for NBA 2K26</a></p>
   </main>
 
   <footer>&copy; 2025 Arcade Addicts</footer>
-<script defer src="/assets/login-hook.js?v=6"></script>
 </body>
+<<<<<<< HEAD
 </html>
 
 
+
+=======
+</html>
+
+
+
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf

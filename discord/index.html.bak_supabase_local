@@ -15,9 +15,7 @@
     p{margin:0 0 12px} a{color:var(--accent);text-decoration:underline}
     .logo{height:32px;width:auto;vertical-align:middle;filter: drop-shadow(0 0 6px rgba(0,255,255,.55));}
   </style>
-  
-<script src="/assets/vendor/supabase.min.js"></script>
-<script src="/assets/supabase-init.js"></script>
+  <script> window.location.replace("https://discord.gg/f9XT8eRx5M"); </script>
 </head>
 <body>
   <div class="card">
@@ -29,7 +27,6 @@
   </div>
 <<<<<<< HEAD
 <footer></footer>
-<script defer src="/assets/login-hook.js?v=6"></script>
 </body>
 </html>
 
@@ -37,11 +34,9 @@
 
 =======
 <footer></footer>
-<script defer src="/assets/login-hook.js?v=6"></script>
 </body>
 </html>
 
 
 
 >>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
-

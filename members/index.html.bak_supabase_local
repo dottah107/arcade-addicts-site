@@ -22,8 +22,6 @@
     .btn{display:inline-block;background:var(--accent);color:#000;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none}
     footer{text-align:center;padding:20px;border-top:2px solid var(--accent);background:var(--panel)}
   </style>
-<script src="/assets/vendor/supabase.min.js"></script>
-<script src="/assets/supabase-init.js"></script>
 </head>
 <body>
   <header>
@@ -43,8 +41,6 @@
   </main>
 
   <footer>&copy; 2025 Arcade Addicts â€” <a href="mailto:arcadeaddicts07@gmail.com">arcadeaddicts07@gmail.com</a></footer>
-<script defer src="/assets/login-hook.js?v=6"></script>
 </body>
 </html>
-
 

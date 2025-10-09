@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <meta name="description" content="Upcoming tournaments at Arcade Addicts â€” Warzone, Tekken 8, MK1, SF6, Dragon Ball FighterZ, NBA 2K26, and Fortnite. Register now for cash prizes." />
+  <meta name="description" content="Upcoming tournaments at Arcade Addicts — Warzone, Tekken 8, MK1, SF6, Dragon Ball FighterZ, NBA 2K26, and Fortnite. Register now for cash prizes." />
   <link rel="canonical" href="https://arcade-addicts.com/tournaments/">
   <link rel="icon" href="/assets/favicon.ico">
   <style>
@@ -64,12 +64,10 @@
     ]
   }
   </script>
-<script src="/assets/vendor/supabase.min.js"></script>
-<script src="/assets/supabase-init.js"></script>
 </head>
 <body>
   <header>
-    <a href="/" aria-label="Back to home">â† Home</a>
+    <a href="/" aria-label="Back to home">← Home</a>
     <h1><img src="/assets/logo.png" alt="" class="logo"> Tournaments</h1>
     <nav class="nav">
       <a href="/tournaments/" aria-current="page">Tournaments</a>
@@ -88,84 +86,84 @@
       <article class="card bg" id="warzone" style="--bg-img:url('/assets/covers/warzone.jpg')">
         <h3><a href="/tournaments/warzone/">COD: Warzone</a></h3>
         <div class="badges"><span class="tag">Duos</span><span class="tag">Crossplay</span></div>
-        <div class="meta"><time datetime="2025-09-28">Sun, Sept 28, 2025</time> Â· <span class="prize">$500 Grand Prize</span> Â· <span class="countdown" data-start="2025-09-28T18:00:00-04:00" aria-live="polite">â€”</span></div>
+        <div class="meta"><time datetime="2025-09-28">Sun, Sept 28, 2025</time> · <span class="prize">$500 Grand Prize</span> · <span class="countdown" data-start="2025-09-28T18:00:00-04:00" aria-live="polite">—</span></div>
         <details><summary>Payout breakdown</summary>
           <ul><li>1st: $300 (60%)</li><li>2nd: $150 (30%)</li><li>3rd: $50 (10%)</li></ul>
         </details>
         <details><summary>Rules / Format</summary>
-          <ul><li>Check-in 30 min before start.</li><li>Best-of-3, highest combined kills wins. Ties â†’ damage.</li><li>No VPNs or reverse boosting.</li><li>Disputes require VOD/clip.</li></ul>
+          <ul><li>Check-in 30 min before start.</li><li>Best-of-3, highest combined kills wins. Ties → damage.</li><li>No VPNs or reverse boosting.</li><li>Disputes require VOD/clip.</li></ul>
         </details>
-        <p><a class="btn" href="/register/?t=Warzone">Register for Warzone</a> <a href="/tournaments/warzone/">View full rules â†’</a></p>
+        <p><a class="btn" href="/register/?t=Warzone">Register for Warzone</a> <a href="/tournaments/warzone/">View full rules →</a></p>
       </article>
 
       <!-- Tekken 8 -->
       <article class="card bg" id="tekken8" style="--bg-img:url('/assets/covers/tekken8.jpg')">
         <h3><a href="/tournaments/tekken8/">Tekken 8</a></h3>
         <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
-        <div class="meta"><time datetime="2025-10-05">Sun, Oct 5, 2025</time> Â· <span class="prize">$750 Champion Purse</span> Â· <span class="countdown" data-start="2025-10-05T18:00:00-04:00" aria-live="polite">â€”</span></div>
+        <div class="meta"><time datetime="2025-10-05">Sun, Oct 5, 2025</time> · <span class="prize">$750 Champion Purse</span> · <span class="countdown" data-start="2025-10-05T18:00:00-04:00" aria-live="polite">—</span></div>
         <details><summary>Payout breakdown</summary>
           <ul><li>1st: $450 (60%)</li><li>2nd: $225 (30%)</li><li>3rd: $75 (10%)</li></ul>
         </details>
         <details><summary>Rules / Format</summary>
           <ul><li>FT3 throughout; FT5 Grand Finals.</li><li>Character lock per set; loser may switch.</li><li>Random stage; rematch on agreement.</li></ul>
         </details>
-        <p><a class="btn" href="/register/?t=Tekken%208">Register for Tekken 8</a> <a href="/tournaments/tekken8/">View full rules â†’</a></p>
+        <p><a class="btn" href="/register/?t=Tekken%208">Register for Tekken 8</a> <a href="/tournaments/tekken8/">View full rules →</a></p>
       </article>
 
       <!-- MK1 -->
       <article class="card bg" id="mk1" style="--bg-img:url('/assets/covers/mk1.jpg')">
         <h3><a href="/tournaments/mk1/">Mortal Kombat 1</a></h3>
         <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
-        <div class="meta"><time datetime="2025-10-12">Sun, Oct 12, 2025</time> Â· <span class="prize">$1000 Fatality Showdown</span> Â· <span class="countdown" data-start="2025-10-12T18:00:00-04:00" aria-live="polite">â€”</span></div>
+        <div class="meta"><time datetime="2025-10-12">Sun, Oct 12, 2025</time> · <span class="prize">$1000 Fatality Showdown</span> · <span class="countdown" data-start="2025-10-12T18:00:00-04:00" aria-live="polite">—</span></div>
         <details><summary>Payout breakdown</summary>
           <ul><li>1st: $600 (60%)</li><li>2nd: $300 (30%)</li><li>3rd: $100 (10%)</li></ul>
         </details>
         <details><summary>Rules / Format</summary>
           <ul><li>FT3 throughout.</li><li>Tournament-legal stages only.</li><li>No macros/rapid-fire.</li></ul>
         </details>
-        <p><a class="btn" href="/register/?t=Mortal%20Kombat%201">Register for MK1</a> <a href="/tournaments/mk1/">View full rules â†’</a></p>
+        <p><a class="btn" href="/register/?t=Mortal%20Kombat%201">Register for MK1</a> <a href="/tournaments/mk1/">View full rules →</a></p>
       </article>
 
       <!-- Street Fighter 6 -->
       <article class="card bg" id="sf6" style="--bg-img:url('/assets/covers/sf6.jpg')">
         <h3><a href="/tournaments/sf6/">Street Fighter 6</a></h3>
         <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
-        <div class="meta"><time datetime="2025-10-19">Sun, Oct 19, 2025</time> Â· <span class="prize">$600 Top Pot</span> Â· <span class="countdown" data-start="2025-10-19T18:00:00-04:00" aria-live="polite">â€”</span></div>
+        <div class="meta"><time datetime="2025-10-19">Sun, Oct 19, 2025</time> · <span class="prize">$600 Top Pot</span> · <span class="countdown" data-start="2025-10-19T18:00:00-04:00" aria-live="polite">—</span></div>
         <details><summary>Payout breakdown</summary>
           <ul><li>1st: $360 (60%)</li><li>2nd: $180 (30%)</li><li>3rd: $60 (10%)</li></ul>
         </details>
         <details><summary>Rules / Format</summary>
           <ul><li>FT3 in winners/losers; FT5 Grand Finals.</li><li>Wired strongly recommended.</li><li>Stage random; color mods banned.</li></ul>
         </details>
-        <p><a class="btn" href="/register/?t=Street%20Fighter%206">Register for SF6</a> <a href="/tournaments/sf6/">View full rules â†’</a></p>
+        <p><a class="btn" href="/register/?t=Street%20Fighter%206">Register for SF6</a> <a href="/tournaments/sf6/">View full rules →</a></p>
       </article>
 
       <!-- Dragon Ball FighterZ -->
       <article class="card bg" id="dbfz" style="--bg-img:url('/assets/covers/dragon-ball-fighterz.jpg')">
         <h3><a href="/tournaments/dbfz/">Dragon Ball FighterZ</a></h3>
         <div class="badges"><span class="tag">1v1</span><span class="tag">Double Elim</span></div>
-        <div class="meta"><time datetime="2025-10-26">Sun, Oct 26, 2025</time> Â· <span class="prize">$1200 Champion Purse</span> Â· <span class="countdown" data-start="2025-10-26T18:00:00-04:00" aria-live="polite">â€”</span></div>
+        <div class="meta"><time datetime="2025-10-26">Sun, Oct 26, 2025</time> · <span class="prize">$1200 Champion Purse</span> · <span class="countdown" data-start="2025-10-26T18:00:00-04:00" aria-live="polite">—</span></div>
         <details><summary>Payout breakdown</summary>
           <ul><li>1st: $720 (60%)</li><li>2nd: $360 (30%)</li><li>3rd: $120 (10%)</li></ul>
         </details>
         <details><summary>Rules / Format</summary>
           <ul><li>FT3 throughout; FT5 Grand Finals.</li><li>Character lock per set; loser may switch.</li><li>Wired strongly recommended.</li></ul>
         </details>
-        <p><a class="btn" href="/register/?t=Dragon%20Ball%20FighterZ">Register for DBFZ</a> <a href="/tournaments/dbfz/">View full rules â†’</a></p>
+        <p><a class="btn" href="/register/?t=Dragon%20Ball%20FighterZ">Register for DBFZ</a> <a href="/tournaments/dbfz/">View full rules →</a></p>
       </article>
 
       <!-- Fortnite -->
       <article class="card bg" id="fortnite" style="--bg-img:url('/assets/covers/fortnite.jpg')">
         <h3><a href="/tournaments/fortnite/">Fortnite Duos</a></h3>
         <div class="badges"><span class="tag">Duos</span><span class="tag">Crossplay</span></div>
-        <div class="meta"><time datetime="2025-11-02">Sun, Nov 2, 2025</time> Â· <span class="prize">$800 Victory Purse</span> Â· <span class="countdown" data-start="2025-11-02T18:00:00-05:00" aria-live="polite">â€”</span></div>
+        <div class="meta"><time datetime="2025-11-02">Sun, Nov 2, 2025</time> · <span class="prize">$800 Victory Purse</span> · <span class="countdown" data-start="2025-11-02T18:00:00-05:00" aria-live="polite">—</span></div>
         <details><summary>Payout breakdown</summary>
           <ul><li>1st: $480 (60%)</li><li>2nd: $240 (30%)</li><li>3rd: $80 (10%)</li></ul>
         </details>
         <details><summary>Rules / Format</summary>
-          <ul><li>Builds ON. Zero Build on request.</li><li>Best-of-3 lobby scoring.</li><li>Ties â†’ most eliminations.</li></ul>
+          <ul><li>Builds ON. Zero Build on request.</li><li>Best-of-3 lobby scoring.</li><li>Ties → most eliminations.</li></ul>
         </details>
-        <p><a class="btn" href="/register/?t=Fortnite%20Duos">Register for Fortnite</a> <a href="/tournaments/fortnite/">View full rules â†’</a></p>
+        <p><a class="btn" href="/register/?t=Fortnite%20Duos">Register for Fortnite</a> <a href="/tournaments/fortnite/">View full rules →</a></p>
       </article>
 
       <!-- NBA 2K26 -->
@@ -174,9 +172,9 @@
   <h3><a href="/tournaments/nba2k26/">NBA 2K26</a></h3>
   <div class="badges"><span class="tag">3v3</span><span class="tag">Crossplay</span></div>
   <div class="meta">
-    <time datetime="2025-11-09">Sun, Nov 9, 2025</time> Â·
-    <span class="prize">$700 Clutch Cash</span> Â·
-    <span class="countdown" data-start="2025-11-09T18:00:00-05:00" aria-live="polite">â€”</span>
+    <time datetime="2025-11-09">Sun, Nov 9, 2025</time> ·
+    <span class="prize">$700 Clutch Cash</span> ·
+    <span class="countdown" data-start="2025-11-09T18:00:00-05:00" aria-live="polite">—</span>
   </div>
   <details><summary>Payout breakdown</summary>
     <ul><li>1st: $420 (60%)</li><li>2nd: $210 (30%)</li><li>3rd: $70 (10%)</li></ul>
@@ -191,20 +189,20 @@
   </details>
   <p>
     <a class="btn" href="/register/?t=NBA%202K26">Register for NBA 2K26</a>
-    <a href="/tournaments/nba2k26/">View full rules â†’</a>
+    <a href="/tournaments/nba2k26/">View full rules →</a>
   </p>
 </article>
 
     </div>
 
     <section class="winners" id="winners">
-      <h2>ðŸ… Past Winners</h2>
+      <h2>🏅 Past Winners</h2>
       <table>
         <thead><tr><th>Event</th><th>Date</th><th>1st</th><th>2nd</th><th>3rd</th></tr></thead>
         <tbody>
-          <tr><td>Warzone Duos</td><td>â€”</td><td>â€”</td><td>â€”</td><td>â€”</td></tr>
-          <tr><td>Tekken 8</td><td>â€”</td><td>â€”</td><td>â€”</td><td>â€”</td></tr>
-          <tr><td>MK1</td><td>â€”</td><td>â€”</td><td>â€”</td><td>â€”</td></tr>
+          <tr><td>Warzone Duos</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>Tekken 8</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>MK1</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
         </tbody>
       </table>
     </section>
@@ -212,8 +210,35 @@
 
   <footer>&copy; 2025 Arcade Addicts</footer>
 
-  
-<script defer src="/assets/login-hook.js?v=6"></script>
+  <script>
+    // Countdown updater
+    const pads = n => n.toString().padStart(2, '0');
+    function updateCountdown(el){
+      const start = new Date(el.dataset.start);
+      const now = new Date();
+      const diff = start - now;
+      if (diff <= 0){
+        if (now - start < 3 * 60 * 60 * 1000){
+          el.textContent = "LIVE now";
+          el.style.color = "#00ffff";
+        } else {
+          el.textContent = "Finished";
+          el.style.opacity = .85;
+        }
+        return;
+      }
+      const s = Math.floor(diff/1000);
+      const d = Math.floor(s/86400);
+      const h = Math.floor((s%86400)/3600);
+      const m = Math.floor((s%3600)/60);
+      const sec = (s%60);
+      el.textContent = (d>0? d+"d ":"") + pads(h)+":"+pads(m)+":"+pads(sec);
+    }
+    function tick(){
+      document.querySelectorAll('.countdown[data-start]').forEach(updateCountdown);
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
 </body>
 </html>
-

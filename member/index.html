@@ -27,7 +27,9 @@ small.muted{color:var(--sub)}
 .progress{height:8px;background:#111;border-radius:10px;overflow:hidden}
 .progress>i{display:block;height:100%;width:0%;background:var(--accent)}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="/assets/vendor/supabase.min.js"></script>
+<script src="/assets/supabase-init.js"></script>
 </head><body>
 <div class="wrap">
   <div class="row">
@@ -76,166 +78,11 @@ small.muted{color:var(--sub)}
   </div>
 </div>
 
-<script>
-const sb = supabase.createClient("https://xvhkwyhncuivsfwfmvbg.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8");
-const $ = (id)=>document.getElementById(id);
-const msg = (m)=>{ $("msg").textContent = m||""; $("ok").textContent=""; };
-const ok  = (m)=>{ $("ok").textContent  = m||""; $("msg").textContent=""; };
-const bar = (n)=>{ const el=$("bar"); if(el){ el.style.width = String(Math.max(0,Math.min(100,n))) + "%"; } };
 
-function esc(s){ return String(s||"").replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
-function when(ts){ try{ return new Date(ts).toLocaleString(); }catch(_){ return ts; } }
-
-async function guard(){
-  const { data:{ session } } = await sb.auth.getSession();
-  if(!session){ location.href = "/login/?next=/member/"; return null; }
-  const u = session.user;
-  $("who").textContent = u.email;
-  $("gamertag").value = (u.user_metadata?.gamertag||"");
-  return u;
-}
-
-async function saveProfile(user){
-  const gamertag = $("gamertag").value.trim();
-  const { error } = await sb.auth.updateUser({ data: { gamertag }});
-  if(error) return msg(error.message);
-  ok("Profile saved.");
-}
-
-async function postIt(user){
-  const f = $("file").files[0]||null;
-  const text = $("content").value.trim();
-  if(!f && !text){ return msg("Add text or choose a file."); }
-  msg(""); ok(""); bar(0);
-  let media_url=null, media_type=null;
-
-  if(f){
-    const ext = (f.name.split(".").pop()||"").toLowerCase();
-    const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    // manual upload with progress
-    const { data, error } = await sb.storage.from("highlights").upload(path, f, {
-      cacheControl: "3600", upsert:false, contentType:f.type||undefined
-    });
-    if(error) return msg(error.message);
-    // Supabase won't give progress via JS SDK for now, so we just jump to 100%
-    bar(100);
-    media_url = sb.storage.from("highlights").getPublicUrl(path).data.publicUrl;
-    media_type = (f.type||"").startsWith("video") ? "video" : "image";
-  }
-
-  const ins = await sb.from("posts").insert({ user_id:user.id, content:(text||null), media_url, media_type });
-  if(ins.error) return msg(ins.error.message);
-  $("file").value=""; $("content").value=""; bar(0);
-  ok("Posted.");
-  await loadMine(user);
-}
-
-async function delPost(id){
-  const { error } = await sb.from("posts").delete().eq("id", id);
-  if(error) msg(error.message); else ok("Post removed.");
-}
-
-async function loadMine(user){
-  const { data, error } = await sb.from("posts").select("*").eq("user_id", user.id)
-                          .order("created_at",{ascending:false}).limit(50);
-  if(error) return msg(error.message);
-  const feed = $("feed"); feed.innerHTML="";
-  (data||[]).forEach(p=>{
-    const card = document.createElement("article"); card.className="card";
-    if(p.media_url){
-      if((p.media_type||"").startsWith("video")){
-        const v=document.createElement("video"); v.controls=true; v.src=p.media_url; v.playsInline=true; card.appendChild(v);
-      }else{
-        const i=document.createElement("img"); i.src=p.media_url; i.alt=""; card.appendChild(i);
-      }
-    }
-    const body=document.createElement("div"); body.className="body";
-    body.innerHTML = (p.content? `<div>${esc(p.content)}</div>`:"")
-                   + `<div class="row2"><span class="badge">${esc(p.media_type||'text')}</span><small class="muted">${when(p.created_at)}</small></div>`
-                   + `<div class="row2"><button class="btn ghost" data-copy="${p.media_url||''}">Copy link</button><button class="btn ghost" data-del="${p.id}">Delete</button></div>`;
-    card.appendChild(body); feed.appendChild(card);
-  });
-
-  // actions
-  feed.querySelectorAll("button[data-copy]").forEach(b=>{
-    b.onclick = async ()=>{ const u=b.getAttribute("data-copy"); if(!u){ return; } try{ await navigator.clipboard.writeText(u); ok("Link copied."); }catch(_){ ok(u); } };
-  });
-  feed.querySelectorAll("button[data-del]").forEach(b=>{
-    b.onclick = async ()=>{ if(confirm("Delete this post?")){ await delPost(b.getAttribute("data-del")); await loadMine(user); } };
-  });
-}
-
-(async()=>{
-  const user = await guard(); if(!user) return;
-  $("saveProfile").onclick = ()=>saveProfile(user);
-  $("post").onclick       = ()=>postIt(user);
-  $("signout").onclick    = async ()=>{ await sb.auth.signOut(); location.href="/login/"; };
-  await loadMine(user);
-})();
-</script>
 <!-- AA_UPLOAD_OVERRIDE -->
-<script>
-(function(){
-  var MAX_MB = 1024;
-  var ALLOWED_VID = ['video/mp4','video/quicktime','video/webm'];
-  var $ = function(id){ return document.getElementById(id); };
-  var btn = $('post');
-  if(!btn) return;
 
-  if(!$('upStatus')){
-    var d = document.createElement('div'); d.id='upStatus'; d.className='muted'; d.style.marginTop='8px';
-    btn.insertAdjacentElement('afterend', d);
-  }
-  var status = $('upStatus');
-  var showMsg = function(m, ok){ if(status){ status.textContent = m||''; status.style.color = ok?'#9f9':'#f99'; } };
-
-  var sb = (window.sb && window.sb.auth && window.sb.storage) ? window.sb
-          : (typeof supabase!=='undefined' ? supabase.createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8') : null);
-
-  btn.onclick = async function(){
-    var file = ($('file')||{}).files ? $('file').files[0] : null;
-    var text = ($('content')||{}).value ? $('content').value.trim() : '';
-    if(!file && !text){ var e=document.getElementById('msg'); if(e) e.textContent='Add text or choose a file.'; return; }
-    if(!sb){ showMsg('Supabase client not found on page.'); return; }
-
-    if(file){
-      var mb = file.size/(1024*1024);
-      if(mb > MAX_MB){ showMsg('That file is '+mb.toFixed(1)+' MB. Max allowed is '+MAX_MB+' MB.'); return; }
-      if(file.type.startsWith('video/') && ALLOWED_VID.indexOf(file.type)===-1){
-        showMsg('Unsupported video. Use MP4/MOV/WebM (H.264/AAC).'); return;
-      }
-    }
-
-    showMsg(file ? 'Uploading' : 'Posting', true); btn.disabled = true;
-    try{
-      var me = (await sb.auth.getUser()).data.user;
-      var media_url=null, media_type=null;
-
-      if(file){
-        var ext = (file.name.split('.').pop()||'').toLowerCase();
-        var path = me.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.' + ext;
-        var up = await sb.storage.from('highlights').upload(path, file, { cacheControl:'3600', upsert:false, contentType:file.type||undefined });
-        if(up.error) throw up.error;
-        var pub = sb.storage.from('highlights').getPublicUrl(path);
-        media_url = pub.data.publicUrl;
-        media_type = file.type.startsWith('video/') ? 'video' : 'image';
-      }
-
-      var ins = await sb.from('posts').insert({ user_id: me.id, content: text||null, media_url, media_type });
-      if(ins.error) throw ins.error;
-
-      if($('file')) $('file').value='';
-      if($('content')) $('content').value='';
-      showMsg('Posted!', true);
-      if(typeof loadMine==='function'){ await loadMine(me); }
-    }catch(err){
-      showMsg(err.message || String(err));
-    }finally{
-      btn.disabled = false;
-    }
-  };
-})();
-</script>
+<script defer src="/assets/login-hook.js?v=6"></script>
 </body></html>
+
 
 

@@ -13,5 +13,3 @@ a.btn{display:inline-block;margin-top:12px;padding:10px 16px;border-radius:10px;
   <a class="btn" href="/">Back to Home</a>
 </div>
 
-
-<script defer src="/assets/login-hook.js?v=6"></script>
