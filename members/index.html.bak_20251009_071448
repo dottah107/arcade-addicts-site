@@ -22,8 +22,6 @@
     .btn{display:inline-block;background:var(--accent);color:#000;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none}
     footer{text-align:center;padding:20px;border-top:2px solid var(--accent);background:var(--panel)}
   </style>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-init.js"></script>
 </head>
 <body>
   <header>
@@ -46,6 +44,5 @@
 <script src="/assets/login-hook.js"></script>
 </body>
 </html>
-
 
 

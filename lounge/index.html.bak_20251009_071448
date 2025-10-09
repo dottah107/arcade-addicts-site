@@ -23,8 +23,6 @@
     p{opacity:.95}
     footer{margin-top:48px;text-align:center;padding:20px;border-top:2px solid var(--accent);background:var(--panel)}
   </style>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-init.js"></script>
 </head>
 <body>
   <header>
@@ -47,7 +45,6 @@
 <script src="/assets/login-hook.js"></script>
 </body>
 </html>
-
 
 
 

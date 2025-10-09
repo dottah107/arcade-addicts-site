@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mortal Kombat 1 Rules | Arcade Addicts</title>
+  <title>Valorant 5v5 Rules | Arcade Addicts</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <meta name="description" content="Mortal Kombat 1 rules, format, schedule, and eligibility for Arcade Addicts." />
+  <meta name="description" content="Valorant 5v5 rules, format, schedule, and eligibility for Arcade Addicts." />
   <link rel="icon" href="/assets/favicon.ico">
   <style>
     :root{ --bg:#000; --panel:#0f0f0f; --panel-2:#111; --text:#fff; --accent:#0ff; }
@@ -24,19 +24,17 @@
     .btn{display:inline-block;background:var(--accent);color:#000;border:none;padding:10px 18px;font-size:1rem;font-weight:700;cursor:pointer;border-radius:10px}
     footer{text-align:center;padding:20px;color:#bbb}
   </style>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-init.js"></script>
 </head>
 <body>
   <header>
     <a href="/tournaments/" aria-label="Back to tournaments">â† Tournaments</a>
-    <h1><img src="/assets/logo.png" alt="" class="logo"> Mortal Kombat 1 â€” Rules</h1>
+    <h1><img src="/assets/logo.png" alt="" class="logo"> Valorant 5v5 â€” Rules</h1>
     <nav><a href="/register/" class="btn">Register</a></nav>
   </header>
 
   <main>
     <section>
-      <p><strong>Date:</strong> Sun, Oct 12, 2025 &nbsp; â€¢ &nbsp; <strong>Prize:</strong> $1000 Fatality Showdown &nbsp; â€¢ &nbsp; <strong>Format:</strong> 1v1, Double Elim</p>
+      <p><strong>Date:</strong> Sun, Oct 26, 2025 &nbsp; â€¢ &nbsp; <strong>Prize:</strong> $1200 Team Bounty &nbsp; â€¢ &nbsp; <strong>Format:</strong> 5v5, Bo3</p>
     </section>
 
     <section>
@@ -74,13 +72,12 @@
       </ul>
     </section>
 
-    <p><a class="btn" href="/register/?t=Mortal%20Kombat%201">Register for Mortal Kombat 1</a></p>
+    <p><a class="btn" href="/register/?t=Valorant%205v5">Register for Valorant 5v5</a></p>
   </main>
 
   <footer>&copy; 2025 Arcade Addicts</footer>
 <script src="/assets/login-hook.js"></script>
 </body>
 </html>
-
 
 

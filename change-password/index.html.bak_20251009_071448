@@ -13,7 +13,6 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid #222;backgroun
 #msg{margin-top:10px;min-height:1.2em;font-weight:600}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-init.js"></script>
 </head><body>
 <div class="wrap">
   <h1 style="color:#00FFFF;margin:0 0 12px">Set a new password</h1>
@@ -58,5 +57,4 @@ const show = m => { \msg.textContent = m || ''; };
 </script>
 <script src="/assets/login-hook.js"></script>
 </body></html>
-
 

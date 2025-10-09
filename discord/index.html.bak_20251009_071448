@@ -16,8 +16,6 @@
     .logo{height:32px;width:auto;vertical-align:middle;filter: drop-shadow(0 0 6px rgba(0,255,255,.55));}
   </style>
   <script> window.location.replace("https://discord.gg/f9XT8eRx5M"); </script>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-init.js"></script>
 </head>
 <body>
   <div class="card">
@@ -31,7 +29,6 @@
 <script src="/assets/login-hook.js"></script>
 </body>
 </html>
-
 
 
 

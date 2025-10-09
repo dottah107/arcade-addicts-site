@@ -30,8 +30,6 @@
     .gateways{display:grid;gap:12px;margin-top:14px}
     .note{font-size:.9rem;color:#bbb;margin-top:10px}
   </style>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-init.js"></script>
 </head>
 <body>
   <header>
@@ -113,7 +111,6 @@
 <script src="/assets/login-hook.js"></script>
 </body>
 </html>
-
 
 
 
