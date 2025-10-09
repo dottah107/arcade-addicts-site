@@ -21,12 +21,30 @@ small{opacity:.8}</style>
   </div>
   <p id="msg"><small>New here? Click “Sign up”.</small></p>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const sb = supabase.createClient("https://xvhkwyhncuivsfwfmvbg.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8");
+  (async () => {
+    const { data: { user } } = await sb.auth.getUser();
+    if (user) location.href = '/member/';
+  })();
+  const E = id => document.getElementById(id);
+  const show = m => (document.getElementById('msg').textContent = m);
+  E('signin').onclick = async (e) => {
+    e.preventDefault();
+    const email = E('email').value.trim(), password = E('pw').value;
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) return show(error.message);
+    location.href = '/member/';
+  };
+  E('signup').onclick = async () => {
+    const email = E('email').value.trim(), password = E('pw').value;
+    const { error } = await sb.auth.signUp({ email, password });
+    show(error ? error.message : 'Check your email to confirm, then sign in.');
+  };
+</script>
 
 
 
 
 
-
-
-
-<script defer src="/assets/login-hook.js?v=3"></script>
