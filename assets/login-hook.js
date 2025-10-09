@@ -21,7 +21,7 @@
     if (!res.ok){ notify("Login failed: " + (await res.text().catch(()=>res.statusText))); return; }
     let data={}; try{ data = await res.json(); }catch(_){}
     if (data.token) try{ localStorage.setItem("aa_token", data.token) }catch(_){}
-    location.href = "/members/";
+    location.href = "/member/";
   }
 
   // robust selectors (no form required)
@@ -51,7 +51,7 @@
     console.log("Sign In clicked → trying Supabase…");
     const sb = await supabaseLogin(em, pw);
     if (sb.used){
-      if (sb.ok){ location.href = "/members/"; return; }
+      if (sb.ok){ location.href = "/member/"; return; }
       console.warn("Supabase login failed:", sb.msg);
     }
     console.log("Falling back to API /api/login");
@@ -81,4 +81,5 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 })();
+
 
