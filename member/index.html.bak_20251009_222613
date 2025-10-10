@@ -33,25 +33,7 @@ small.muted{color:var(--sub)}
 <script src="/assets/supabase-init.js"></script>
 <script src="/assets/social.js"></script>
 <script src="/assets/member-wire.js"></script>
-<section id="aa-friends-section" style="margin:24px;padding:16px;border:1px solid #333;border-radius:10px;color:#fff">
-  <h3 style="margin:0 0 10px">Friends</h3>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-    <input id="aaFriendEmail" placeholder="Friend's email" style="padding:8px;flex:1;min-width:240px;color:#000">
-    <button id="aaSendReq" style="padding:10px 14px;font-weight:600;cursor:pointer;">Send Request</button>
-  </div>
-  <div style="display:flex;gap:24px;margin-top:14px;flex-wrap:wrap;">
-    <div style="min-width:260px;">
-      <h4 style="margin:0 0 6px">Incoming</h4>
-      <ul id="aaIncoming" style="display:grid;gap:8px;padding-left:18px;"></ul>
-    </div>
-    <div style="min-width:260px;">
-      <h4 style="margin:0 0 6px">Outgoing</h4>
-      <ul id="aaOutgoing" style="display:grid;gap:8px;padding-left:18px;"></ul>
-    </div>
-  </div>
-</section>
 </body></html>
-
 
 
 
