@@ -1,0 +1,151 @@
+﻿window.AA = {
+  async getSession(){
+    const { data:{ session } } = await supabase.auth.getSession();
+    if (!session) { location.href = "/login/"; throw new Error("No session"); }
+    return session;
+  },
+
+  // ---------- Uploads ----------
+  async uploadContent(file, title=""){
+    const { user:{ id } } = await this.getSession();
+    const path = `${id}/${Date.now()}_${file.name}`;
+    const up = await supabase.storage.from("user-content")
+      .upload(path, file, { upsert:true, contentType: file.type || "application/octet-stream" });
+    if (up.error) throw up.error;
+
+    const db = await supabase.from("uploads").insert({ user_id:id, path, title });
+    if (db.error) throw db.error;
+
+    return supabase.storage.from("user-content").getPublicUrl(path).data.publicUrl;
+  },
+
+  async listMyUploads(){
+    const { user:{ id } } = await this.getSession();
+    const r = await supabase.from("uploads")
+      .select("id,path,title,created_at")
+      .eq("user_id", id)
+      .order("created_at", { ascending:false });
+    if (r.error) throw r.error;
+
+    return r.data.map(row => ({
+      ...row,
+      url: supabase.storage.from("user-content").getPublicUrl(row.path).data.publicUrl
+    }));
+  },
+
+  // ---------- Friends ----------
+  async sendFriendRequestByEmail(email){
+    const e = (email||"").trim().toLowerCase();
+    if (!e) throw new Error("Email required");
+    const q = await supabase.from("profiles").select("id").eq("email", e).limit(1);
+    if (q.error) throw q.error;
+    if (!q.data?.length) throw new Error("User not found");
+    return this.sendFriendRequest(q.data[0].id);
+  },
+
+  async sendFriendRequest(recipientId){
+    const { user:{ id } } = await this.getSession();
+    if (recipientId === id) throw new Error("Can't friend yourself");
+    const ins = await supabase.from("friend_requests").insert({ requester:id, recipient:recipientId });
+    if (ins.error) throw ins.error;
+    return true;
+  },
+
+  async listIncomingRequests(){
+    const { user:{ id } } = await this.getSession();
+    const r = await supabase.from("friend_requests")
+      .select("id,requester,status,created_at")
+      .eq("recipient", id).eq("status","pending")
+      .order("created_at",{ ascending:false });
+    if (r.error) throw r.error;
+    return r.data;
+  },
+
+  async listOutgoingRequests(){
+    const { user:{ id } } = await this.getSession();
+    const r = await supabase.from("friend_requests")
+      .select("id,recipient,status,created_at")
+      .eq("requester", id)
+      .order("created_at",{ ascending:false });
+    if (r.error) throw r.error;
+    return r.data;
+  },
+
+  async acceptRequest(id){
+    const u = await supabase.from("friend_requests").update({ status:"accepted" }).eq("id", id);
+    if (u.error) throw u.error;
+  },
+
+  async declineRequest(id){
+    const u = await supabase.from("friend_requests").update({ status:"declined" }).eq("id", id);
+    if (u.error) throw u.error;
+  }
+};
+
+/* === injected: friend request name helpers === */
+if (!window.AA) window.AA = {};
+if (!AA._profileCache) AA._profileCache = new Map();
+
+AA._getProfilesByIds = async function(ids){
+  const uniq = Array.from(new Set((ids||[]).filter(Boolean)));
+  const missing = uniq.filter(id => !AA._profileCache.has(id));
+  if (missing.length){
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, display_name, email")
+      .in("id", missing);
+    if (error) throw error;
+    for (const p of (data||[])) AA._profileCache.set(p.id, p);
+    for (const id of missing) if (!AA._profileCache.has(id)) AA._profileCache.set(id, null);
+  }
+  return uniq.map(id => AA._profileCache.get(id));
+};
+
+AA.listIncomingRequests = async function(){
+  const { data:{ session } } = await supabase.auth.getSession();
+  const myId = session?.user?.id;
+  if (!myId) throw new Error("No session");
+  const { data, error } = await supabase
+    .from("friend_requests")
+    .select("id, status, requester, recipient, created_at")
+    .eq("recipient", myId)
+    .order("created_at", { ascending:false });
+  if (error) throw error;
+
+  const reqIds = Array.from(new Set((data||[]).map(r => r.requester).filter(Boolean)));
+  const profs = await AA._getProfilesByIds(reqIds);
+  const map = new Map(profs.filter(Boolean).map(p => [p.id, p]));
+  return (data||[]).map(r => {
+    const p = map.get(r.requester);
+    return {
+      ...r,
+      requester_name:  p?.display_name || null,
+      requester_email: p?.email || null
+    };
+  });
+};
+
+AA.listOutgoingRequests = async function(){
+  const { data:{ session } } = await supabase.auth.getSession();
+  const myId = session?.user?.id;
+  if (!myId) throw new Error("No session");
+  const { data, error } = await supabase
+    .from("friend_requests")
+    .select("id, status, requester, recipient, created_at")
+    .eq("requester", myId)
+    .order("created_at", { ascending:false });
+  if (error) throw error;
+
+  const recIds = Array.from(new Set((data||[]).map(r => r.recipient).filter(Boolean)));
+  const profs = await AA._getProfilesByIds(recIds);
+  const map = new Map(profs.filter(Boolean).map(p => [p.id, p]));
+  return (data||[]).map(r => {
+    const p = map.get(r.recipient);
+    return {
+      ...r,
+      recipient_name:  p?.display_name || null,
+      recipient_email: p?.email || null
+    };
+  });
+};
+
