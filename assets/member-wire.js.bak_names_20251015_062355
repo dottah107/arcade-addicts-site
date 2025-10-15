@@ -80,39 +80,3 @@
     console.error("member-wire init", e);
   }
 })();
-
-/* === injected: render overrides to show names instead of UUIDs === */
-if (typeof renderIncoming !== "undefined") {
-  renderIncoming = async function(){
-    try {
-      const incUL = document.getElementById("aaIncoming");
-      if (!incUL) return;
-      const rows = await AA.listIncomingRequests();
-      incUL.innerHTML = rows.length ? rows.map(fr => {
-        const who = fr.requester_name || fr.requester_email || fr.requester;
-        return `<li>
-          From: <strong>${who}</strong> · ${new Date(fr.created_at).toLocaleString()}
-          <button data-acc="${fr.id}">Accept</button>
-          <button data-dec="${fr.id}">Decline</button>
-        </li>`;
-      }).join("") : `<li>No requests</li>`;
-      incUL.querySelectorAll("[data-acc]").forEach(b => b.onclick = async () => { await AA.acceptRequest(b.dataset.acc); renderIncoming(); });
-      incUL.querySelectorAll("[data-dec]").forEach(b => b.onclick = async () => { await AA.declineRequest(b.dataset.dec); renderIncoming(); });
-    } catch(e){ console.error("renderIncoming (override)", e); }
-  }
-}
-
-if (typeof renderOutgoing !== "undefined") {
-  renderOutgoing = async function(){
-    try {
-      const outUL = document.getElementById("aaOutgoing");
-      if (!outUL) return;
-      const rows = await AA.listOutgoingRequests();
-      outUL.innerHTML = rows.length ? rows.map(fr => {
-        const who = fr.recipient_name || fr.recipient_email || fr.recipient;
-        return `<li>To: <strong>${who}</strong> · ${fr.status}</li>`;
-      }).join("") : `<li>None</li>`;
-    } catch(e){ console.error("renderOutgoing (override)", e); }
-  }
-}
-
