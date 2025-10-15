@@ -50,16 +50,7 @@ small.muted{color:var(--sub)}
     </div>
   </div>
 </section>
-<section id="aa-gamertag-section" style="margin:24px;padding:16px;border:1px solid #333;border-radius:10px;color:#fff">
-  <h3 style="margin:0 0 10px">My Gamertag</h3>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-    <input id="aaGamertag" placeholder="Enter gamertag" style="padding:8px;flex:1;min-width:220px;color:#000">
-    <button id="aaSaveGamertag" style="padding:10px 14px;font-weight:600;cursor:pointer;">Save</button>
-    <span id="aaGTStatus" style="margin-left:8px;color:#0af;"></span>
-  </div>
-</section>
 </body></html>
-
 
 
 

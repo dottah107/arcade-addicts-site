@@ -76,33 +76,3 @@
     await renderUploads();
   } catch (e) { console.error("member-wire init", e); }
 })();
-
-/* === gamertag load/save === */
-(async () => {
-  try {
-    const { data:{ session } } = await supabase.auth.getSession();
-    if (!session) return;
-    const id = session.user.id;
-    const input = document.getElementById("aaGamertag");
-    const btn   = document.getElementById("aaSaveGamertag");
-    const msg   = document.getElementById("aaGTStatus");
-
-    // load current gamertag
-    try {
-      const { data } = await supabase.from("profiles").select("display_name").eq("id", id).single();
-      if (data?.display_name && input) input.value = data.display_name;
-    } catch(e){}
-
-    async function saveGamertag(){
-      if (!input) return;
-      const name = (input.value||"").trim();
-      if (!name) { if(msg) msg.textContent = "Enter a name"; return; }
-      const { error } = await supabase.from("profiles").update({ display_name: name }).eq("id", id);
-      if (error) { if(msg) msg.textContent = error.message; return; }
-      if(msg) { msg.textContent = "Saved!"; setTimeout(()=> msg.textContent="", 1500); }
-    }
-
-    btn?.addEventListener("click", saveGamertag);
-  } catch(e){}
-})();
-
