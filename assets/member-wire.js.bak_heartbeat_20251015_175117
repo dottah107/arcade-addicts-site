@@ -106,26 +106,3 @@
   } catch(e){}
 })();
 
-
-/* === presence heartbeat: updates profiles.last_seen every 30s === */
-(async () => {
-  try {
-    const { data:{ session } } = await supabase.auth.getSession();
-    if (!session) return;
-    const id = session.user.id;
-
-    async function beat(){
-      try {
-        await supabase.from("profiles")
-          .update({ last_seen: new Date().toISOString() })
-          .eq("id", id);
-      } catch(_) {}
-    }
-
-    await beat();                       // update now
-    if (!window.__aaHeartbeat) {
-      window.__aaHeartbeat = setInterval(beat, 30_000); // then every 30s
-    }
-  } catch(e) { console.error("heartbeat", e); }
-})();
-
