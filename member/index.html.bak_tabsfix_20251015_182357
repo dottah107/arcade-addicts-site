@@ -1,12 +1,4 @@
-﻿<div class="topbar">
-  <h2 id="aaHeroTitle">Member</h2>
-  <div class="tabs">
-    <button class="tabbtn" data-target="friends">Friends</button>
-    <button class="tabbtn" data-target="gamertag">My Gamertag</button>
-    <button class="tabbtn" data-target="upload">Upload</button>
-  </div>
-</div>
-<!doctype html>
+﻿<!doctype html>
 <html lang=""en"">
 <head>
   <meta charset=""utf-8""/>
@@ -146,5 +138,4 @@
   <script src=""/assets/member-wire.js?v=ui1""></script>
 </body>
 </html>
-
 

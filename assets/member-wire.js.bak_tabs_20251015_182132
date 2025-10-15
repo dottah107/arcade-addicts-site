@@ -129,35 +129,3 @@
   } catch(e) { console.error("heartbeat", e); }
 })();
 
-
-/* === tabs + hero gamertag === */
-(function(){
-  function setActive(name){
-    document.querySelectorAll(".tabbtn").forEach(b=>{
-      b.classList.toggle("active", b.dataset.target===name);
-    });
-    document.querySelectorAll(".aa-panel").forEach(p=>{
-      p.classList.toggle("active", p.dataset.panel===name);
-    });
-  }
-  // default: nothing open; open on click
-  document.addEventListener("click", (e)=>{
-    const btn = e.target.closest(".tabbtn");
-    if (!btn) return;
-    setActive(btn.dataset.target);
-  });
-
-  // hero = my gamertag
-  (async () => {
-    try {
-      const { data:{ session } } = await supabase.auth.getSession();
-      if (!session) return;
-      const el = document.getElementById("aaHeroTitle");
-      if (!el) return;
-      const { data } = await supabase.from("profiles").select("display_name,email").eq("id", session.user.id).single();
-      const name = (data?.display_name && data.display_name.trim()) || (data?.email ? data.email.split("@")[0] : "Member");
-      el.textContent = name;
-    } catch(_) {}
-  })();
-})();
-

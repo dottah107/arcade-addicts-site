@@ -1,12 +1,4 @@
-﻿<div class="topbar">
-  <h2 id="aaHeroTitle">Member</h2>
-  <div class="tabs">
-    <button class="tabbtn" data-target="friends">Friends</button>
-    <button class="tabbtn" data-target="gamertag">My Gamertag</button>
-    <button class="tabbtn" data-target="upload">Upload</button>
-  </div>
-</div>
-<!doctype html>
+﻿<!doctype html>
 <html lang=""en"">
 <head>
   <meta charset=""utf-8""/>
@@ -68,15 +60,6 @@
     .cols{display:flex; gap:18px; flex-wrap:wrap}
     .col{min-width:260px; flex:1}
   </style>
-<style id="aa-tabs-css">
-  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,#0a0f12,#0b1f1e);border:1px solid #0b2a2a;border-radius:16px;padding:16px;margin:16px 0}
-  #aaHeroTitle{margin:0;font-size:18px;letter-spacing:.3px}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap}
-  .tabbtn{cursor:pointer;padding:10px 14px;border-radius:999px;border:1px solid #1e2a2f;background:#0f1318;color:#e8f0f6;font-weight:700}
-  .tabbtn.active{background:#14b8a6;border-color:transparent;color:#000}
-  .aa-panel{display:none;margin-top:14px}
-  .aa-panel.active{display:block}
-</style>
 </head>
 <body>
   <div class=""wrap"">
@@ -146,5 +129,3 @@
   <script src=""/assets/member-wire.js?v=ui1""></script>
 </body>
 </html>
-
-
