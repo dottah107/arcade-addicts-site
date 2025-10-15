@@ -141,12 +141,11 @@
 
   <!-- scripts (SDK -> init -> app code) -->
   <script src=""/assets/vendor/supabase.min.js?v=ui1""></script>
-  <script src=""/assets/supabase-init.js?v=header7""></script>
-  <script src=""/assets/social.js?v=header7""></script>
-  <script src=""/assets/member-wire.js?v=header7""></script>
+  <script src=""/assets/supabase-init.js?v=ui1""></script>
+  <script src=""/assets/social.js?v=ui1""></script>
+  <script src=""/assets/member-wire.js?v=ui1""></script>
 </body>
 </html>
-
 
 
 
