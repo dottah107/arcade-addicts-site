@@ -1,31 +1,4 @@
-﻿<style id="aa-theme-teal-contrast">
-  :root { --aa-teal:#14b8a6; --aa-teal-dark:#0d9488; }
-
-  /* Gamertag input: bright text on dark field */
-  #aaGamertag {
-    background:#0b1215 !important;
-    color:#ffffff !important;
-    border:2px solid var(--aa-teal) !important;
-    border-radius:10px !important;
-    padding:10px 12px !important;
-    font-size:16px !important;
-    font-weight:600 !important;
-    outline:none !important;
-  }
-  #aaGamertag::placeholder { color:#86fff0 !important; opacity:0.9; }
-
-  /* Status text more visible */
-  #aaGTStatus { color: var(--aa-teal) !important; font-weight:700; }
-
-  /* Buttons pop against dark bg */
-  #aaSaveGamertag, #aaUploadBtn, #aaSendReq {
-    background: var(--aa-teal) !important; color:#000 !important; border:none !important;
-  }
-  #aaSaveGamertag:hover, #aaUploadBtn:hover, #aaSendReq:hover {
-    background: var(--aa-teal-dark) !important;
-  }
-</style>
-<!DOCTYPE html><html lang="en"><head>
+﻿<!DOCTYPE html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Member Dashboard  Arcade Addicts</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,7 +59,6 @@ small.muted{color:var(--sub)}
   </div>
 </section>
 </body></html>
-
 
 
 
