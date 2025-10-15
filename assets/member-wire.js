@@ -1,9 +1,9 @@
-﻿(async () => {
+﻿/* member-wire.js — v2 show gamertags */
+(async () => {
   try {
     const { data:{ session } } = await supabase.auth.getSession();
     if (!session) { location.href = "/login/"; return; }
 
-    // ---------- element refs ----------
     const emailInput   = document.getElementById("aaFriendEmail");
     const sendBtn      = document.getElementById("aaSendReq");
     const incUL        = document.getElementById("aaIncoming");
@@ -14,17 +14,20 @@
     const upBtn        = document.getElementById("aaUploadBtn");
     const upList       = document.getElementById("aaUploadsList");
 
-    // ---------- render helpers ----------
+    function whoName(name, email, id){ return name || email || id; }
+
     async function renderIncoming(){
       if (!incUL) return;
       try {
         const rows = await AA.listIncomingRequests();
-        incUL.innerHTML = rows.map(fr => `
-          <li>
-            From: <code>${fr.requester}</code> · ${new Date(fr.created_at).toLocaleString()}
+        incUL.innerHTML = rows.length ? rows.map(fr => {
+          const who = whoName(fr.requester_name, fr.requester_email, fr.requester);
+          return `<li>
+            From: <strong>${who}</strong> · ${new Date(fr.created_at).toLocaleString()}
             <button data-acc="${fr.id}">Accept</button>
             <button data-dec="${fr.id}">Decline</button>
-          </li>`).join("");
+          </li>`;
+        }).join("") : `<li>No requests</li>`;
         incUL.querySelectorAll("[data-acc]").forEach(b => b.onclick = async () => { await AA.acceptRequest(b.dataset.acc); renderIncoming(); });
         incUL.querySelectorAll("[data-dec]").forEach(b => b.onclick = async () => { await AA.declineRequest(b.dataset.dec); renderIncoming(); });
       } catch (e) { console.error("renderIncoming", e); }
@@ -34,85 +37,42 @@
       if (!outUL) return;
       try {
         const rows = await AA.listOutgoingRequests();
-        outUL.innerHTML = rows.map(fr => `
-          <li>To: <code>${fr.recipient}</code> · ${fr.status}</li>`).join("");
+        outUL.innerHTML = rows.length ? rows.map(fr => {
+          const who = whoName(fr.recipient_name, fr.recipient_email, fr.recipient);
+          return `<li>To: <strong>${who}</strong> · ${fr.status}</li>`;
+        }).join("") : `<li>None</li>`;
       } catch (e) { console.error("renderOutgoing", e); }
     }
 
     async function renderUploads(){
       if (!upList) return;
       try {
-        const rows = await AA.listMyUploads();
+        const rows = await AA.listMyUploads?.() || [];
         upList.innerHTML = rows.length
           ? rows.map(r => `<li><a href="${r.url}" target="_blank">${r.title || r.path.split('/').pop()}</a> · ${new Date(r.created_at).toLocaleString()}</li>`).join("")
           : "<li>No uploads yet.</li>";
       } catch (e) { console.error("renderUploads", e); }
     }
 
-    // ---------- events ----------
     sendBtn?.addEventListener("click", async () => {
       const email = emailInput?.value?.trim();
       if (!email) return alert("Enter a friend's email");
-      try {
-        await AA.sendFriendRequestByEmail(email);
-        alert("Request sent");
-        await renderOutgoing();
-      } catch (e) { alert(e.message || "Could not send"); }
+      try { await AA.sendFriendRequestByEmail(email); alert("Request sent"); renderOutgoing(); }
+      catch (e) { alert(e.message || "Could not send"); }
     });
 
     upBtn?.addEventListener("click", async () => {
+      const f = upFileInput?.files?.[0];
+      if (!f) return alert("Choose a file");
       try {
-        const f = upFileInput?.files?.[0];
-        if (!f) return alert("Choose a file");
         await AA.uploadContent(f, upTitleInput?.value || "");
-        upTitleInput.value = "";
-        upFileInput.value = "";
-        await renderUploads();
-        alert("Uploaded");
+        upTitleInput.value = ""; upFileInput.value = "";
+        renderUploads();
       } catch (e) { alert(e.message || "Upload failed"); }
     });
 
-    // ---------- initial paint ----------
     await renderIncoming();
     await renderOutgoing();
     await renderUploads();
-  } catch (e) {
-    console.error("member-wire init", e);
-  }
+  } catch (e) { console.error("member-wire init", e); }
 })();
-
-/* === injected: render overrides to show names instead of UUIDs === */
-if (typeof renderIncoming !== "undefined") {
-  renderIncoming = async function(){
-    try {
-      const incUL = document.getElementById("aaIncoming");
-      if (!incUL) return;
-      const rows = await AA.listIncomingRequests();
-      incUL.innerHTML = rows.length ? rows.map(fr => {
-        const who = fr.requester_name || fr.requester_email || fr.requester;
-        return `<li>
-          From: <strong>${who}</strong> · ${new Date(fr.created_at).toLocaleString()}
-          <button data-acc="${fr.id}">Accept</button>
-          <button data-dec="${fr.id}">Decline</button>
-        </li>`;
-      }).join("") : `<li>No requests</li>`;
-      incUL.querySelectorAll("[data-acc]").forEach(b => b.onclick = async () => { await AA.acceptRequest(b.dataset.acc); renderIncoming(); });
-      incUL.querySelectorAll("[data-dec]").forEach(b => b.onclick = async () => { await AA.declineRequest(b.dataset.dec); renderIncoming(); });
-    } catch(e){ console.error("renderIncoming (override)", e); }
-  }
-}
-
-if (typeof renderOutgoing !== "undefined") {
-  renderOutgoing = async function(){
-    try {
-      const outUL = document.getElementById("aaOutgoing");
-      if (!outUL) return;
-      const rows = await AA.listOutgoingRequests();
-      outUL.innerHTML = rows.length ? rows.map(fr => {
-        const who = fr.recipient_name || fr.recipient_email || fr.recipient;
-        return `<li>To: <strong>${who}</strong> · ${fr.status}</li>`;
-      }).join("") : `<li>None</li>`;
-    } catch(e){ console.error("renderOutgoing (override)", e); }
-  }
-}
-
