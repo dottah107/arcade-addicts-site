@@ -1,0 +1,98 @@
+﻿<style id="aa-theme-teal-contrast">
+  :root { --aa-teal:#14b8a6; --aa-teal-dark:#0d9488; }
+
+  /* Gamertag input: bright text on dark field */
+  #aaGamertag {
+    background:#0b1215 !important;
+    color:#ffffff !important;
+    border:2px solid var(--aa-teal) !important;
+    border-radius:10px !important;
+    padding:10px 12px !important;
+    font-size:16px !important;
+    font-weight:600 !important;
+    outline:none !important;
+  }
+  #aaGamertag::placeholder { color:#86fff0 !important; opacity:0.9; }
+
+  /* Status text more visible */
+  #aaGTStatus { color: var(--aa-teal) !important; font-weight:700; }
+
+  /* Buttons pop against dark bg */
+  #aaSaveGamertag, #aaUploadBtn, #aaSendReq {
+    background: var(--aa-teal) !important; color:#000 !important; border:none !important;
+  }
+  #aaSaveGamertag:hover, #aaUploadBtn:hover, #aaSendReq:hover {
+    background: var(--aa-teal-dark) !important;
+  }
+</style>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Member Dashboard  Arcade Addicts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--panel:#0b0b0b;--surface:#0f0f0f;--muted:#1a1a1a;--text:#fff;--sub:#9ab;--accent:#00FFFF;--radius:16px;--max:1100px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:var(--max);margin:36px auto;padding:0 18px}
+h1{margin:0 0 12px;color:var(--accent)} .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.btn{padding:10px 14px;border-radius:12px;border:2px solid transparent;font-weight:800;cursor:pointer}
+.btn.primary{background:var(--accent);color:#000}.btn.ghost{background:transparent;border-color:var(--accent);color:var(--accent)}
+.panel{background:var(--surface);border:1px solid var(--muted);border-radius:var(--radius);padding:16px;margin:14px 0}
+label{display:block;margin:8px 0 6px;font-weight:600}
+input,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #222;background:#0b0b0b;color:#fff}
+small.muted{color:var(--sub)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:950px){.grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:620px){.grid{grid-template-columns:1fr}}
+.card{background:#0b0b0b;border:1px solid #222;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card .body{padding:12px;display:grid;gap:10px}
+.card img,.card video{display:block;width:100%;height:auto}
+.row2{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.badge{border:1px solid #222;border-radius:999px;padding:6px 10px;color:#aee}
+#msg{min-height:1.2em;margin:8px 0;color:#f99;font-weight:600}
+#ok{min-height:1.2em;margin:8px 0;color:#9f9;font-weight:700}
+.kicker{color:var(--sub)}
+.progress{height:8px;background:#111;border-radius:10px;overflow:hidden}
+.progress>i{display:block;height:100%;width:0%;background:var(--accent)}
+</style>
+
+
+<script src="/assets/vendor/supabase.min.js"></script>
+<script src="/assets/supabase-init.js"></script>
+<script src="/assets/social.js"></script>
+<script src="/assets/member-wire.js"></script>
+<section id="aa-friends-section" style="margin:24px;padding:16px;border:1px solid #333;border-radius:10px;color:#fff">
+  <h3 style="margin:0 0 10px">Friends</h3>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+    <input id="aaFriendEmail" placeholder="Friend's email" style="padding:8px;flex:1;min-width:240px;color:#000">
+    <button id="aaSendReq" style="padding:10px 14px;font-weight:600;cursor:pointer;">Send Request</button>
+  </div>
+  <div style="display:flex;gap:24px;margin-top:14px;flex-wrap:wrap;">
+    <div style="min-width:260px;">
+      <h4 style="margin:0 0 6px">Incoming</h4>
+      <ul id="aaIncoming" style="display:grid;gap:8px;padding-left:18px;"></ul>
+    </div>
+    <div style="min-width:260px;">
+      <h4 style="margin:0 0 6px">Outgoing</h4>
+      <ul id="aaOutgoing" style="display:grid;gap:8px;padding-left:18px;"></ul>
+    </div>
+  </div>
+</section>
+<section id="aa-gamertag-section" style="margin:24px;padding:16px;border:1px solid #333;border-radius:10px;color:#fff">
+  <h3 style="margin:0 0 10px">My Gamertag</h3>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+    <input id="aaGamertag" placeholder="Enter gamertag" style="padding:8px;flex:1;min-width:220px;color:#000">
+    <button id="aaSaveGamertag" style="padding:10px 14px;font-weight:600;cursor:pointer;">Save</button>
+    <span id="aaGTStatus" style="margin-left:8px;color:#0af;"></span>
+  </div>
+</section>
+</body></html>
+
+
+
+
+
+
+
+
+
+
