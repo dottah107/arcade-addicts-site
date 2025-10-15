@@ -84,4 +84,3 @@ AA.sendFriendRequestByEmail = async function(email){
   });
   if (e2) throw e2;
 };
-
