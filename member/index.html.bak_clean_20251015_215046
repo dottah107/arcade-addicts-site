@@ -77,28 +77,6 @@
   .aa-panel{display:none;margin-top:14px}
   .aa-panel.active{display:block}
 </style>
-<style id="aaMinimalHeaderOnly">
-  /* Hide every card/section under .wrap except our header/topbar */
-  .wrap > :not(.topbar){ display:none !important; }
-
-  /* Modern topbar */
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    gap:16px; padding:18px 20px;
-    background:#0b0f14; border-bottom:1px solid #1f2937;
-    position:sticky; top:0; z-index:50;
-  }
-  .topbar h2{ margin:0; font-size:20px; font-weight:700; color:#22d3ee; } /* teal title */
-
-  .tabs{ display:flex; gap:8px; }
-  .tabbtn{
-    padding:8px 12px; border-radius:10px; cursor:pointer;
-    background:#0f172a; border:1px solid #1f2937; color:#e5e7eb;
-    transition:transform .05s ease, background .15s ease, border-color .15s ease;
-  }
-  .tabbtn:hover{ background:#111827; transform:translateY(-1px); }
-  .tabbtn.active{ background:#06b6d4; color:#000; border-color:#06b6d4; }
-</style>
 </head>
 <body>
   <div class=""wrap"">
@@ -163,12 +141,11 @@
 
   <!-- scripts (SDK -> init -> app code) -->
   <script src=""/assets/vendor/supabase.min.js?v=ui1""></script>
-  <script src=""/assets/supabase-init.js?v=clean1""></script>
-  <script src=""/assets/social.js?v=clean1""></script>
-  <script src=""/assets/member-wire.js?v=clean1""></script>
+  <script src=""/assets/supabase-init.js?v=header7""></script>
+  <script src=""/assets/social.js?v=header7""></script>
+  <script src=""/assets/member-wire.js?v=header7""></script>
 </body>
 </html>
-
 
 
 
