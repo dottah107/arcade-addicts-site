@@ -1,98 +1,62 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Change Password • Arcade Addicts</title>
+﻿<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Change Password • Arcade Addicts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:#000;color:#fff}
+.wrap{max-width:520px;margin:60px auto;padding:0 16px}
+.card{background:#0f0f0f;border:1px solid #161616;border-radius:14px;padding:18px}
+label{display:block;margin:10px 0 6px;font-weight:600}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid #222;background:#0b0b0b;color:#fff}
+.btn{width:100%;margin-top:12px;padding:12px;border-radius:12px;font-weight:800;border:none;cursor:pointer;background:#00FFFF;color:#000}
+#msg{margin-top:10px;min-height:1.2em;font-weight:600}
+</style>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root { --accent:#00FFFF; --bg:#000; --card:#0f0f0f; --border:#161616; --field:#0b0b0b; }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#fff}
-    .wrap{max-width:520px;margin:60px auto;padding:0 16px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
-    h1{margin:0 0 12px;color:var(--accent)}
-    label{display:block;margin:10px 0 6px;font-weight:600}
-    input{width:100%;padding:12px;border-radius:10px;border:1px solid #222;background:var(--field);color:#fff}
-    .btn{width:100%;margin-top:12px;padding:12px;border-radius:12px;font-weight:800;border:none;cursor:pointer;background:var(--accent);color:#000}
-    .btn[disabled]{opacity:.6;cursor:not-allowed}
-    #msg{margin-top:10px;min-height:1.2em;font-weight:600}
-    a{color:var(--accent)}
-  </style>
-
-  <!-- Supabase (local, single set, cache-busted) -->
-  <script src="/assets/vendor/supabase.min.js?v=chg6"></script>
-  <script src="/assets/supabase-init.js?v=chg6"></script>
-</head>
-<body>
-  <div class="wrap">
-    <h1>Set a new password</h1>
-    <div id="msg"></div>
-
-    <div class="card">
-      <label for="pw">New password (min 6)</label>
-      <input id="pw" type="password" minlength="6" required />
-
-      <label for="pw2">Confirm password</label>
-      <input id="pw2" type="password" minlength="6" required />
-
-      <button id="save" class="btn">Save password</button>
-    </div>
-
-    <p style="opacity:.8;margin-top:10px">
-      <a href="/login/">Back to login</a>
-    </p>
+<script src="/assets/vendor/supabase.min.js"></script>
+<script src="/assets/supabase-init.js"></script>
+</head><body>
+<div class="wrap">
+  <h1 style="color:#00FFFF;margin:0 0 12px">Set a new password</h1>
+  <div id="msg"></div>
+  <div class="card">
+    <label for="pw">New password (min 6)</label>
+    <input id="pw" type="password" minlength="6" required>
+    <label for="pw2">Confirm password</label>
+    <input id="pw2" type="password" minlength="6" required>
+    <button id="save" class="btn">Save password</button>
   </div>
+  <p style="opacity:.8;margin-top:10px"><a href="/login/" style="color:#00FFFF">Back to login</a></p>
+</div>
 
-  <script>
-    // Helpers
-    const $  = id => document.getElementById(id);
-    const msg = (t) => { $('msg').textContent = t || ''; };
+<script id="AA_CHANGE_PASSWORD">
+const sb = supabase.createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8');
+const \$ = id => document.getElementById(id);
+const show = m => { \msg.textContent = m || ''; };
 
-    // If we arrived from the email, Supabase puts tokens in the hash (and sometimes 'token' in query)
-    // We set the session so updateUser({ password }) is authorized.
-    (async () => {
-      try {
-        const hashParams  = new URLSearchParams((location.hash || '').replace(/^#/, ''));
-        const queryParams = new URLSearchParams(location.search || '');
+// If we arrived from the email, tokens are in the hash; set session so update works
+(function(){
+  const h = location.hash || "";
+  if (!h.includes("type=recovery")) return;
+  const p = new URLSearchParams(h.slice(1));
+  const access_token  = p.get("access_token");
+  const refresh_token = p.get("refresh_token");
+  if (access_token && refresh_token) {
+    sb.auth.setSession({ access_token, refresh_token }).catch(()=>{});
+  }
+})();
 
-        const type = hashParams.get('type') || queryParams.get('type');
-        const access_token  = hashParams.get('access_token') || queryParams.get('token') || null;
-        const refresh_token = hashParams.get('refresh_token') || null;
-
-        if (type === 'recovery' && (access_token || refresh_token)) {
-          await supabase.auth.setSession({ access_token, refresh_token });
-        }
-      } catch (_) {}
-    })();
-
-    $('save').onclick = async () => {
-      const pw  = $('pw').value.trim();
-      const pw2 = $('pw2').value.trim();
-
-      if (pw.length < 6) { msg('Password must be at least 6 characters.'); return; }
-      if (pw !== pw2)     { msg('Passwords do not match.'); return; }
-
-      $('save').disabled = true;
-      msg('Saving…');
-
-      const { error } = await supabase.auth.updateUser({ password: pw });
-
-      if (error) {
-        $('save').disabled = false;
-        msg(error.message || 'Could not update password.');
-        return;
-      }
-
-      msg('Password updated. Redirecting to login…');
-      setTimeout(() => { location.href = '/login/'; }, 900);
-    };
-  </script>
-</body>
-</html>
-
+\save.onclick = async () => {
+  const pw  = \pw.value;
+  const pw2 = \pw2.value;
+  if (pw.length < 6) { show("Password must be at least 6 characters."); return; }
+  if (pw !== pw2)   { show("Passwords do not match."); return; }
+  const { error } = await sb.auth.updateUser({ password: pw });
+  if (error) { show(error.message); return; }
+  show("Password updated. Redirecting to login…");
+  setTimeout(()=>location.href="/login/", 900);
+};
+</script>
+<script defer src="/assets/login-hook.js?v=6"></script>
+</body></html>
 
