@@ -31,6 +31,7 @@
     footer{text-align:center;padding:20px;font-size:.85rem;color:#bbb}
     @media (max-width:720px){ .row{grid-template-columns:1fr} }
     .note{font-size:.9rem;opacity:.8;margin-top:8px}
+    #regMsg{margin:10px 0;font-weight:700}
   </style>
 </head>
 <body>
@@ -42,23 +43,26 @@
 
   <main>
     <h2>Register an Account</h2>
-    </div>
-  <p id="aa-msg" class="note"></p>
-</div>
- <form id="reg" novalidate><div id="msg" style="margin:10px 0;color:#9f9;font-weight:700"></div>
-  <input type="hidden" name="_subject" value="New Arcade Addicts registration (with credentials)">
-<input type="hidden" name="_template" value="table">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="/register/success.html">
-  <input type="hidden" name="_subject" value="Tournament Registration">
-<input type="hidden" name="_autoresponse" value="Thanks for registering with Arcade Addicts — you’re in! We’ll email bracket and check-in details soon.">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="/register/success.html">
+
+    <p id="aa-msg" class="note"></p>
+
+    <form id="reg" novalidate>
+      <!-- (These hidden fields can stay; they won’t be used now that we handle signup in JS) -->
+      <input type="hidden" name="_subject" value="New Arcade Addicts registration (with credentials)">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="/register/success.html">
+      <input type="hidden" name="_subject" value="Tournament Registration">
+      <input type="hidden" name="_autoresponse" value="Thanks for registering with Arcade Addicts — you’re in!">
+      <input type="hidden" name="_captcha" value="false">
+
+      <div id="regMsg" class="note"></div>
+
       <div class="row">
-        <div class="col"><label for="name">Full name</label><input id="name" name="Name" required></div>
-        <div class="col"><label for="gamer">Gamer tag</label><input id="gamer" name="GamerTag" required></div>
-        <div class="col"><label for="email">Email</label><input id="email" type="email" name="Email" required></div>
-        <div class="col"><label for="password">Password</label><input id="password" type="password" name="Password" minlength="6" required></div>
+        <div class="col"><label for="name">Full name</label><input id="name" name="Name" autocomplete="name" required></div>
+        <div class="col"><label for="gamer">Gamer tag</label><input id="gamer" name="GamerTag" autocomplete="nickname"></div>
+        <div class="col"><label for="email">Email</label><input id="email" type="email" name="Email" autocomplete="email" required></div>
+        <div class="col"><label for="password">Password</label><input id="password" type="password" name="Password" minlength="6" autocomplete="new-password" required></div>
         <div class="col"><label for="discord">Discord</label><input id="discord" name="Discord" placeholder="username#0000"></div>
         <div class="col"><label for="game">Tournament</label>
           <select id="game" name="Tournament" required>
@@ -78,91 +82,87 @@
           <select id="region" name="Region"><option>NA</option><option>EU</option><option>APAC</option><option>LATAM</option></select></div>
         <div class="col full"><label for="notes">Notes</label><textarea id="notes" name="Notes" placeholder="Anything we should know?"></textarea></div>
       </div>
-      <p class="note">Prefer a web form that doesn’t open email? Ask me to switch this to Formspree and I’ll give you the one-line change.</p>
-      <button class="btn" type="submit">Send registration</button>
+
+      <p class="note">After you register, check your email to verify, then log in.</p>
+      <button class="btn" type="submit">Register</button>
     </form>
   </main>
+
   <footer>&copy; 2025 Arcade Addicts</footer>
-<script>
-const t=new URLSearchParams(location.search).get("t");
-const map={MK1:"Mortal Kombat 1","Tekken 8":"Tekken 8",Warzone:"Warzone","NBA 2K26":"NBA 2K26"};
-document.getElementById("game")?.value=(map[t]||t||"");
 
-if (new URLSearchParams(location.search).has("t")) {
-  document.querySelector("form")?.scrollIntoView({behavior:"smooth", block:"start"});
-  setTimeout(()=>document.getElementById("name")?.focus(), 200);
-}
-</script>
-<script>
-const raw = new URLSearchParams(location.search).get("t") || "";
-const key = raw.toLowerCase().replace(/%20|[\s-]/g,"");  // normalize
-const map = {warzone:"Warzone", tekken8:"Tekken 8", mk1:"Mortal Kombat 1", nba2k26:"NBA 2K26"};
-document.getElementById("game")?.value = map[key] || raw;
-</script>
-<script>
-/* AA_MANDATORY_AUTH */
-(function(){
-  const URL='https://xvhkwyhncuivsfwfmvbg.supabase.co', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8';
-  function boot(){
-    if (!window.supabase) return;
-    const sb = supabase.createClient(URL, KEY);
-    const form = document.querySelector('form');
-    if (!form) return;
+  <!-- Keep your existing “pick tournament from ?t=” logic -->
+  <script>
+    const t=new URLSearchParams(location.search).get("t");
+    const map1={MK1:"Mortal Kombat 1","Tekken 8":"Tekken 8",Warzone:"Warzone","NBA 2K26":"NBA 2K26"};
+    document.getElementById("game")?.value=(map1[t]||t||"");
+    if (new URLSearchParams(location.search).has("t")) {
+      document.querySelector("form")?.scrollIntoView({behavior:"smooth", block:"start"});
+      setTimeout(()=>document.getElementById("name")?.focus(), 200);
+    }
+  </script>
+  <script>
+    const raw = new URLSearchParams(location.search).get("t") || "";
+    const key = raw.toLowerCase().replace(/%20|[\s-]/g,"");
+    const map2 = {warzone:"Warzone", tekken8:"Tekken 8", mk1:"Mortal Kombat 1", nba2k26:"NBA 2K26"};
+    document.getElementById("game")?.value = map2[key] || raw;
+  </script>
 
-    form.addEventListener('submit', async (e)=>{
-      const email = document.getElementById('email')?.value?.trim();
-      const pw    = document.getElementById('password')?.value || '';
-      if (!email || !pw) return; // HTML 'required' will show
+  <!-- Supabase SDK (local) -->
+  <script src="/assets/vendor/supabase.min.js?v=reg4"></script>
 
-      e.preventDefault();
+  <!-- Page-only signup wiring -->
+  <script>
+  (function(){
+    const URL='https://xvhkwyhncuivsfwfmvbg.supabase.co';
+    const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8';
 
-      try {
-        // Try to sign up first
-        let { error } = await sb.auth.signUp({ email, password: pw });
+    function $(s, r=document){ return r.querySelector(s); }
+    function msg(str, ok=false){
+      const el = $("#regMsg"); if (!el) return;
+      el.style.color = ok ? "#86efac" : "#fca5a5";
+      el.textContent = str || "";
+    }
 
-        // If user exists, try sign-in
-        if (error && /exists|already/i.test(error.message || '')) {
-          const r = await sb.auth.signInWithPassword({ email, password: pw });
-          if (r.error) throw r.error;
-        } else if (error && !/confirm|verify/i.test(error.message || '')) {
-          // If it's not a "confirm your email" message, treat as fatal
-          throw error;
+    function ready(fn){ if (document.readyState==="loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
+    ready(()=>{
+      if (!window.supabase) { msg("Missing Supabase SDK"); return; }
+      const sb = supabase.createClient(URL, KEY);
+
+      const form = $("#reg");
+      if (!form) return;
+
+      // prevent native nav (stops the raw letters/weird page)
+      form.setAttribute("action", "");
+      form.addEventListener("submit", async (e)=>{
+        e.preventDefault();
+        msg("");
+
+        const email = $("#email")?.value?.trim() || "";
+        const password = $("#password")?.value || "";
+        if (!email || !password){ msg("Enter email and password."); return; }
+
+        const btn = form.querySelector('button[type="submit"],input[type="submit"]');
+        const old = btn?.innerText || btn?.value;
+        if (btn){ btn.disabled = true; if ("innerText" in btn) btn.innerText = "Registering..."; else btn.value = "Registering..."; }
+
+        try {
+          const redirectUrl = location.origin + "/login/?email=1";
+          const { error } = await sb.auth.signUp({
+            email, password,
+            options: { emailRedirectTo: redirectUrl }
+          });
+          if (error){ msg(error.message); return; }
+
+          msg("Check your email to verify your account.", true);
+          setTimeout(()=>{ location.href = "/login/?email=1"; }, 1200);
+        } catch(err){
+          msg(err?.message || "Could not register.");
+        } finally {
+          if (btn){ btn.disabled = false; if ("innerText" in btn) btn.innerText = old; else btn.value = old; }
         }
-        // Attach Supabase UID (if available) to the submission
-        const got = await sb.auth.getUser();
-        if (got?.data?.user?.id) {
-          let uid = document.getElementById('supabase_uid');
-          if (!uid) {
-            uid = document.createElement('input');
-            uid.type='hidden'; uid.name='supabase_uid'; uid.id='supabase_uid';
-            form.appendChild(uid);
-          }
-          uid.value = got.data.user.id;
-        }
-        // Proceed to send registration to FormSubmit
-        form.submit();
-      } catch (err) {
-        alert('Account error: ' + (err?.message || err));
-      }
+      });
     });
-  }
-  if (document.readyState !== 'loading') boot(); else document.addEventListener('DOMContentLoaded', boot);
-})();
-</script>
+  })();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
