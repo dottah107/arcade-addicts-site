@@ -40,7 +40,11 @@
       try {
         const redirectUrl = location.origin + "/login/?email=1"; // where Supabase will send them after clicking the link
         // Supabase v2: pass redirect in the 2nd arg
-        const { error } = await supabase.auth.updateUser({ email: newEmail }, { emailRedirectTo: redirectUrl });
+        const { error } = await supabase.auth.updateUser(
+  { email: newEmail },
+  { emailRedirectTo: 'https://www.arcade-addicts.com/change-password/' }
+);
+
         if (error) return status(out, error.message);
 
         status(out, "We sent a verification link to your new email. Open it to confirm the change.", true);
@@ -52,6 +56,7 @@
     });
   });
 })();
+
 
 
 
