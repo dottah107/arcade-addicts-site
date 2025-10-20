@@ -55,8 +55,4 @@ const show = m => { \msg.textContent = m || ''; };
   setTimeout(()=>location.href="/login/", 900);
 };
 </script>
-<script src="/assets/vendor/supabase.min.js?v=chg4"></script>
-<script src="/assets/supabase-init.js?v=chg4"></script>
-<script src="/assets/change-email-wire.js?v=chg4"></script>
 </body></html>
-
