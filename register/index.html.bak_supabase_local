@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | Arcade Addicts</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <meta name="description" content="Sign up for Arcade Addicts tournaments. Warzone, Tekken 8, and MK1." />
+  <style>
+    :root{ --bg:#000; --panel:#0f0f0f; --panel-2:#111; --text:#fff; --accent:#0ff; --muted:#1a1a1a; }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;}
+    a{color:inherit;text-decoration:none}
+    header{background:var(--panel);padding:20px;border-bottom:3px solid var(--accent);display:flex;justify-content:space-between;align-items:center}
+    header h1{display:flex;align-items:center;gap:10px;margin:0;font-family:'Press Start 2P',cursive;color:var(--accent);font-size:1.1rem}
+    header h1 .logo{height:28px;width:auto;display:block;filter: drop-shadow(0 0 6px rgba(0,255,255,.55));}
+    @media (max-width:640px){ header h1 .logo{height:24px} }
+    main{max-width:900px;margin:40px auto;padding:0 20px}
+    h2{color:var(--accent);font-size:1.6rem;margin:0 0 14px}
+    p.muted{opacity:.85;margin-top:0}
+    form{background:var(--panel-2);padding:20px;border-radius:12px;border:1px solid #1b1b1b}
+    .row{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+    .row .col{display:flex;flex-direction:column}
+    label{font-weight:700;margin-bottom:6px}
+    input, select, textarea{background:#0b0b0b;color:#fff;border:1px solid #222;border-radius:10px;padding:12px}
+    textarea{min-height:90px;resize:vertical}
+    .full{grid-column:1/-1}
+    .btn{display:inline-block;background:var(--accent);color:#000;border:none;padding:12px 22px;font-size:1rem;font-weight:700;cursor:pointer;border-radius:10px;margin-top:6px}
+    .btn:hover{filter:brightness(.9)}
+    footer{text-align:center;padding:20px;font-size:.85rem;color:#bbb}
+    @media (max-width:720px){ .row{grid-template-columns:1fr} }
+    .note{font-size:.9rem;opacity:.8;margin-top:8px}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" aria-label="Back to home">← Home</a>
+    <h1><img src="/assets/logo.png" alt="" class="logo"> Register</h1>
+    <span></span>
+  </header>
+
+  <main>
+    <h2>Register an Account</h2>
+    </div>
+  <p id="aa-msg" class="note"></p>
+<<<<<<< HEAD
+</div>
+ <form id="reg" novalidate><div id="msg" style="margin:10px 0;color:#9f9;font-weight:700"></div>
+  <input type="hidden" name="_subject" value="New Arcade Addicts registration (with credentials)">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="/register/success.html">
+=======
+</div>
+ <form id="reg" novalidate><div id="msg" style="margin:10px 0;color:#9f9;font-weight:700"></div>
+  <input type="hidden" name="_subject" value="New Arcade Addicts registration (with credentials)">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="/register/success.html">
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
+  <input type="hidden" name="_subject" value="Tournament Registration">
+<input type="hidden" name="_autoresponse" value="Thanks for registering with Arcade Addicts — you’re in! We’ll email bracket and check-in details soon.">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="/register/success.html">
+      <div class="row">
+        <div class="col"><label for="name">Full name</label><input id="name" name="Name" required></div>
+        <div class="col"><label for="gamer">Gamer tag</label><input id="gamer" name="GamerTag" required></div>
+<<<<<<< HEAD
+        <div class="col"><label for="email">Email</label><input id="email" type="email" name="Email" required></div>
+=======
+        <div class="col"><label for="email">Email</label><input id="email" type="email" name="Email" required></div>
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
+        <div class="col"><label for="password">Password</label><input id="password" type="password" name="Password" minlength="6" required></div>
+        <div class="col"><label for="discord">Discord</label><input id="discord" name="Discord" placeholder="username#0000"></div>
+        <div class="col"><label for="game">Tournament</label>
+          <select id="game" name="Tournament" required>
+            <option value="Warzone">COD: Warzone</option>
+            <option value="Tekken 8">Tekken 8</option>
+            <option value="Mortal Kombat 1">Mortal Kombat 1</option>
+          </select></div>
+        <div class="col"><label for="platform">Platform</label>
+          <select id="platform" name="Platform" required>
+            <option>PC</option><option>PlayStation</option><option>Xbox</option><option>Switch</option>
+          </select></div>
+        <div class="col"><label for="team">Team size</label>
+          <select id="team" name="TeamSize">
+            <option>Solo</option><option>Duo</option><option>Trio</option><option>Squad</option>
+          </select></div>
+        <div class="col"><label for="region">Region</label>
+          <select id="region" name="Region"><option>NA</option><option>EU</option><option>APAC</option><option>LATAM</option></select></div>
+        <div class="col full"><label for="notes">Notes</label><textarea id="notes" name="Notes" placeholder="Anything we should know?"></textarea></div>
+      </div>
+      <p class="note">Prefer a web form that doesn’t open email? Ask me to switch this to Formspree and I’ll give you the one-line change.</p>
+      <button class="btn" type="submit">Send registration</button>
+    </form>
+  </main>
+  <footer>&copy; 2025 Arcade Addicts</footer>
+<script>
+const t=new URLSearchParams(location.search).get("t");
+const map={MK1:"Mortal Kombat 1","Tekken 8":"Tekken 8",Warzone:"Warzone","NBA 2K26":"NBA 2K26"};
+document.getElementById("game")?.value=(map[t]||t||"");
+
+if (new URLSearchParams(location.search).has("t")) {
+  document.querySelector("form")?.scrollIntoView({behavior:"smooth", block:"start"});
+  setTimeout(()=>document.getElementById("name")?.focus(), 200);
+}
+</script>
+<script>
+const raw = new URLSearchParams(location.search).get("t") || "";
+const key = raw.toLowerCase().replace(/%20|[\s-]/g,"");  // normalize
+const map = {warzone:"Warzone", tekken8:"Tekken 8", mk1:"Mortal Kombat 1", nba2k26:"NBA 2K26"};
+document.getElementById("game")?.value = map[key] || raw;
+<<<<<<< HEAD
+</script>
+=======
+</script>
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
+<script>
+/* AA_MANDATORY_AUTH */
+(function(){
+  const URL='https://xvhkwyhncuivsfwfmvbg.supabase.co', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8';
+  function boot(){
+    if (!window.supabase) return;
+    const sb = supabase.createClient(URL, KEY);
+    const form = document.querySelector('form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e)=>{
+      const email = document.getElementById('email')?.value?.trim();
+      const pw    = document.getElementById('password')?.value || '';
+      if (!email || !pw) return; // HTML 'required' will show
+
+      e.preventDefault();
+
+      try {
+        // Try to sign up first
+        let { error } = await sb.auth.signUp({ email, password: pw });
+
+        // If user exists, try sign-in
+        if (error && /exists|already/i.test(error.message || '')) {
+          const r = await sb.auth.signInWithPassword({ email, password: pw });
+          if (r.error) throw r.error;
+        } else if (error && !/confirm|verify/i.test(error.message || '')) {
+          // If it's not a "confirm your email" message, treat as fatal
+          throw error;
+        }
+        // Attach Supabase UID (if available) to the submission
+        const got = await sb.auth.getUser();
+        if (got?.data?.user?.id) {
+          let uid = document.getElementById('supabase_uid');
+          if (!uid) {
+            uid = document.createElement('input');
+            uid.type='hidden'; uid.name='supabase_uid'; uid.id='supabase_uid';
+            form.appendChild(uid);
+          }
+          uid.value = got.data.user.id;
+        }
+        // Proceed to send registration to FormSubmit
+        form.submit();
+      } catch (err) {
+        alert('Account error: ' + (err?.message || err));
+      }
+    });
+  }
+  if (document.readyState !== 'loading') boot(); else document.addEventListener('DOMContentLoaded', boot);
+})();
+<<<<<<< HEAD
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 15598d536066e746efe01f9bb161bb30f6372cdf
