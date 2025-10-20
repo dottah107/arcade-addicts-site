@@ -9,8 +9,8 @@
   a.btn{display:inline-block;margin-top:10px;background:#00FFFF;color:#000;font-weight:800;padding:12px 16px;border-radius:12px;text-decoration:none}
 </style>
 
-<script src="/assets/vendor/supabase.min.js?v=fp2"></script>
-<script src="/assets/supabase-init.js?v=fp2"></script>
+<script src="/assets/vendor/supabase.min.js"></script>
+<script src="/assets/supabase-init.js"></script>
 </head><body>
   <div class="card">
     <h1>You're verified!</h1>
@@ -20,8 +20,6 @@
 
 <script defer src="/assets/login-hook.js?v=6"></script>
 <script src="/assets/forgot-wire.js?v=fp1"></script>
-<script src="/assets/forgot-nav.js?v=fp2"></script>
 </body></html>
-
 
 
