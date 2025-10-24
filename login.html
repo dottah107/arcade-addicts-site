@@ -1,83 +1,101 @@
-﻿<!DOCTYPE html>
-<html lang='en'>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<title>Arcade-Addicts Login</title>
-<style>
-body {
-  background: linear-gradient(180deg, #0b0c10, #000);
-  color: #eee;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
-}
-.container {
-  background: #171717;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,224,255,0.3);
-  padding: 40px;
-  width: 100%;
-  max-width: 420px;
-  text-align: center;
-}
-h1 {
-  color: #00e0ff;
-  text-shadow: 0 0 10px #00e0ff;
-}
-input[type='text'],
-input[type='email'],
-input[type='password'] {
-  width: 90%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: none;
-  font-size: 1em;
-  text-align: center;
-}
-.btn {
-  display: inline-block;
-  background: #00e0ff;
-  color: #000;
-  padding: 12px 30px;
-  border-radius: 6px;
-  font-weight: bold;
-  text-decoration: none;
-  margin-top: 10px;
-  cursor: pointer;
-}
-.btn:hover {
-  background: #fff;
-  color: #000;
-}
-.link {
-  display: block;
-  margin-top: 15px;
-  color: #00e0ff;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.link:hover {
-  color: #fff;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Arcade Addicts</title>
+  <style>
+    body {
+      background: linear-gradient(180deg, #0b0c10, #000);
+      color: #eee;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #171717;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,224,255,0.3);
+      padding: 40px;
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+    }
+    h1 {
+      color: #00e0ff;
+      text-shadow: 0 0 8px #00e0ff;
+    }
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+      text-align: center;
+      font-size: 1em;
+    }
+    .btn {
+      background: #00e0ff;
+      color: #000;
+      padding: 12px 30px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:hover {
+      background: #fff;
+      color: #00e0ff;
+    }
+    p {
+      color: #aaa;
+      margin-top: 15px;
+    }
+    a {
+      color: #00e0ff;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #fff;
+    }
+  </style>
 </head>
+
 <body>
-<div class='container'>
-  <h1>Member Login</h1>
-  <form>
-    <input type='text' placeholder='Username or Email' required><br>
-    <input type='password' placeholder='Password' required><br>
-    <button type='submit' class='btn'>Login</button>
-  </form>
-  <a href='#' class='link'>Forgot Password?</a>
-  <hr style='margin:20px 0;border:1px solid #333;'>
-  <p>New here?</p>
-  <a href='#signup' class='btn'>Create Account</a>
-</div>
-</body>
-</html>
+  <div class="container">
+    <h1>Member Login</h1>
+    <form id="login-form">
+      <input type="email" id="login-email" placeholder="Email address" required><br>
+      <input type="password" id="login-password" placeholder="Password" required><br>
+      <button type="submit" class="btn">Login</button>
+    </form>
+    <p id="login-message"></p>
+    <p>Don't have an account? <a href="register.html">Register here</a></p>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+    const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const form = document.getElementById('login-form')
+    const message = document.getElementById('login-message')
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      message.textContent = 'Logging in...'
+
+      const email = document.getElementById('login-email').value
+      const password = document.getElementById('login-password').value
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+      if (error) {
+        message
+
+
