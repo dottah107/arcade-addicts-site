@@ -9,68 +9,80 @@
       background: #0b0c10;
       color: #eee;
       font-family: "Segoe UI", Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
       margin: 0;
-    }
-    .container {
-      background: #171717;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,224,255,0.3);
-      padding: 32px 20px;
-      width: 100%;
-      max-width: 950px;
-      text-align: center;
-      position: relative;
+      padding: 0;
     }
 
-    /* Gamertag + profile positioned cleanly top right */
+    .header {
+      background: #171717;
+      border-bottom: 2px solid #00e0ff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 224, 255, 0.3);
+    }
+
+    .header h2 {
+      margin: 0;
+      color: #00e0ff;
+      font-size: 22px;
+    }
+
     .profile-edit {
-      position: absolute;
-      top: 20px;
-      right: 25px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       background: #111;
       border: 1px solid #00e0ff;
       border-radius: 8px;
-      padding: 10px 15px;
-      text-align: center;
-      width: 180px;
-      box-shadow: 0 0 10px rgba(0,224,255,0.2);
+      padding: 8px 14px;
+      box-shadow: 0 0 8px rgba(0, 224, 255, 0.2);
     }
+
     .avatar {
-      width: 72px;
-      height: 72px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #00e0ff;
-      margin-bottom: 8px;
     }
+
     #display-name {
       background: transparent;
       border: none;
       color: #00e0ff;
       font-weight: bold;
-      text-align: center;
       font-size: 16px;
-      margin-top: 5px;
+      width: 140px;
     }
+
     .profile-edit button {
       background: #00e0ff;
       color: #000;
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 5px;
       border: none;
       cursor: pointer;
       font-weight: bold;
-      font-size: 13px;
-      margin-top: 6px;
+      font-size: 12px;
       transition: 0.2s;
     }
+
     .profile-edit button:hover {
       background: #fff;
       color: #00e0ff;
+    }
+
+    .container {
+      background: #171717;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 224, 255, 0.3);
+      padding: 32px 20px;
+      width: 95%;
+      max-width: 950px;
+      margin: 30px auto;
+      text-align: center;
     }
 
     .layout-main {
@@ -78,20 +90,23 @@
       gap: 32px;
       justify-content: space-between;
       align-items: flex-start;
-      margin-top: 90px;
     }
+
     .preview-section {
       flex: 1;
       min-width: 350px;
     }
+
     .right-section {
       flex: 1;
       min-width: 350px;
     }
+
     .tab {
       margin-bottom: 16px;
       text-align: center;
     }
+
     .tab button {
       background: #0b0c10;
       color: #eee;
@@ -103,31 +118,39 @@
       font-weight: bold;
       transition: 0.2s;
     }
+
     .tab button.active,
     .tab button:hover {
       background: #00e0ff;
       color: #171717;
     }
+
     .section {
       display: none;
     }
+
     .section.active {
       display: block;
     }
+
     ul {
       list-style: none;
       padding: 0;
     }
+
     li {
       margin: 5px 0;
     }
+
     a {
       color: #00e0ff;
       text-decoration: none;
     }
+
     a:hover {
       color: #fff;
     }
+
     #logout-btn {
       margin-top: 24px;
       background: #ee0033;
@@ -139,59 +162,61 @@
       cursor: pointer;
       transition: 0.2s;
     }
+
     #logout-btn:hover {
       background: #fff;
       color: #ee0033;
     }
+
     .uploads-display {
       display: flex;
       gap: 10px;
       justify-content: center;
       margin-bottom: 20px;
     }
+
     .uploads-display > div {
       width: 48%;
     }
+
     @media (max-width: 900px) {
       .layout-main {
         flex-direction: column;
         align-items: stretch;
       }
-      .profile-edit {
-        position: static;
-        margin-bottom: 20px;
-        width: auto;
+      .header {
+        flex-direction: column;
+        gap: 12px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- GAMERTAG & PROFILE (fixed top-right) -->
+  <div class="header">
+    <h2>Arcade Addicts - Member Dashboard</h2>
     <div class="profile-edit" id="profile-section">
-      <img class="avatar" id="avatar-preview" src="https://placehold.co/84x84?text=Avatar" alt="Profile Picture">
-      <form id="profile-form">
-        <input type="file" id="avatar-upload" accept="image/*"><br>
-        <input type="text" id="display-name" placeholder="Gamertag / Name"><br>
+      <img class="avatar" id="avatar-preview" src="https://placehold.co/50x50?text=Avatar" alt="Profile Picture">
+      <form id="profile-form" style="display:flex; align-items:center; gap:8px;">
+        <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
+        <label for="avatar-upload" style="cursor:pointer; color:#00e0ff; font-size:12px;">Change Avatar</label>
+        <input type="text" id="display-name" placeholder="Gamertag">
         <button type="submit">Save</button>
       </form>
-      <p id="profile-message"></p>
+      <p id="profile-message" style="margin:0; font-size:11px;"></p>
     </div>
+  </div>
 
+  <div class="container">
     <div class="layout-main">
-      <!-- LEFT: Photo & Video -->
       <div class="preview-section">
         <div class="uploads-display">
           <div>
             <h3>Photo Preview</h3>
-            <img id="photo-preview"
-              style="width:100%; max-height:250px; object-fit:cover; border-radius:8px; display:none;">
+            <img id="photo-preview" style="width:100%; max-height:250px; object-fit:cover; border-radius:8px; display:none;">
           </div>
           <div>
             <h3>Video Preview</h3>
-            <video id="video-preview"
-              style="width:100%; max-height:250px; border-radius:8px; display:none;"
-              controls muted></video>
+            <video id="video-preview" style="width:100%; max-height:250px; border-radius:8px; display:none;" controls muted></video>
           </div>
         </div>
         <input type="file" id="file-input" multiple>
@@ -199,7 +224,6 @@
         <p id="upload-message"></p>
       </div>
 
-      <!-- RIGHT: Tabs & Feed -->
       <div class="right-section">
         <div class="tab">
           <button id="activity-tab" class="active">Activity Feed</button>
@@ -222,15 +246,13 @@
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
     const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
-    const supabaseKey =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
     const supabase = createClient(supabaseUrl, supabaseKey)
 
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) window.location.href = '/login.html'
     const user = session.user
 
-    // Profile
     const avatarEl = document.getElementById('avatar-preview')
     const avatarUploadEl = document.getElementById('avatar-upload')
     const displayNameEl = document.getElementById('display-name')
@@ -260,7 +282,6 @@
       profileMsg.textContent = error ? 'Save failed.' : 'Profile saved!'
     }
 
-    // Tabs
     const tabs = [['activity-tab', 'activity-section'], ['myuploads-tab', 'uploads-section']]
     tabs.forEach(([tab, sec]) => {
       document.getElementById(tab).onclick = () => {
@@ -273,7 +294,6 @@
       }
     })
 
-    // Feed
     async function loadActivity() {
       const { data } = await supabase.storage.from('user_uploads').list(user.id + '/')
       const feed = document.getElementById('activity-feed')
@@ -291,7 +311,6 @@
     }
     loadActivity()
 
-    // Uploads + Previews
     const fileInput = document.getElementById('file-input')
     const photoPreview = document.getElementById('photo-preview')
     const videoPreview = document.getElementById('video-preview')
@@ -349,6 +368,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
