@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -39,8 +39,6 @@ button:hover {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
-ul { list-style-type: none; padding: 0; }
-li { margin: 5px 0; }
 </style>
 </head>
 
@@ -66,21 +64,22 @@ li { margin: 5px 0; }
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
   const supabase = createClient(supabaseUrl, supabaseKey)
 
+  // Redirect if not logged in
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) window.location.href = '/login.html'
 
   const user = session.user
   document.getElementById('member-email').textContent = user.email
 
+  // Fetch the user's uploaded content
   async function loadUploads() {
     const { data, error } = await supabase.storage.from('user_uploads').list(user.id + '/', { limit: 20 })
-    if (!error && data && data.length) {
+    if (!error && data.length) {
       const list = document.getElementById('upload-list')
       list.innerHTML = ''
       data.forEach(file => {
-        const fileUrl = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl
         const li = document.createElement('li')
-        li.innerHTML = `<a href="${fileUrl}" target="_blank">${file.name}</a>`
+        li.innerHTML = `<a href="${supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl}" target="_blank">${file.name}</a>`
         list.appendChild(li)
       })
     }
@@ -97,3 +96,5 @@ li { margin: 5px 0; }
 </script>
 </body>
 </html>
+
+
