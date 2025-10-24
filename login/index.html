@@ -33,3 +33,33 @@ small{opacity:.8}</style>
 
 <script defer src="/assets/login-hook.js?v=3"></script>
 
+
+<!-- AA_SIGNUP_REDIRECT_V2 -->
+<script>
+(function(){
+  function go(){ location.href='/register/'; }
+  function wire(id){
+    var el=document.getElementById(id);
+    if(el){ el.onclick=function(e){ e.preventDefault(); go(); }; }
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    // common ids we used earlier
+    wire('signup');      // <button id="signup">
+    wire('showSignup');  // <a id="showSignup">Create an account</a>
+    // fallback: if neither exists, drop a link under the form
+    setTimeout(function(){
+      if(!document.getElementById('aa_signup_link')){
+        var anchor = document.getElementById('pw') || document.getElementById('email') || document.querySelector('.card') || document.body;
+        var a = document.createElement('a');
+        a.id='aa_signup_link';
+        a.href='/register/';
+        a.textContent='Create an account';
+        a.className='inline';
+        a.style.display='block';
+        a.style.marginTop='10px';
+        anchor.parentNode.insertBefore(a, anchor.nextSibling);
+      }
+    },0);
+  });
+})();
+</script>
