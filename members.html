@@ -1,44 +1,81 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Member Dashboard - Arcade Addicts</title>
-<style>
-body {
-  background: linear-gradient(180deg, #0b0c10, #000);
-  color: #eee;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
-}
-.container {
-  background: #171717;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,224,255,0.3);
-  padding: 40px;
-  width: 100%;
-  max-width: 450px;
-  text-align: center;
-}
-h1 {
-  color: #00e0ff;
-  text-shadow: 0 0 8px #00e0ff;
-}
-p {
-  color: #aaa;
-  margin-top: 15px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Dashboard - Arcade Addicts</title>
+  <style>
+    body {
+      background: #0b0c10;
+      color: #eee;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #171717;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,224,255,0.3);
+      padding: 40px;
+      width: 100%;
+      max-width: 550px;
+      text-align: center;
+    }
+    h1 {
+      color: #00e0ff;
+      text-shadow: 0 0 8px #00e0ff;
+    }
+    button {
+      background: #00e0ff;
+      color: #000;
+      padding: 12px 30px;
+      border-radius: 6px;
+      border: none;
+      font-weight: bold;
+      margin-top: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #fff;
+      color: #00e0ff;
+    }
+    input[type="file"] {
+      display: block;
+      margin: 20px auto;
+      color: #eee;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 15px;
+    }
+    li {
+      margin: 5px 0;
+    }
+    a {
+      color: #00e0ff;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #fff;
+    }
+  </style>
 </head>
+
 <body>
   <div class="container">
     <h1>Welcome, <span id="member-email"></span></h1>
-    <p>Your dashboard is ready once you log in!</p>
-    <p id="status-text">Checking user session...</p>
+    <p>Upload your highlights or files below:</p>
+    <input type="file" id="file-input" multiple>
+    <button id="upload-btn">Upload</button>
+    <p id="upload-message"></p>
+    <h3>Your Files</h3>
+    <ul id="upload-list"></ul>
+    <button id="logout-btn" style="margin-top:20px;">Logout</button>
   </div>
 
   <script type="module">
@@ -49,30 +86,69 @@ p {
     const supabase = createClient(supabaseUrl, supabaseKey)
 
     const emailEl = document.getElementById('member-email')
-    const statusEl = document.getElementById('status-text')
+    const fileInput = document.getElementById('file-input')
+    const uploadMsg = document.getElementById('upload-message')
+    const uploadList = document.getElementById('upload-list')
 
-    async function checkSession() {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession()
-        if (error) throw error
-        if (!session) {
-          statusEl.textContent = 'No active session — redirecting to login...'
-          setTimeout(() => (window.location.href = '/login.html'), 1000)
-          return
+    // Check login session
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) {
+      window.location.href = '/login.html'
+    }
+    const user = session.user
+    emailEl.textContent = user.email
+
+    // Upload file(s) to 'user_uploads'
+    document.getElementById('upload-btn').addEventListener('click', async () => {
+      const files = fileInput.files
+      if (!files.length) {
+        alert('Select file(s) first.')
+        return
+      }
+      uploadMsg.textContent = 'Uploading...'
+
+      for (let file of files) {
+        if (file.size > 50 * 1024 * 1024 * 1024) {
+          uploadMsg.textContent = file.name + ' too large!'
+          continue
         }
 
-        const user = session.user
-        emailEl.textContent = user.email
-        statusEl.textContent = 'You are logged in!'
-      } catch (err) {
-        console.error('Session check failed:', err)
-        statusEl.textContent = 'Error checking session. See console for details.'
+        const { error } = await supabase.storage
+          .from('user_uploads')
+          .upload(user.id + '/' + file.name, file, { upsert:true })
+
+        if (error) {
+          uploadMsg.textContent = 'Error: ' + error.message
+          return
+        }
+      }
+
+      uploadMsg.textContent = 'Upload complete!'
+      loadUploads()
+    })
+
+    // Load user's uploaded files
+    async function loadUploads() {
+      const { data, error } = await supabase.storage.from('user_uploads').list(user.id + '/')
+      uploadList.innerHTML = ''
+      if (!error && data && data.length) {
+        data.forEach(file => {
+          const url = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl
+          const li = document.createElement('li')
+          li.innerHTML = '<a href="' + url + '" target="_blank">' + file.name + '</a>'
+          uploadList.appendChild(li)
+        })
+      } else {
+        uploadList.innerHTML = '<li>No uploads yet.</li>'
       }
     }
+    loadUploads()
 
-    checkSession()
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await supabase.auth.signOut()
+      window.location.href = '/login.html'
+    })
   </script>
 </body>
 </html>
-
-
