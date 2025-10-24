@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -96,6 +96,18 @@
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
       if (error) {
-        message
+        message.textContent = 'Error: ' + error.message
+        message.style.color = 'red'
+      } else {
+        message.textContent = 'Login successful! Redirecting...'
+        message.style.color = '#00e0ff'
 
-
+        // Redirect to member area after 1 second
+        setTimeout(() => {
+          window.location.href = 'members.html'
+        }, 1000)
+      }
+    })
+  </script>
+</body>
+</html>
