@@ -1,92 +1,228 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Member Dashboard - Arcade Addicts</title>
-<style>
-body {
-  background: #0b0c10;
-  color: #eee;
-  font-family: "Segoe UI", Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
-}
-.container {
-  background: #171717;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,224,255,0.3);
-  padding: 40px;
-  width: 100%;
-  max-width: 550px;
-  text-align: center;
-}
-h1 { color: #00e0ff; text-shadow: 0 0 8px #00e0ff; }
-button {
-  background: #00e0ff;
-  color: #000;
-  padding: 12px 30px;
-  border-radius: 6px;
-  border: none;
-  font-weight: bold;
-  margin-top: 15px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-button:hover {
-  background: #fff;
-  color: #00e0ff;
-}
-input[type="file"] {
-  display: block;
-  margin: 20px auto;
-  color:#eee;
-}
-ul { list-style-type: none; padding: 0; margin-top: 15px; }
-li { margin: 5px 0; }
-a { color: #00e0ff; text-decoration: none; }
-a:hover { color: #fff; }
-#logout-btn {
-  margin-top: 24px;
-  background: #ee0033;
-  color: #fff;
-  padding: 10px 24px;
-  border-radius: 6px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-#logout-btn:hover { background: #fff; color: #ee0033; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Dashboard - Arcade Addicts</title>
+  <style>
+  /* Profile at top-right and remove name border */
+  .profile-edit {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: none;
+    box-shadow: none;
+    border: none;
+  }
+  .profile-edit h2, .profile-edit input[type=text], .profile-edit p {
+    border: none;
+    background: none;
+  }
+
+    body {
+      background: #0b0c10;
+      color: #eee;
+      font-family: "Segoe UI", Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #171717;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,224,255,0.3);
+      padding: 32px 20px 24px 20px;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+    .avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #00e0ff;
+      margin-bottom: 8px;
+      background: #222;
+    }
+    .profile-edit input[type=text] {
+      width: 70%;
+      padding: 8px;
+      margin: 10px 0;
+      background: #222;
+      border: 1px solid #00e0ff;
+      border-radius: 6px;
+      color: #eee;
+      text-align: center;
+    }
+    .profile-edit input[type=file] {
+      margin: 0 0 12px 0;
+    }
+    .profile-edit button {
+      background: #00e0ff;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .profile-edit button:hover {
+      background: #fff;
+      color: #00e0ff;
+    }
+    .tab {
+      margin: 25px 0 10px 0;
+      text-align: center;
+    }
+    .tab button {
+      background: #0b0c10;
+      color: #eee;
+      border: 1px solid #00e0ff;
+      border-radius: 6px 6px 0 0;
+      padding: 8px 24px;
+      margin: 0 2px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .tab button.active, .tab button:hover {
+      background: #00e0ff;
+      color: #171717;
+    }
+    .section { display: none; }
+    .section.active { display: block; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 5px 0; }
+    a { color: #00e0ff; text-decoration: none; }
+    a:hover { color: #fff; }
+    #logout-btn {
+      margin-top: 24px;
+      background: #ee0033;
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 6px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #logout-btn:hover {
+      background: #fff;
+      color: #ee0033;
+    }
+  </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>Welcome, <span id="member-email"></span></h1>
-    <p>Your personal space to upload, download & connect!</p>
-    <input type="file" id="file-input" multiple>
-    <button id="upload-btn">Upload File(s)</button>
-    <p id="upload-message"></p>
-    <h3>Your Uploads</h3>
-    <ul id="upload-list"></ul>
+    <div class="profile-edit" id="profile-section">
+      <img class="avatar" id="avatar-preview" src="https://placehold.co/84x84?text=Avatar" alt="Profile Picture">
+      <form id="profile-form">
+        <input type="file" id="avatar-upload" accept="image/*"><br>
+        <input type="text" id="display-name" placeholder="Display Name"><br>
+        <button type="submit">Save Profile</button>
+      </form>
+      <p id="profile-message"></p>
+    </div>
+    <div class="tab">
+      <button id="activity-tab" class="active">Activity Feed</button>
+      <button id="myuploads-tab">My Uploads</button>
+    </div>
+    <div id="activity-section" class="section active">
+      <h3>Recent Activity</h3>
+      <ul id="activity-feed"></ul>
+    </div>
+    <div id="uploads-section" class="section">
+      <input type="file" id="file-input" multiple>
+      <button id="upload-btn">Upload</button>
+      <p id="upload-message"></p>
+      <h3>Your Uploads</h3>
+      <ul id="upload-list"></ul>
+    </div>
     <button id="logout-btn">Logout</button>
   </div>
-
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
     const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
     const supabase = createClient(supabaseUrl, supabaseKey)
 
+    // Auth/session
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) window.location.href = '/login.html'
     const user = session.user
-    document.getElementById('member-email').textContent = user.email
 
-    document.getElementById('upload-btn').addEventListener('click', async () => {
+    // -- Profile section --
+    const avatarEl = document.getElementById('avatar-preview')
+    const avatarUploadEl = document.getElementById('avatar-upload')
+    const displayNameEl = document.getElementById('display-name')
+    const profileMsg = document.getElementById('profile-message')
+
+    // Fetch and show existing profile info
+    async function loadProfile() {
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+      if (data) {
+        displayNameEl.value = data.display_name || ""
+        avatarEl.src = data.avatar_url || avatarEl.src
+      }
+    }
+    loadProfile()
+
+    // Handle profile form save
+    document.getElementById('profile-form').onsubmit = async (e) => {
+      e.preventDefault()
+      let avatarUrl
+      if (avatarUploadEl.files.length) {
+        const avatarFile = avatarUploadEl.files[0]
+        const { data, error } = await supabase.storage.from('user_uploads').upload(user.id + '/avatar.png', avatarFile, { upsert:true })
+        if (error) { profileMsg.textContent = 'Avatar upload failed.'; return }
+        avatarUrl = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/avatar.png').data.publicUrl
+        avatarEl.src = avatarUrl
+      }
+      const updates = { id: user.id, display_name: displayNameEl.value || null, avatar_url: avatarUrl }
+      const { error } = await supabase.from('profiles').upsert(updates)
+      profileMsg.textContent = error ? 'Save failed.' : 'Profile saved!'
+    }
+
+    // -- Tabs --
+    const tabs = [['activity-tab','activity-section'], ['myuploads-tab','uploads-section']]
+    tabs.forEach(([tab, sec]) => {
+      document.getElementById(tab).onclick = () => {
+        tabs.forEach(([t,s]) => {
+          document.getElementById(t).classList.remove('active')
+          document.getElementById(s).classList.remove('active')
+        })
+        document.getElementById(tab).classList.add('active')
+        document.getElementById(sec).classList.add('active')
+      }
+    })
+
+    // -- Activity Feed (show uploads as activity) --
+    async function loadActivity() {
+      const { data, error } = await supabase.storage.from('user_uploads').list(user.id + '/')
+      const feed = document.getElementById('activity-feed')
+      feed.innerHTML = ''
+      if (!error && data && data.length) {
+        data.sort((a,b)=>b.created_at.localeCompare(a.created_at))
+        data.forEach(file => {
+          const url = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl
+          const li = document.createElement('li')
+          li.innerHTML = 'Uploaded <a href="' + url + '" target="_blank">' + file.name + '</a>'
+          feed.appendChild(li)
+        })
+      } else {
+        feed.innerHTML = '<li>No activity yet.</li>'
+      }
+    }
+    loadActivity()
+
+    // -- Uploads --
+    document.getElementById('upload-btn').onclick = async function() {
       const files = document.getElementById('file-input').files
       if (!files.length) return alert('Please select a file first.')
       document.getElementById('upload-message').textContent = 'Uploading...'
@@ -95,9 +231,7 @@ a:hover { color: #fff; }
           document.getElementById('upload-message').textContent = file.name + ' is too large!'
           continue
         }
-        const { error } = await supabase.storage
-          .from('user_uploads')
-          .upload(user.id + '/' + file.name, file, { upsert:true })
+        const { error } = await supabase.storage.from('user_uploads').upload(user.id + '/' + file.name, file, { upsert:true })
         if (error) {
           document.getElementById('upload-message').textContent = 'Error: ' + error.message
           return
@@ -105,8 +239,8 @@ a:hover { color: #fff; }
       }
       document.getElementById('upload-message').textContent = 'Upload complete!'
       loadUploads()
-    })
-
+      loadActivity()
+    }
     async function loadUploads() {
       const { data, error } = await supabase.storage.from('user_uploads').list(user.id + '/')
       const list = document.getElementById('upload-list')
@@ -118,14 +252,17 @@ a:hover { color: #fff; }
           li.innerHTML = '<a href="' + url + '" target="_blank">' + file.name + '</a>'
           list.appendChild(li)
         })
-      } else list.innerHTML = '<li>No uploads yet.</li>'
+      } else {
+        list.innerHTML = '<li>No uploads yet.</li>'
+      }
     }
     loadUploads()
 
-    document.getElementById('logout-btn').addEventListener('click', async () => {
+    // -- Logout --
+    document.getElementById('logout-btn').onclick = async () => {
       await supabase.auth.signOut()
       window.location.href = '/login.html'
-    })
+    }
   </script>
 </body>
 </html>
