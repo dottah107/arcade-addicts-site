@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,59 +6,73 @@
 <title>Member Dashboard - Arcade Addicts</title>
 <style>
 body {
-  background: #0b0c10;
+  background: linear-gradient(180deg, #0b0c10, #000);
   color: #eee;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
   margin: 0;
-  padding: 20px;
 }
 .container {
-  max-width: 900px;
-  margin: 0 auto;
+  background: #171717;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,224,255,0.3);
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
   text-align: center;
 }
 h1 {
   color: #00e0ff;
+  text-shadow: 0 0 8px #00e0ff;
 }
-.card {
-  background: #171717;
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+p {
+  color: #aaa;
+  margin-top: 15px;
 }
 </style>
 </head>
-
 <body>
-<div class="container">
-  <h1>Welcome, <span id="member-email"></span></h1>
-  <p>Your personal member dashboard is ready!</p>
-  <div class="card">
-    <p>Here you will soon be able to upload videos, share highlights, and post your content.</p>
+  <div class="container">
+    <h1>Welcome, <span id="member-email"></span></h1>
+    <p>Your dashboard is ready once you log in!</p>
+    <p id="status-text">Checking user session...</p>
   </div>
-</div>
 
-<script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-  // Supabase connection
-  const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
-  const supabase = createClient(supabaseUrl, supabaseKey)
+    const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
+    const supabase = createClient(supabaseUrl, supabaseKey)
 
-  // Check login session
-  const { data: { session }, error } = await supabase.auth.getSession()
-  if (error) console.error('Session Error:', error)
+    const emailEl = document.getElementById('member-email')
+    const statusEl = document.getElementById('status-text')
 
-  if (!session) {
-    window.location.href = '/login.html'
-  } else {
-    const user = session.user
-    console.log('Welcome:', user.email)
-    const emailElement = document.getElementById('member-email')
-    if (emailElement) emailElement.textContent = user.email
-  }
-</script>
+    async function checkSession() {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        if (error) throw error
+        if (!session) {
+          statusEl.textContent = 'No active session — redirecting to login...'
+          setTimeout(() => (window.location.href = '/login.html'), 1000)
+          return
+        }
+
+        const user = session.user
+        emailEl.textContent = user.email
+        statusEl.textContent = 'You are logged in!'
+      } catch (err) {
+        console.error('Session check failed:', err)
+        statusEl.textContent = 'Error checking session. See console for details.'
+      }
+    }
+
+    checkSession()
+  </script>
 </body>
 </html>
+
+
