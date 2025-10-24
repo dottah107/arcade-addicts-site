@@ -5,20 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Member Dashboard - Arcade Addicts</title>
   <style>
-  /* Profile at top-right and remove name border */
-  .profile-edit {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    background: none;
-    box-shadow: none;
-    border: none;
-  }
-  .profile-edit h2, .profile-edit input[type=text], .profile-edit p {
-    border: none;
-    background: none;
-  }
-
     body {
       background: #0b0c10;
       color: #eee;
@@ -35,8 +21,18 @@
       box-shadow: 0 0 20px rgba(0,224,255,0.3);
       padding: 32px 20px 24px 20px;
       width: 100%;
-      max-width: 600px;
+      max-width: 950px;
       text-align: center;
+      position: relative;
+    }
+    .profile-edit {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      background: none;
+      box-shadow: none;
+      border: none;
+      z-index: 1;
     }
     .avatar {
       width: 84px;
@@ -57,9 +53,7 @@
       color: #eee;
       text-align: center;
     }
-    .profile-edit input[type=file] {
-      margin: 0 0 12px 0;
-    }
+    .profile-edit input[type=file] { margin: 0 0 12px 0; }
     .profile-edit button {
       background: #00e0ff;
       color: #000;
@@ -71,12 +65,36 @@
       font-weight: bold;
       transition: 0.2s;
     }
-    .profile-edit button:hover {
-      background: #fff;
-      color: #00e0ff;
+    .profile-edit button:hover { background: #fff; color: #00e0ff; }
+    .layout-main {
+      display: flex;
+      flex-direction: row;
+      gap: 38px;
+      justify-content: center;
+      align-items: flex-start;
+      margin-top: 48px;
+    }
+    .preview-section {
+      flex: 1 1 0px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 340px;
+    }
+    .previews-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+    .previews-row > div {
+      width: 48%;
+    }
+    .right-section {
+      flex: 1 1 0px;
+      min-width: 340px;
     }
     .tab {
-      margin: 25px 0 10px 0;
+      margin: 0 0 16px 0;
       text-align: center;
     }
     .tab button {
@@ -90,10 +108,7 @@
       font-weight: bold;
       transition: 0.2s;
     }
-    .tab button.active, .tab button:hover {
-      background: #00e0ff;
-      color: #171717;
-    }
+    .tab button.active, .tab button:hover { background: #00e0ff; color: #171717; }
     .section { display: none; }
     .section.active { display: block; }
     ul { list-style: none; padding: 0; }
@@ -111,13 +126,14 @@
       cursor: pointer;
       transition: 0.2s;
     }
-    #logout-btn:hover {
-      background: #fff;
-      color: #ee0033;
+    #logout-btn:hover { background: #fff; color: #ee0033; }
+    @media (max-width: 900px) {
+      .layout-main { flex-direction: column; align-items: stretch; }
+      .preview-section, .right-section { min-width: 100%; }
+      .container { max-width: 99vw; }
     }
   </style>
 </head>
-
 <body>
   <div class="container">
     <div class="profile-edit" id="profile-section">
@@ -129,20 +145,38 @@
       </form>
       <p id="profile-message"></p>
     </div>
-    <div class="tab">
-      <button id="activity-tab" class="active">Activity Feed</button>
-      <button id="myuploads-tab">My Uploads</button>
-    </div>
-    <div id="activity-section" class="section active">
-      <h3>Recent Activity</h3>
-      <ul id="activity-feed"></ul>
-    </div>
-    <div id="uploads-section" class="section">
-      <input type="file" id="file-input" multiple>
-      <button id="upload-btn">Upload</button>
-      <p id="upload-message"></p>
-      <h3>Your Uploads</h3>
-      <ul id="upload-list"></ul>
+    <div class="layout-main">
+      <!-- LEFT: Photo/Video Previews and Upload controls -->
+      <div class="preview-section">
+        <div class="previews-row">
+          <div>
+            <h3>Photo Preview</h3>
+            <img id="photo-preview" style="width:100%; max-height:250px; object-fit:cover; border-radius:8px; display:none;">
+          </div>
+          <div>
+            <h3>Video Preview</h3>
+            <video id="video-preview" style="width:100%; max-height:250px; border-radius:8px; display:none;" controls muted></video>
+          </div>
+        </div>
+        <input type="file" id="file-input" multiple>
+        <button id="upload-btn">Upload</button>
+        <p id="upload-message"></p>
+      </div>
+      <!-- RIGHT: Activity Feed/My Uploads tabs -->
+      <div class="right-section">
+        <div class="tab">
+          <button id="activity-tab" class="active">Activity Feed</button>
+          <button id="myuploads-tab">My Uploads</button>
+        </div>
+        <div id="activity-section" class="section active">
+          <h3>Recent Activity</h3>
+          <ul id="activity-feed"></ul>
+        </div>
+        <div id="uploads-section" class="section">
+          <h3>Your Uploads</h3>
+          <ul id="upload-list"></ul>
+        </div>
+      </div>
     </div>
     <button id="logout-btn">Logout</button>
   </div>
@@ -152,20 +186,18 @@
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    // Auth/session
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) window.location.href = '/login.html'
     const user = session.user
 
-    // -- Profile section --
+    // Profile logic
     const avatarEl = document.getElementById('avatar-preview')
     const avatarUploadEl = document.getElementById('avatar-upload')
     const displayNameEl = document.getElementById('display-name')
     const profileMsg = document.getElementById('profile-message')
 
-    // Fetch and show existing profile info
     async function loadProfile() {
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+      const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
       if (data) {
         displayNameEl.value = data.display_name || ""
         avatarEl.src = data.avatar_url || avatarEl.src
@@ -173,14 +205,13 @@
     }
     loadProfile()
 
-    // Handle profile form save
     document.getElementById('profile-form').onsubmit = async (e) => {
       e.preventDefault()
       let avatarUrl
       if (avatarUploadEl.files.length) {
-        const avatarFile = avatarUploadEl.files[0]
-        const { data, error } = await supabase.storage.from('user_uploads').upload(user.id + '/avatar.png', avatarFile, { upsert:true })
-        if (error) { profileMsg.textContent = 'Avatar upload failed.'; return }
+        const file = avatarUploadEl.files[0]
+        const { error } = await supabase.storage.from('user_uploads').upload(user.id + '/avatar.png', file, { upsert: true })
+        if (error) return profileMsg.textContent = 'Avatar upload failed.'
         avatarUrl = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/avatar.png').data.publicUrl
         avatarEl.src = avatarUrl
       }
@@ -189,7 +220,7 @@
       profileMsg.textContent = error ? 'Save failed.' : 'Profile saved!'
     }
 
-    // -- Tabs --
+    // Tab handling
     const tabs = [['activity-tab','activity-section'], ['myuploads-tab','uploads-section']]
     tabs.forEach(([tab, sec]) => {
       document.getElementById(tab).onclick = () => {
@@ -202,63 +233,70 @@
       }
     })
 
-    // -- Activity Feed (show uploads as activity) --
+    // Activity
     async function loadActivity() {
-      const { data, error } = await supabase.storage.from('user_uploads').list(user.id + '/')
+      const { data } = await supabase.storage.from('user_uploads').list(user.id + '/')
       const feed = document.getElementById('activity-feed')
       feed.innerHTML = ''
-      if (!error && data && data.length) {
-        data.sort((a,b)=>b.created_at.localeCompare(a.created_at))
+      if (data && data.length) {
         data.forEach(file => {
           const url = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl
           const li = document.createElement('li')
           li.innerHTML = 'Uploaded <a href="' + url + '" target="_blank">' + file.name + '</a>'
           feed.appendChild(li)
         })
-      } else {
-        feed.innerHTML = '<li>No activity yet.</li>'
-      }
+      } else feed.innerHTML = '<li>No activity yet.</li>'
     }
     loadActivity()
 
-    // -- Uploads --
-    document.getElementById('upload-btn').onclick = async function() {
-      const files = document.getElementById('file-input').files
+    // Uploads and Preview
+    const fileInput = document.getElementById('file-input')
+    const photoPreview = document.getElementById('photo-preview')
+    const videoPreview = document.getElementById('video-preview')
+
+    fileInput.addEventListener('change', (event) => {
+      const files = event.target.files
+      if (!files.length) return
+      photoPreview.style.display = 'none'
+      videoPreview.style.display = 'none'
+      const first = files[0]
+      const url = URL.createObjectURL(first)
+      if (first.type.startsWith('image/')) {
+        photoPreview.src = url
+        photoPreview.style.display = 'block'
+      } else if (first.type.startsWith('video/')) {
+        videoPreview.src = url
+        videoPreview.style.display = 'block'
+      }
+    })
+
+    document.getElementById('upload-btn').onclick = async () => {
+      const files = fileInput.files
       if (!files.length) return alert('Please select a file first.')
       document.getElementById('upload-message').textContent = 'Uploading...'
-      for (let file of files) {
-        if (file.size > 50 * 1024 * 1024 * 1024) {
-          document.getElementById('upload-message').textContent = file.name + ' is too large!'
-          continue
-        }
-        const { error } = await supabase.storage.from('user_uploads').upload(user.id + '/' + file.name, file, { upsert:true })
-        if (error) {
-          document.getElementById('upload-message').textContent = 'Error: ' + error.message
-          return
-        }
+      for (let f of files) {
+        const { error } = await supabase.storage.from('user_uploads').upload(user.id + '/' + f.name, f, { upsert: true })
+        if (error) return document.getElementById('upload-message').textContent = 'Error: ' + error.message
       }
       document.getElementById('upload-message').textContent = 'Upload complete!'
-      loadUploads()
-      loadActivity()
+      loadUploads(); loadActivity()
     }
+
     async function loadUploads() {
-      const { data, error } = await supabase.storage.from('user_uploads').list(user.id + '/')
+      const { data } = await supabase.storage.from('user_uploads').list(user.id + '/')
       const list = document.getElementById('upload-list')
       list.innerHTML = ''
-      if (!error && data && data.length) {
+      if (data && data.length) {
         data.forEach(file => {
           const url = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl
           const li = document.createElement('li')
           li.innerHTML = '<a href="' + url + '" target="_blank">' + file.name + '</a>'
           list.appendChild(li)
         })
-      } else {
-        list.innerHTML = '<li>No uploads yet.</li>'
-      }
+      } else list.innerHTML = '<li>No uploads yet.</li>'
     }
     loadUploads()
 
-    // -- Logout --
     document.getElementById('logout-btn').onclick = async () => {
       await supabase.auth.signOut()
       window.location.href = '/login.html'
@@ -266,3 +304,5 @@
   </script>
 </body>
 </html>
+
+
