@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Register - Arcade-Addicts</title>
+<style>
+body {
+  background: linear-gradient(180deg, #0b0c10, #000);
+  color: #eee;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+.container {
+  background: #171717;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,224,255,0.3);
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+h1 {
+  color: #00e0ff;
+  text-shadow: 0 0 8px #00e0ff;
+}
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: none;
+  font-size: 1em;
+  text-align: center;
+}
+.btn {
+  display: inline-block;
+  background: #00e0ff;
+  color: #000;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 15px;
+  cursor: pointer;
+}
+.btn:hover {
+  background: #fff;
+  color: #000;
+}
+p {
+  color: #aaa;
+  margin-top: 15px;
+}
+a {
+  color: #00e0ff;
+  text-decoration: none;
+}
+a:hover {
+  color: #fff;
+}
+</style>
+</head>
+<body>
+<div class='container'>
+  <h1>Create Your Account</h1>
+  <form action='#' method='post'>
+    <input type='text' placeholder='Username' required><br>
+    <input type='email' placeholder='Email' required><br>
+    <input type='password' placeholder='Password' required><br>
+    <input type='password' placeholder='Confirm Password' required><br>
+    <button type='submit' class='btn'>Register</button>
+  </form>
+  <p>Already have an account? <a href='login.html'>Login here</a></p>
+</div>
+</body>
+</html>
