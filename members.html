@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,28 +8,16 @@
 body {
   background: #0b0c10;
   color: #eee;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   margin: 0;
   padding: 20px;
 }
 .container {
   max-width: 900px;
   margin: 0 auto;
+  text-align: center;
 }
 h1 {
-  color: #00e0ff;
-}
-button {
-  background: #00e0ff;
-  color: #000;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin: 10px 0;
-}
-button:hover {
-  background: #fff;
   color: #00e0ff;
 }
 .card {
@@ -37,7 +25,7 @@ button:hover {
   margin-top: 20px;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
 </style>
 </head>
@@ -45,56 +33,32 @@ button:hover {
 <body>
 <div class="container">
   <h1>Welcome, <span id="member-email"></span></h1>
-  <p>Your personal membership area</p>
-
-  <button id="upload-btn">Upload Highlight</button>
-  <button id="friends-btn">Friends</button>
-  <button id="logout-btn">Logout</button>
-
-  <div class="card" id="content-section">
-    <h2>Your Uploads</h2>
-    <ul id="upload-list"></ul>
+  <p>Your personal member dashboard is ready!</p>
+  <div class="card">
+    <p>Here you will soon be able to upload videos, share highlights, and post your content.</p>
   </div>
 </div>
 
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
+  // Supabase connection
   const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
   const supabase = createClient(supabaseUrl, supabaseKey)
 
-  // Redirect if not logged in
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) window.location.href = '/login.html'
+  // Check login session
+  const { data: { session }, error } = await supabase.auth.getSession()
+  if (error) console.error('Session Error:', error)
 
-  const user = session.user
-  document.getElementById('member-email').textContent = user.email
-
-  // Fetch the user's uploaded content
-  async function loadUploads() {
-    const { data, error } = await supabase.storage.from('user_uploads').list(user.id + '/', { limit: 20 })
-    if (!error && data.length) {
-      const list = document.getElementById('upload-list')
-      list.innerHTML = ''
-      data.forEach(file => {
-        const li = document.createElement('li')
-        li.innerHTML = `<a href="${supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl}" target="_blank">${file.name}</a>`
-        list.appendChild(li)
-      })
-    }
-  }
-
-  loadUploads()
-
-  document.getElementById('upload-btn').addEventListener('click', () => window.location.href = '/upload.html')
-  document.getElementById('friends-btn').addEventListener('click', () => window.location.href = '/friends.html')
-  document.getElementById('logout-btn').addEventListener('click', async () => {
-    await supabase.auth.signOut()
+  if (!session) {
     window.location.href = '/login.html'
-  })
+  } else {
+    const user = session.user
+    console.log('Welcome:', user.email)
+    const emailElement = document.getElementById('member-email')
+    if (emailElement) emailElement.textContent = user.email
+  }
 </script>
 </body>
 </html>
-
-
