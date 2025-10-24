@@ -5,242 +5,209 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Member Dashboard - Arcade Addicts</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: #0b0c10;
       color: #eee;
       font-family: "Segoe UI", Arial, sans-serif;
-      margin: 0;
-      padding: 0;
     }
 
-    .header {
-      background: #171717;
-      border-bottom: 2px solid #00e0ff;
-      padding: 15px 30px;
+    /* Top Navigation */
+    .top-nav {
+      background: #fff;
+      padding: 15px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0, 224, 255, 0.3);
+      border-bottom: 2px solid #ddd;
     }
-
-    .header h2 {
-      margin: 0;
-      color: #00e0ff;
+    .top-nav .logo {
       font-size: 22px;
+      font-weight: bold;
+      color: #0b0c10;
     }
-
-    .profile-edit {
+    .top-nav .nav-links {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #111;
-      border: 1px solid #00e0ff;
-      border-radius: 8px;
-      padding: 8px 14px;
-      box-shadow: 0 0 8px rgba(0, 224, 255, 0.2);
+      gap: 25px;
     }
+    .top-nav .nav-links a {
+      color: #555;
+      text-decoration: none;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+    .top-nav .nav-links a:hover { color: #00e0ff; }
 
-    .avatar {
-      width: 50px;
-      height: 50px;
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #0070b8, #005a8a);
+      padding: 60px 20px;
+      text-align: center;
+      color: #fff;
+    }
+    .hero .avatar {
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #00e0ff;
+      border: 4px solid #fff;
+      margin-bottom: 15px;
     }
-
-    #display-name {
-      background: transparent;
-      border: none;
-      color: #00e0ff;
-      font-weight: bold;
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .hero p {
       font-size: 16px;
-      width: 140px;
+      opacity: 0.9;
     }
 
-    .profile-edit button {
-      background: #00e0ff;
-      color: #000;
-      padding: 6px 12px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 12px;
-      transition: 0.2s;
+    /* Main Content Grid */
+    .content-grid {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
     }
 
-    .profile-edit button:hover {
-      background: #fff;
-      color: #00e0ff;
-    }
-
-    .container {
+    /* Card Styles */
+    .card {
       background: #171717;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 224, 255, 0.3);
-      padding: 32px 20px;
-      width: 95%;
-      max-width: 950px;
-      margin: 30px auto;
-      text-align: center;
-    }
-
-    .layout-main {
-      display: flex;
-      gap: 32px;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-
-    .preview-section {
-      flex: 1;
-      min-width: 350px;
-    }
-
-    .right-section {
-      flex: 1;
-      min-width: 350px;
-    }
-
-    .tab {
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    .tab button {
-      background: #0b0c10;
-      color: #eee;
       border: 1px solid #00e0ff;
-      border-radius: 6px 6px 0 0;
-      padding: 8px 24px;
-      margin: 0 2px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 224, 255, 0.2);
     }
-
-    .tab button.active,
-    .tab button:hover {
-      background: #00e0ff;
-      color: #171717;
+    .card h2 {
+      font-size: 20px;
+      color: #00e0ff;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-
-    .section {
-      display: none;
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    ul {
+    .card ul {
       list-style: none;
       padding: 0;
     }
-
-    li {
-      margin: 5px 0;
+    .card ul li {
+      margin: 10px 0;
     }
-
-    a {
+    .card ul li a {
       color: #00e0ff;
       text-decoration: none;
-    }
-
-    a:hover {
-      color: #fff;
-    }
-
-    #logout-btn {
-      margin-top: 24px;
-      background: #ee0033;
-      color: #fff;
-      padding: 10px 24px;
-      border-radius: 6px;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
       transition: 0.2s;
     }
-
-    #logout-btn:hover {
+    .card ul li a:hover {
+      color: #fff;
+    }
+    .card label {
+      display: block;
+      font-size: 14px;
+      color: #ccc;
+      margin: 12px 0 5px 0;
+    }
+    .card input[type="text"],
+    .card input[type="email"],
+    .card input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      background: #0b0c10;
+      border: 1px solid #00e0ff;
+      border-radius: 6px;
+      color: #eee;
+      font-size: 14px;
+    }
+    .card button {
+      background: #00e0ff;
+      color: #0b0c10;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+      transition: 0.2s;
+    }
+    .card button:hover {
       background: #fff;
-      color: #ee0033;
+      color: #00e0ff;
     }
 
-    .uploads-display {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .uploads-display > div {
-      width: 48%;
-    }
-
+    /* Responsive */
     @media (max-width: 900px) {
-      .layout-main {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .header {
-        flex-direction: column;
-        gap: 12px;
+      .content-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h2>Arcade Addicts - Member Dashboard</h2>
-    <div class="profile-edit" id="profile-section">
-      <img class="avatar" id="avatar-preview" src="https://placehold.co/50x50?text=Avatar" alt="Profile Picture">
-      <form id="profile-form" style="display:flex; align-items:center; gap:8px;">
-        <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
-        <label for="avatar-upload" style="cursor:pointer; color:#00e0ff; font-size:12px;">Change Avatar</label>
-        <input type="text" id="display-name" placeholder="Gamertag">
-        <button type="submit">Save</button>
-      </form>
-      <p id="profile-message" style="margin:0; font-size:11px;"></p>
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <div class="logo">🎮 Arcade Addicts</div>
+    <div class="nav-links">
+      <a href="#">Your Account</a>
+      <a href="#" id="logout-link">Log Out</a>
     </div>
   </div>
 
-  <div class="container">
-    <div class="layout-main">
-      <div class="preview-section">
-        <div class="uploads-display">
-          <div>
-            <h3>Photo Preview</h3>
-            <img id="photo-preview" style="width:100%; max-height:250px; object-fit:cover; border-radius:8px; display:none;">
-          </div>
-          <div>
-            <h3>Video Preview</h3>
-            <video id="video-preview" style="width:100%; max-height:250px; border-radius:8px; display:none;" controls muted></video>
-          </div>
-        </div>
-        <input type="file" id="file-input" multiple>
-        <button id="upload-btn">Upload</button>
-        <p id="upload-message"></p>
-      </div>
+  <!-- Hero Section -->
+  <div class="hero">
+    <img class="avatar" id="avatar-preview" src="https://placehold.co/140x140?text=Avatar" alt="Profile Picture">
+    <h1 id="display-name-hero">Your Gamertag</h1>
+    <p id="member-since">Member Since <span id="join-date">January 1st, 2025</span></p>
+  </div>
 
-      <div class="right-section">
-        <div class="tab">
-          <button id="activity-tab" class="active">Activity Feed</button>
-          <button id="myuploads-tab">My Uploads</button>
-        </div>
-        <div id="activity-section" class="section active">
-          <h3>Recent Activity</h3>
-          <ul id="activity-feed"></ul>
-        </div>
-        <div id="uploads-section" class="section">
-          <h3>Your Uploads</h3>
-          <ul id="upload-list"></ul>
-        </div>
-      </div>
+  <!-- Main Content Grid -->
+  <div class="content-grid">
+
+    <!-- Card 1: Upload Files -->
+    <div class="card">
+      <h2>📁 Upload Files</h2>
+      <p>Choose files to upload to your gallery.</p>
+      <label>Select Files:</label>
+      <input type="file" id="file-input" multiple>
+      <button id="upload-btn">Upload</button>
+      <p id="upload-message" style="margin-top:10px; color:#00e0ff;"></p>
     </div>
 
-    <button id="logout-btn">Logout</button>
+    <!-- Card 2: Update Profile Info -->
+    <div class="card">
+      <h2>✏️ Update Profile Info</h2>
+      <p>You can update your profile by filling out the form below.</p>
+      <form id="profile-form">
+        <label>First Name:</label>
+        <input type="text" id="first-name" placeholder="First Name">
+        <label>Last Name:</label>
+        <input type="text" id="last-name" placeholder="Last Name">
+        <label>Change Avatar:</label>
+        <input type="file" id="avatar-upload" accept="image/*">
+        <button type="submit">Update Profile</button>
+      </form>
+      <p id="profile-message" style="margin-top:10px; color:#00e0ff;"></p>
+    </div>
+
+    <!-- Card 3: Activity Feed -->
+    <div class="card">
+      <h2>🔔 Recent Activity</h2>
+      <ul id="activity-feed">
+        <li>No activity yet.</li>
+      </ul>
+    </div>
+
+    <!-- Card 4: My Uploads -->
+    <div class="card">
+      <h2>📂 Your Uploads</h2>
+      <ul id="upload-list">
+        <li>No uploads yet.</li>
+      </ul>
+    </div>
+
   </div>
 
   <script type="module">
@@ -255,13 +222,17 @@
 
     const avatarEl = document.getElementById('avatar-preview')
     const avatarUploadEl = document.getElementById('avatar-upload')
-    const displayNameEl = document.getElementById('display-name')
+    const firstNameEl = document.getElementById('first-name')
+    const lastNameEl = document.getElementById('last-name')
     const profileMsg = document.getElementById('profile-message')
+    const displayNameHero = document.getElementById('display-name-hero')
 
     async function loadProfile() {
       const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
       if (data) {
-        displayNameEl.value = data.display_name || ""
+        firstNameEl.value = data.first_name || ""
+        lastNameEl.value = data.last_name || ""
+        displayNameHero.textContent = (data.first_name || "") + " " + (data.last_name || "")
         avatarEl.src = data.avatar_url || avatarEl.src
       }
     }
@@ -277,22 +248,11 @@
         avatarUrl = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/avatar.png').data.publicUrl
         avatarEl.src = avatarUrl
       }
-      const updates = { id: user.id, display_name: displayNameEl.value || null, avatar_url: avatarUrl }
+      const updates = { id: user.id, first_name: firstNameEl.value || null, last_name: lastNameEl.value || null, avatar_url: avatarUrl }
       const { error } = await supabase.from('profiles').upsert(updates)
       profileMsg.textContent = error ? 'Save failed.' : 'Profile saved!'
+      if (!error) displayNameHero.textContent = firstNameEl.value + " " + lastNameEl.value
     }
-
-    const tabs = [['activity-tab', 'activity-section'], ['myuploads-tab', 'uploads-section']]
-    tabs.forEach(([tab, sec]) => {
-      document.getElementById(tab).onclick = () => {
-        tabs.forEach(([t, s]) => {
-          document.getElementById(t).classList.remove('active')
-          document.getElementById(s).classList.remove('active')
-        })
-        document.getElementById(tab).classList.add('active')
-        document.getElementById(sec).classList.add('active')
-      }
-    })
 
     async function loadActivity() {
       const { data } = await supabase.storage.from('user_uploads').list(user.id + '/')
@@ -312,25 +272,6 @@
     loadActivity()
 
     const fileInput = document.getElementById('file-input')
-    const photoPreview = document.getElementById('photo-preview')
-    const videoPreview = document.getElementById('video-preview')
-
-    fileInput.addEventListener('change', (event) => {
-      const files = event.target.files
-      if (!files.length) return
-      photoPreview.style.display = 'none'
-      videoPreview.style.display = 'none'
-      const first = files[0]
-      const url = URL.createObjectURL(first)
-      if (first.type.startsWith('image/')) {
-        photoPreview.src = url
-        photoPreview.style.display = 'block'
-      } else if (first.type.startsWith('video/')) {
-        videoPreview.src = url
-        videoPreview.style.display = 'block'
-      }
-    })
-
     document.getElementById('upload-btn').onclick = async () => {
       const files = fileInput.files
       if (!files.length) return alert('Please select a file first.')
@@ -361,16 +302,10 @@
     }
     loadUploads()
 
-    document.getElementById('logout-btn').onclick = async () => {
+    document.getElementById('logout-link').onclick = async () => {
       await supabase.auth.signOut()
       window.location.href = '/login.html'
     }
   </script>
 </body>
 </html>
-
-
-
-
-
-
