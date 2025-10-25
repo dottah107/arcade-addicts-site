@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -278,6 +278,7 @@
     async function postToActivity(url, fileName) {
       const contentType = fileName.match(/\.(mp4|webm|ogg)$/i) ? 'video' : 'image'
       const { error } = await supabase.from('posts').insert({
+        user_id: user.id,
         media_url: url,
         media_type: contentType,
         content_type: contentType,
