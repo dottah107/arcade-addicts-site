@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -115,7 +115,7 @@
 <body>
 
   <div class="top-nav">
-    <a href="/index.html" class="logo">🎮 Arcade Addicts</a>
+    <a href="/index.html" class="logo"> Arcade Addicts</a>
     <div class="nav-links">
       <a href="/members.html">Dashboard</a>
       <a href="/account.html">Your Account</a>
@@ -126,7 +126,7 @@
   <div class="content-grid">
 
     <div class="card">
-      <h2>📁 Upload Files</h2>
+      <h2> Upload Files</h2>
       <p>Choose files to upload to your gallery.</p>
       <label>Select Files:</label>
       <input type="file" id="file-input" multiple>
@@ -135,7 +135,7 @@
     </div>
 
     <div class="card">
-      <h2>✏️ Update Profile Info</h2>
+      <h2> Update Profile Info</h2>
       <p>You can update your profile by filling out the form below.</p>
       <form id="profile-form">
         <label>First Name:</label>
@@ -150,14 +150,23 @@
     </div>
 
     <div class="card">
-      <h2>📂 Your Uploads</h2>
+      <h2> Dashboard Background</h2>
+      <p>Upload a custom background image or video for your dashboard.</p>
+      <label>Choose Background (Image or Video):</label>
+      <input type="file" id="background-upload" accept="image/*,video/*">
+      <button id="background-btn">Upload Background</button>
+      <p id="background-message" style="margin-top:10px; color:#00e0ff;"></p>
+    </div>
+
+    <div class="card">
+      <h2> Your Uploads</h2>
       <ul id="upload-list">
         <li>No uploads yet.</li>
       </ul>
     </div>
 
     <div class="card">
-      <h2>🔔 Recent Activity</h2>
+      <h2> Recent Activity</h2>
       <ul id="activity-feed">
         <li>No activity yet.</li>
       </ul>
@@ -179,6 +188,8 @@
     const firstNameEl = document.getElementById('first-name')
     const lastNameEl = document.getElementById('last-name')
     const profileMsg = document.getElementById('profile-message')
+    const backgroundUploadEl = document.getElementById('background-upload')
+    const backgroundMsg = document.getElementById('background-message')
 
     async function loadProfile() {
       const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
@@ -234,6 +245,41 @@
         profileMsg.textContent = 'Save failed: ' + error.message
       } else {
         profileMsg.textContent = 'Profile saved! Changes will appear on your dashboard.'
+      }
+    }
+
+    document.getElementById('background-btn').onclick = async () => {
+      const file = backgroundUploadEl.files[0]
+      if (!file) return backgroundMsg.textContent = 'Please select a file first.'
+      
+      backgroundMsg.textContent = 'Uploading background...'
+      const fileName = `${user.id}/background-${Date.now()}.${file.name.split('.').pop()}`
+      
+      const { error: uploadError } = await supabase.storage
+        .from('user_uploads')
+        .upload(fileName, file, { upsert: true })
+      
+      if (uploadError) {
+        backgroundMsg.textContent = 'Upload failed: ' + uploadError.message
+        return
+      }
+      
+      const { data: urlData } = supabase.storage
+        .from('user_uploads')
+        .getPublicUrl(fileName)
+      
+      const backgroundUrl = urlData.publicUrl
+      
+      const { error } = await supabase.from('profiles').upsert({
+        id: user.id,
+        background_url: backgroundUrl,
+        updated_at: new Date().toISOString()
+      })
+      
+      if (error) {
+        backgroundMsg.textContent = 'Save failed: ' + error.message
+      } else {
+        backgroundMsg.textContent = 'Background saved! It will appear on your dashboard.'
       }
     }
 
