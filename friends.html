@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Friends - Arcade Addicts</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #0b0c10; color: #eee; font-family: "Segoe UI", Arial, sans-serif; }
-
-    .top-nav { background: #fff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ddd; }
-    .top-nav .logo { font-size: 22px; font-weight: bold; color: #0b0c10; text-decoration: none; transition: 0.2s; }
+    .top-nav {
+      background: #fff; padding: 15px 40px; display: flex;
+      justify-content: space-between; align-items: center; border-bottom: 2px solid #ddd;
+    }
+    .top-nav .logo {
+      font-size: 22px; font-weight: bold; color: #0b0c10; text-decoration: none; transition: 0.2s;
+    }
     .top-nav .logo:hover { color: #00e0ff; }
     .top-nav .nav-links { display: flex; gap: 25px; }
     .top-nav .nav-links a { color: #555; text-decoration: none; font-size: 15px; transition: 0.2s; }
@@ -30,7 +33,6 @@
   </style>
 </head>
 <body>
-
   <div class="top-nav">
     <a href="/index.html" class="logo"> Arcade Addicts</a>
     <div class="nav-links">
@@ -40,24 +42,20 @@
       <a href="#" id="logout-link">Log Out</a>
     </div>
   </div>
-
   <div class="container">
     <div class="section">
       <h2> Friend Requests</h2>
       <div class="user-list" id="friend-requests"><p>No friend requests.</p></div>
     </div>
-
     <div class="section">
       <h2> Your Friends</h2>
       <div class="user-list" id="friends-list"><p>No friends yet.</p></div>
     </div>
-
     <div class="section">
       <h2> Find Friends</h2>
       <div class="user-list" id="all-users"><p>Loading users...</p></div>
     </div>
   </div>
-
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
     const supabase = createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8')
@@ -121,15 +119,15 @@
       } else container.innerHTML = '<p>No friends yet.</p>'
     }
 
-    async function loadUsers() { console.log("Loading users...")  {
-      const { data: allUsers, error: usersError } = await supabase.from('profiles').select('id, username, avatar_url')
+    async function loadUsers() {
+      const { data: allUsers } = await supabase.from('profiles').select('id, username, avatar_url')
       const { data: sentRequests } = await supabase.from('friend_requests').select('receiver_id').eq('sender_id', user.id).eq('status', 'pending')
       const { data: friends } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
       const sentIds = sentRequests ? sentRequests.map(r => r.receiver_id) : []
       const friendIds = friends ? friends.map(f => f.friend_id) : []
       const container = document.getElementById('all-users')
       container.innerHTML = ''
-      console.log("All users:", allUsers, "Error:", usersError); if (allUsers) allUsers.filter(u => u.id !== user.id).forEach(u => {
+      if (allUsers) allUsers.filter(u => u.id !== user.id).forEach(u => {
         const isFriend = friendIds.includes(u.id)
         const isPending = sentIds.includes(u.id)
         const card = document.createElement('div')
