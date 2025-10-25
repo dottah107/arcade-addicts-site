@@ -61,43 +61,6 @@
       color: #00e0ff;
       margin-bottom: 15px;
     }
-    .card ul {
-      list-style: none;
-      padding: 0;
-    }
-    .card ul li {
-      margin: 10px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .card ul li a {
-      color: #00e0ff;
-      text-decoration: none;
-      transition: 0.2s;
-      flex: 1;
-    }
-    .card ul li a:hover { color: #fff; }
-    .card ul li .delete-btn {
-      background: #ff4444;
-      color: #fff;
-      border: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-      line-height: 1;
-    }
-    .card ul li .delete-btn:hover {
-      background: #cc0000;
-      transform: scale(1.1);
-    }
     .card label {
       display: block;
       font-size: 14px;
@@ -131,6 +94,58 @@
       color: #00e0ff;
     }
 
+    .upload-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    .upload-item {
+      position: relative;
+      cursor: pointer;
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: #0b0c10;
+      border: 2px solid #00e0ff;
+    }
+    .upload-item img,
+    .upload-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .upload-item .dropdown {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(23, 23, 23, 0.95);
+      border: 1px solid #00e0ff;
+      border-radius: 6px;
+      padding: 8px 0;
+      display: none;
+      z-index: 10;
+      min-width: 180px;
+    }
+    .upload-item:hover .dropdown {
+      display: block;
+    }
+    .upload-item .dropdown button {
+      width: 100%;
+      background: transparent;
+      color: #00e0ff;
+      border: none;
+      padding: 8px 12px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 13px;
+      transition: 0.2s;
+      margin: 0;
+    }
+    .upload-item .dropdown button:hover {
+      background: #00e0ff;
+      color: #0b0c10;
+    }
+
     @media (max-width: 900px) {
       .content-grid { grid-template-columns: 1fr; }
     }
@@ -153,7 +168,7 @@
       <h2> Upload Files</h2>
       <p>Choose files to upload to your gallery.</p>
       <label>Select Files:</label>
-      <input type="file" id="file-input" multiple>
+      <input type="file" id="file-input" multiple accept="image/*,video/*">
       <button id="upload-btn">Upload</button>
       <p id="upload-message" style="margin-top:10px; color:#00e0ff;"></p>
     </div>
@@ -166,27 +181,16 @@
         <input type="text" id="first-name" placeholder="First Name">
         <label>Last Name:</label>
         <input type="text" id="last-name" placeholder="Last Name">
-        <label>Change Avatar:</label>
-        <input type="file" id="avatar-upload" accept="image/*">
         <button type="submit">Update Profile</button>
       </form>
       <p id="profile-message" style="margin-top:10px; color:#00e0ff;"></p>
     </div>
 
-    <div class="card">
-      <h2> Dashboard Background</h2>
-      <p>Upload a custom background image or video for your dashboard.</p>
-      <label>Choose Background (Image or Video):</label>
-      <input type="file" id="background-upload" accept="image/*,video/*">
-      <button id="background-btn">Upload Background</button>
-      <p id="background-message" style="margin-top:10px; color:#00e0ff;"></p>
-    </div>
-
-    <div class="card">
+    <div class="card" style="grid-column: 1 / -1;">
       <h2> Your Uploads</h2>
-      <ul id="upload-list">
-        <li>No uploads yet.</li>
-      </ul>
+      <div class="upload-gallery" id="upload-gallery">
+        <p>No uploads yet.</p>
+      </div>
     </div>
 
   </div>
@@ -201,12 +205,9 @@
     if (!session) window.location.href = '/login.html'
     const user = session.user
 
-    const avatarUploadEl = document.getElementById('avatar-upload')
     const firstNameEl = document.getElementById('first-name')
     const lastNameEl = document.getElementById('last-name')
     const profileMsg = document.getElementById('profile-message')
-    const backgroundUploadEl = document.getElementById('background-upload')
-    const backgroundMsg = document.getElementById('background-message')
 
     async function loadProfile() {
       const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
@@ -220,39 +221,12 @@
     document.getElementById('profile-form').onsubmit = async (e) => {
       e.preventDefault()
       profileMsg.textContent = 'Saving...'
-      
-      let avatarUrl = null
-      
-      if (avatarUploadEl.files.length) {
-        const file = avatarUploadEl.files[0]
-        const fileName = `${user.id}/avatar-${Date.now()}.${file.name.split('.').pop()}`
-        
-        const { error: uploadError } = await supabase.storage
-          .from('user_uploads')
-          .upload(fileName, file, { upsert: true })
-        
-        if (uploadError) {
-          console.error('Upload error:', uploadError)
-          profileMsg.textContent = 'Avatar upload failed: ' + uploadError.message
-          return
-        }
-        
-        const { data: urlData } = supabase.storage
-          .from('user_uploads')
-          .getPublicUrl(fileName)
-        
-        avatarUrl = urlData.publicUrl
-      }
 
       const updates = {
         id: user.id,
         first_name: firstNameEl.value || null,
         last_name: lastNameEl.value || null,
         updated_at: new Date().toISOString()
-      }
-      
-      if (avatarUrl) {
-        updates.avatar_url = avatarUrl
       }
 
       const { error } = await supabase.from('profiles').upsert(updates)
@@ -262,41 +236,6 @@
         profileMsg.textContent = 'Save failed: ' + error.message
       } else {
         profileMsg.textContent = 'Profile saved! Changes will appear on your dashboard.'
-      }
-    }
-
-    document.getElementById('background-btn').onclick = async () => {
-      const file = backgroundUploadEl.files[0]
-      if (!file) return backgroundMsg.textContent = 'Please select a file first.'
-      
-      backgroundMsg.textContent = 'Uploading background...'
-      const fileName = `${user.id}/background-${Date.now()}.${file.name.split('.').pop()}`
-      
-      const { error: uploadError } = await supabase.storage
-        .from('user_uploads')
-        .upload(fileName, file, { upsert: true })
-      
-      if (uploadError) {
-        backgroundMsg.textContent = 'Upload failed: ' + uploadError.message
-        return
-      }
-      
-      const { data: urlData } = supabase.storage
-        .from('user_uploads')
-        .getPublicUrl(fileName)
-      
-      const backgroundUrl = urlData.publicUrl
-      
-      const { error } = await supabase.from('profiles').upsert({
-        id: user.id,
-        background_url: backgroundUrl,
-        updated_at: new Date().toISOString()
-      })
-      
-      if (error) {
-        backgroundMsg.textContent = 'Save failed: ' + error.message
-      } else {
-        backgroundMsg.textContent = 'Background saved! It will appear on your dashboard.'
       }
     }
 
@@ -314,37 +253,62 @@
       loadUploads()
     }
 
+    async function setAsBackground(url) {
+      const { error } = await supabase.from('profiles').upsert({
+        id: user.id,
+        background_url: url,
+        updated_at: new Date().toISOString()
+      })
+      if (error) alert('Failed: ' + error.message)
+      else alert('Background updated! Refresh your dashboard to see it.')
+    }
+
+    async function setAsAvatar(url) {
+      const { error } = await supabase.from('profiles').upsert({
+        id: user.id,
+        avatar_url: url,
+        updated_at: new Date().toISOString()
+      })
+      if (error) alert('Failed: ' + error.message)
+      else alert('Profile picture updated! Refresh your dashboard to see it.')
+    }
+
     async function deleteFile(fileName) {
-      if (!confirm('Are you sure you want to delete this file?')) return
-      
+      if (!confirm('Delete this file?')) return
       const { error } = await supabase.storage.from('user_uploads').remove([`${user.id}/${fileName}`])
-      
-      if (error) {
-        alert('Delete failed: ' + error.message)
-      } else {
-        loadUploads()
-      }
+      if (error) alert('Delete failed: ' + error.message)
+      else loadUploads()
     }
 
     async function loadUploads() {
       const { data } = await supabase.storage.from('user_uploads').list(user.id + '/')
-      const list = document.getElementById('upload-list')
-      list.innerHTML = ''
+      const gallery = document.getElementById('upload-gallery')
+      gallery.innerHTML = ''
       if (data && data.length) {
         data.forEach(file => {
           const url = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl
-          const li = document.createElement('li')
-          li.innerHTML = `
-            <a href="${url}" target="_blank">${file.name}</a>
-            <button class="delete-btn" onclick="deleteFile('${file.name}')"></button>
+          const isVideo = file.name.match(/\.(mp4|webm|ogg)$/i)
+          
+          const item = document.createElement('div')
+          item.className = 'upload-item'
+          item.innerHTML = `
+            ${isVideo ? `<video src="${url}" muted></video>` : `<img src="${url}" alt="${file.name}">`}
+            <div class="dropdown">
+              <button onclick="window.open('${url}', '_blank')"> View</button>
+              <button onclick="setAsBackground('${url}')"> Set as Background</button>
+              <button onclick="setAsAvatar('${url}')"> Set as Profile Pic</button>
+              <button onclick="deleteFile('${file.name}')" style="color:#ff4444;"> Delete</button>
+            </div>
           `
-          list.appendChild(li)
+          gallery.appendChild(item)
         })
       } else {
-        list.innerHTML = '<li>No uploads yet.</li>'
+        gallery.innerHTML = '<p>No uploads yet.</p>'
       }
     }
     
+    window.setAsBackground = setAsBackground
+    window.setAsAvatar = setAsAvatar
     window.deleteFile = deleteFile
     
     loadUploads()
