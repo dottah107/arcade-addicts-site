@@ -191,16 +191,50 @@
 
     document.getElementById('profile-form').onsubmit = async (e) => {
       e.preventDefault()
-      let avatarUrl
+      profileMsg.textContent = 'Saving...'
+      
+      let avatarUrl = null
+      
       if (avatarUploadEl.files.length) {
         const file = avatarUploadEl.files[0]
-        const { error } = await supabase.storage.from('user_uploads').upload(user.id + '/avatar.png', file, { upsert: true })
-        if (error) return profileMsg.textContent = 'Avatar upload failed.'
-        avatarUrl = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/avatar.png').data.publicUrl
+        const fileName = `${user.id}/avatar-${Date.now()}.${file.name.split('.').pop()}`
+        
+        const { error: uploadError } = await supabase.storage
+          .from('user_uploads')
+          .upload(fileName, file, { upsert: true })
+        
+        if (uploadError) {
+          console.error('Upload error:', uploadError)
+          profileMsg.textContent = 'Avatar upload failed: ' + uploadError.message
+          return
+        }
+        
+        const { data: urlData } = supabase.storage
+          .from('user_uploads')
+          .getPublicUrl(fileName)
+        
+        avatarUrl = urlData.publicUrl
       }
-      const updates = { id: user.id, first_name: firstNameEl.value || null, last_name: lastNameEl.value || null, avatar_url: avatarUrl }
+
+      const updates = {
+        id: user.id,
+        first_name: firstNameEl.value || null,
+        last_name: lastNameEl.value || null,
+        updated_at: new Date().toISOString()
+      }
+      
+      if (avatarUrl) {
+        updates.avatar_url = avatarUrl
+      }
+
       const { error } = await supabase.from('profiles').upsert(updates)
-      profileMsg.textContent = error ? 'Save failed.' : 'Profile saved!'
+      
+      if (error) {
+        console.error('Profile update error:', error)
+        profileMsg.textContent = 'Save failed: ' + error.message
+      } else {
+        profileMsg.textContent = 'Profile saved! Changes will appear on your dashboard.'
+      }
     }
 
     const fileInput = document.getElementById('file-input')
@@ -209,7 +243,8 @@
       if (!files.length) return alert('Please select a file first.')
       document.getElementById('upload-message').textContent = 'Uploading...'
       for (let f of files) {
-        const { error } = await supabase.storage.from('user_uploads').upload(user.id + '/' + f.name, f, { upsert: true })
+        const fileName = `${user.id}/${Date.now()}-${f.name}`
+        const { error } = await supabase.storage.from('user_uploads').upload(fileName, f)
         if (error) return document.getElementById('upload-message').textContent = 'Error: ' + error.message
       }
       document.getElementById('upload-message').textContent = 'Upload complete!'
