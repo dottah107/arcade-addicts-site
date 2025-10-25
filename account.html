@@ -276,14 +276,19 @@
     }
 
     async function postToActivity(url, fileName) {
+      const contentType = fileName.match(/\.(mp4|webm|ogg)$/i) ? 'video' : 'image'
       const { error } = await supabase.from('posts').insert({
-        user_id: user.id,
-        content_url: url,
-        content_type: fileName.match(/\.(mp4|webm|ogg)$/i) ? 'video' : 'image',
+        media_url: url,
+        media_type: contentType,
+        content_type: contentType,
         created_at: new Date().toISOString()
       })
-      if (error) alert('Failed: ' + error.message)
-      else alert('Posted to activity feed! Check your dashboard.')
+      if (error) {
+        console.error('Post error:', error)
+        alert('Failed: ' + error.message)
+      } else {
+        alert('Posted to activity feed! Check your dashboard.')
+      }
     }
 
     async function deleteFileHandler(fileName) {
