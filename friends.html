@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Friends - Arcade Addicts</title>
   <style>
-    body { background: #0b0c10; color: #eee; font-family: "Segoe UI", Arial, sans-serif; }
+    body { background: #0b0c10; color: #eee; font-family: "Segoe UI", Arial, sans-serif; margin: 0; padding: 0; }
     .top-nav { background: #fff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ddd; }
     .top-nav .logo { font-size: 22px; font-weight: bold; color: #0b0c10; text-decoration: none; transition: 0.2s; }
     .top-nav .logo:hover { color: #00e0ff; }
@@ -28,7 +28,7 @@
 </head>
 <body>
   <div class="top-nav">
-    <a href="/index.html" class="logo"> Arcade Addicts</a>
+    <a href="/index.html" class="logo">🎮 Arcade Addicts</a>
     <div class="nav-links">
       <a href="/members.html">Dashboard</a>
       <a href="/friends.html">Friends</a>
@@ -37,9 +37,9 @@
     </div>
   </div>
   <div class="container">
-    <div class="section"><h2> Friend Requests</h2><div class="user-list" id="friend-requests"><p>No friend requests.</p></div></div>
-    <div class="section"><h2> Your Friends</h2><div class="user-list" id="friends-list"><p>No friends yet.</p></div></div>
-    <div class="section"><h2> Find Friends</h2><div class="user-list" id="all-users"><p>Loading users...</p></div></div>
+    <div class="section"><h2>👥 Friend Requests</h2><div class="user-list" id="friend-requests"><p>No friend requests.</p></div></div>
+    <div class="section"><h2>✅ Your Friends</h2><div class="user-list" id="friends-list"><p>No friends yet.</p></div></div>
+    <div class="section"><h2>🔍 Find Friends</h2><div class="user-list" id="all-users"><p>Loading users...</p></div></div>
   </div>
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
@@ -81,7 +81,7 @@
           const requester = profileMap[req.requester]
           const card = document.createElement('div')
           card.className = 'user-card'
-          card.innerHTML = `<img src="${requester?.avatar_url || 'https://placehold.co/80x80?text=User'}" alt="${requester?.username || 'User'}"><div class="name">${requester?.username || 'User'}</div><div><button class="accept" onclick="window.acceptRequest(${req.id}, '${req.requester}')">Accept</button><button class="decline" onclick="window.declineRequest(${req.id})">Decline</button></div>`
+          card.innerHTML = '<img src="' + (requester?.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (requester?.username || 'User') + '"><div class="name">' + (requester?.username || 'User') + '</div><div><button class="accept" onclick="window.acceptRequest(' + req.id + ', \'' + req.requester + '\')">Accept</button><button class="decline" onclick="window.declineRequest(' + req.id + ')">Decline</button></div>'
           container.appendChild(card)
         })
       } else container.innerHTML = '<p>No friend requests.</p>'
@@ -97,7 +97,7 @@
         if (profiles) profiles.forEach(friend => {
           const card = document.createElement('div')
           card.className = 'user-card'
-          card.innerHTML = `<img src="${friend.avatar_url || 'https://placehold.co/80x80?text=User'}" alt="${friend.username || 'User'}"><div class="name">${friend.username || 'User'}</div>`
+          card.innerHTML = '<img src="' + (friend.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (friend.username || 'User') + '"><div class="name">' + (friend.username || 'User') + '</div>'
           container.appendChild(card)
         })
       } else container.innerHTML = '<p>No friends yet.</p>'
@@ -116,7 +116,8 @@
         const isPending = sentIds.includes(u.id)
         const card = document.createElement('div')
         card.className = 'user-card'
-        card.innerHTML = `<img src="${u.avatar_url || 'https://placehold.co/80x80?text=User'}" alt="${u.username || 'User'}"><div class="name">${u.username || 'User'}</div>${isFriend ? '<button class="pending">Friends </button>' : isPending ? '<button class="pending">Pending</button>' : `<button onclick="window.sendRequest('${u.id}')">Add Friend</button>`}`
+        let buttonHTML = isFriend ? '<button class="pending">Friends ✓</button>' : (isPending ? '<button class="pending">Pending</button>' : '<button onclick="window.sendRequest(\'' + u.id + '\')">Add Friend</button>')
+        card.innerHTML = '<img src="' + (u.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (u.username || 'User') + '"><div class="name">' + (u.username || 'User') + '</div>' + buttonHTML
         container.appendChild(card)
       })
     }
