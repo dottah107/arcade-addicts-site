@@ -116,15 +116,17 @@
     }
     .upload-item .dropdown {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(23, 23, 23, 0.95);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(23, 23, 23, 0.98);
       border: 1px solid #00e0ff;
       border-radius: 6px;
-      padding: 8px 0;
+      padding: 6px 0;
       display: none;
       z-index: 10;
-      min-width: 180px;
+      min-width: 140px;
+      box-shadow: 0 4px 15px rgba(0, 224, 255, 0.3);
     }
     .upload-item:hover .dropdown {
       display: block;
@@ -134,10 +136,10 @@
       background: transparent;
       color: #00e0ff;
       border: none;
-      padding: 8px 12px;
+      padding: 6px 10px;
       text-align: left;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       transition: 0.2s;
       margin: 0;
     }
@@ -295,8 +297,8 @@
             ${isVideo ? `<video src="${url}" muted></video>` : `<img src="${url}" alt="${file.name}">`}
             <div class="dropdown">
               <button onclick="window.open('${url}', '_blank')"> View</button>
-              <button onclick="setAsBackground('${url}')"> Set as Background</button>
-              <button onclick="setAsAvatar('${url}')"> Set as Profile Pic</button>
+              <button onclick="setAsBackground('${url}')"> Background</button>
+              <button onclick="setAsAvatar('${url}')"> Profile Pic</button>
               <button onclick="deleteFile('${file.name}')" style="color:#ff4444;"> Delete</button>
             </div>
           `
