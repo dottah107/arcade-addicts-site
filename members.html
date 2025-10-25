@@ -205,7 +205,7 @@
       const friendIds = friendLinks ? friendLinks.map(f => f.friend_id) : []
       
       // Include yourself + friends
-      const userIds = [user.id, ...friendIds]
+      const userIds = friendIds.length > 0 ? [user.id, ...friendIds] : [user.id]
 
       // Get posts from you and your friends
       const { data: posts } = await supabase
