@@ -275,6 +275,17 @@
       else alert('Profile picture updated! Refresh your dashboard to see it.')
     }
 
+    async function postToActivity(url, fileName) {
+      const { error } = await supabase.from('posts').insert({
+        user_id: user.id,
+        content_url: url,
+        content_type: fileName.match(/\.(mp4|webm|ogg)$/i) ? 'video' : 'image',
+        created_at: new Date().toISOString()
+      })
+      if (error) alert('Failed: ' + error.message)
+      else alert('Posted to activity feed! Check your dashboard.')
+    }
+
     async function deleteFileHandler(fileName) {
       if (!confirm('Delete this file?')) return
       const { error } = await supabase.storage.from('user_uploads').remove([`${user.id}/${fileName}`])
@@ -311,6 +322,10 @@
           avatarBtn.textContent = ' Profile Pic'
           avatarBtn.onclick = () => setAsAvatar(url)
           
+          const activityBtn = document.createElement('button')
+          activityBtn.textContent = ' Post to Activity'
+          activityBtn.onclick = () => postToActivity(url, file.name)
+          
           const deleteBtn = document.createElement('button')
           deleteBtn.textContent = ' Delete'
           deleteBtn.style.color = '#ff4444'
@@ -319,6 +334,7 @@
           dropdown.appendChild(viewBtn)
           dropdown.appendChild(bgBtn)
           dropdown.appendChild(avatarBtn)
+          dropdown.appendChild(activityBtn)
           dropdown.appendChild(deleteBtn)
           
           item.innerHTML = media
