@@ -275,7 +275,7 @@
       else alert('Profile picture updated! Refresh your dashboard to see it.')
     }
 
-    async function deleteFile(fileName) {
+    async function deleteFileHandler(fileName) {
       if (!confirm('Delete this file?')) return
       const { error } = await supabase.storage.from('user_uploads').remove([`${user.id}/${fileName}`])
       if (error) alert('Delete failed: ' + error.message)
@@ -293,15 +293,36 @@
           
           const item = document.createElement('div')
           item.className = 'upload-item'
-          item.innerHTML = `
-            ${isVideo ? `<video src="${url}" muted></video>` : `<img src="${url}" alt="${file.name}">`}
-            <div class="dropdown">
-              <button onclick="window.open('${url}', '_blank')"> View</button>
-              <button onclick="setAsBackground('${url}')"> Background</button>
-              <button onclick="setAsAvatar('${url}')"> Profile Pic</button>
-              <button onclick="deleteFile('${file.name}')" style="color:#ff4444;"> Delete</button>
-            </div>
-          `
+          
+          const media = isVideo ? `<video src="${url}" muted></video>` : `<img src="${url}" alt="${file.name}">`
+          
+          const dropdown = document.createElement('div')
+          dropdown.className = 'dropdown'
+          
+          const viewBtn = document.createElement('button')
+          viewBtn.textContent = ' View'
+          viewBtn.onclick = () => window.open(url, '_blank')
+          
+          const bgBtn = document.createElement('button')
+          bgBtn.textContent = ' Background'
+          bgBtn.onclick = () => setAsBackground(url)
+          
+          const avatarBtn = document.createElement('button')
+          avatarBtn.textContent = ' Profile Pic'
+          avatarBtn.onclick = () => setAsAvatar(url)
+          
+          const deleteBtn = document.createElement('button')
+          deleteBtn.textContent = ' Delete'
+          deleteBtn.style.color = '#ff4444'
+          deleteBtn.onclick = () => deleteFileHandler(file.name)
+          
+          dropdown.appendChild(viewBtn)
+          dropdown.appendChild(bgBtn)
+          dropdown.appendChild(avatarBtn)
+          dropdown.appendChild(deleteBtn)
+          
+          item.innerHTML = media
+          item.appendChild(dropdown)
           gallery.appendChild(item)
         })
       } else {
@@ -311,7 +332,6 @@
     
     window.setAsBackground = setAsBackground
     window.setAsAvatar = setAsAvatar
-    window.deleteFile = deleteFile
     
     loadUploads()
 
