@@ -126,6 +126,15 @@
   <div class="content-grid">
 
     <div class="card">
+      <h2> Upload Files</h2>
+      <p>Choose files to upload to your gallery.</p>
+      <label>Select Files:</label>
+      <input type="file" id="file-input" multiple>
+      <button id="upload-btn">Upload</button>
+      <p id="upload-message" style="margin-top:10px; color:#00e0ff;"></p>
+    </div>
+
+    <div class="card">
       <h2> Update Profile Info</h2>
       <p>You can update your profile by filling out the form below.</p>
       <form id="profile-form">
@@ -192,6 +201,20 @@
       const updates = { id: user.id, first_name: firstNameEl.value || null, last_name: lastNameEl.value || null, avatar_url: avatarUrl }
       const { error } = await supabase.from('profiles').upsert(updates)
       profileMsg.textContent = error ? 'Save failed.' : 'Profile saved!'
+    }
+
+    const fileInput = document.getElementById('file-input')
+    document.getElementById('upload-btn').onclick = async () => {
+      const files = fileInput.files
+      if (!files.length) return alert('Please select a file first.')
+      document.getElementById('upload-message').textContent = 'Uploading...'
+      for (let f of files) {
+        const { error } = await supabase.storage.from('user_uploads').upload(user.id + '/' + f.name, f, { upsert: true })
+        if (error) return document.getElementById('upload-message').textContent = 'Error: ' + error.message
+      }
+      document.getElementById('upload-message').textContent = 'Upload complete!'
+      loadUploads()
+      loadActivity()
     }
 
     async function loadUploads() {

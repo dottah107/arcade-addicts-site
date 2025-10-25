@@ -62,63 +62,6 @@
       font-size: 16px;
       opacity: 0.9;
     }
-
-    .content-grid {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 30px;
-    }
-
-    .card {
-      background: #171717;
-      border: 1px solid #00e0ff;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 4px 10px rgba(0, 224, 255, 0.2);
-    }
-    .card h2 {
-      font-size: 20px;
-      color: #00e0ff;
-      margin-bottom: 15px;
-    }
-    .card label {
-      display: block;
-      font-size: 14px;
-      color: #ccc;
-      margin: 12px 0 5px 0;
-    }
-    .card input[type="file"] {
-      width: 100%;
-      padding: 10px;
-      background: #0b0c10;
-      border: 1px solid #00e0ff;
-      border-radius: 6px;
-      color: #eee;
-      font-size: 14px;
-    }
-    .card button {
-      background: #00e0ff;
-      color: #0b0c10;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 15px;
-      width: 100%;
-      transition: 0.2s;
-    }
-    .card button:hover {
-      background: #fff;
-      color: #00e0ff;
-    }
-
-    @media (max-width: 900px) {
-      .content-grid { grid-template-columns: 1fr; }
-    }
   </style>
 </head>
 <body>
@@ -135,19 +78,6 @@
     <img class="avatar" id="avatar-preview" src="https://placehold.co/140x140?text=Avatar" alt="Profile Picture">
     <h1 id="display-name-hero">Your Gamertag</h1>
     <p id="member-since">Member Since <span id="join-date">January 1st, 2025</span></p>
-  </div>
-
-  <div class="content-grid">
-
-    <div class="card">
-      <h2> Upload Files</h2>
-      <p>Choose files to upload to your gallery.</p>
-      <label>Select Files:</label>
-      <input type="file" id="file-input" multiple>
-      <button id="upload-btn">Upload</button>
-      <p id="upload-message" style="margin-top:10px; color:#00e0ff;"></p>
-    </div>
-
   </div>
 
   <script type="module">
@@ -171,18 +101,6 @@
       }
     }
     loadProfile()
-
-    const fileInput = document.getElementById('file-input')
-    document.getElementById('upload-btn').onclick = async () => {
-      const files = fileInput.files
-      if (!files.length) return alert('Please select a file first.')
-      document.getElementById('upload-message').textContent = 'Uploading...'
-      for (let f of files) {
-        const { error } = await supabase.storage.from('user_uploads').upload(user.id + '/' + f.name, f, { upsert: true })
-        if (error) return document.getElementById('upload-message').textContent = 'Error: ' + error.message
-      }
-      document.getElementById('upload-message').textContent = 'Upload complete!'
-    }
 
     document.getElementById('logout-link').onclick = async () => {
       await supabase.auth.signOut()
