@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Account - Arcade Addicts</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0b0c10;
+      color: #eee;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .top-nav {
+      background: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ddd;
+    }
+    .top-nav .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #0b0c10;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .top-nav .logo:hover { color: #00e0ff; }
+    .top-nav .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    .top-nav .nav-links a {
+      color: #555;
+      text-decoration: none;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+    .top-nav .nav-links a:hover { color: #00e0ff; }
+
+    .content-grid {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+
+    .card {
+      background: #171717;
+      border: 1px solid #00e0ff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 224, 255, 0.2);
+    }
+    .card h2 {
+      font-size: 20px;
+      color: #00e0ff;
+      margin-bottom: 15px;
+    }
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .card ul li {
+      margin: 10px 0;
+    }
+    .card ul li a {
+      color: #00e0ff;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .card ul li a:hover { color: #fff; }
+    .card label {
+      display: block;
+      font-size: 14px;
+      color: #ccc;
+      margin: 12px 0 5px 0;
+    }
+    .card input[type="text"],
+    .card input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      background: #0b0c10;
+      border: 1px solid #00e0ff;
+      border-radius: 6px;
+      color: #eee;
+      font-size: 14px;
+    }
+    .card button {
+      background: #00e0ff;
+      color: #0b0c10;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+      transition: 0.2s;
+    }
+    .card button:hover {
+      background: #fff;
+      color: #00e0ff;
+    }
+
+    @media (max-width: 900px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-nav">
+    <a href="/index.html" class="logo"> Arcade Addicts</a>
+    <div class="nav-links">
+      <a href="/members.html">Dashboard</a>
+      <a href="/account.html">Your Account</a>
+      <a href="#" id="logout-link">Log Out</a>
+    </div>
+  </div>
+
+  <div class="content-grid">
+
+    <div class="card">
+      <h2> Update Profile Info</h2>
+      <p>You can update your profile by filling out the form below.</p>
+      <form id="profile-form">
+        <label>First Name:</label>
+        <input type="text" id="first-name" placeholder="First Name">
+        <label>Last Name:</label>
+        <input type="text" id="last-name" placeholder="Last Name">
+        <label>Change Avatar:</label>
+        <input type="file" id="avatar-upload" accept="image/*">
+        <button type="submit">Update Profile</button>
+      </form>
+      <p id="profile-message" style="margin-top:10px; color:#00e0ff;"></p>
+    </div>
+
+    <div class="card">
+      <h2> Your Uploads</h2>
+      <ul id="upload-list">
+        <li>No uploads yet.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2> Recent Activity</h2>
+      <ul id="activity-feed">
+        <li>No activity yet.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+    const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) window.location.href = '/login.html'
+    const user = session.user
+
+    const avatarUploadEl = document.getElementById('avatar-upload')
+    const firstNameEl = document.getElementById('first-name')
+    const lastNameEl = document.getElementById('last-name')
+    const profileMsg = document.getElementById('profile-message')
+
+    async function loadProfile() {
+      const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+      if (data) {
+        firstNameEl.value = data.first_name || ""
+        lastNameEl.value = data.last_name || ""
+      }
+    }
+    loadProfile()
+
+    document.getElementById('profile-form').onsubmit = async (e) => {
+      e.preventDefault()
+      let avatarUrl
+      if (avatarUploadEl.files.length) {
+        const file = avatarUploadEl.files[0]
+        const { error } = await supabase.storage.from('user_uploads').upload(user.id + '/avatar.png', file, { upsert: true })
+        if (error) return profileMsg.textContent = 'Avatar upload failed.'
+        avatarUrl = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/avatar.png').data.publicUrl
+      }
+      const updates = { id: user.id, first_name: firstNameEl.value || null, last_name: lastNameEl.value || null, avatar_url: avatarUrl }
+      const { error } = await supabase.from('profiles').upsert(updates)
+      profileMsg.textContent = error ? 'Save failed.' : 'Profile saved!'
+    }
+
+    async function loadUploads() {
+      const { data } = await supabase.storage.from('user_uploads').list(user.id + '/')
+      const list = document.getElementById('upload-list')
+      list.innerHTML = ''
+      if (data && data.length) {
+        data.forEach(file => {
+          const url = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl
+          const li = document.createElement('li')
+          li.innerHTML = '<a href="' + url + '" target="_blank">' + file.name + '</a>'
+          list.appendChild(li)
+        })
+      } else {
+        list.innerHTML = '<li>No uploads yet.</li>'
+      }
+    }
+    loadUploads()
+
+    async function loadActivity() {
+      const { data } = await supabase.storage.from('user_uploads').list(user.id + '/')
+      const feed = document.getElementById('activity-feed')
+      feed.innerHTML = ''
+      if (data && data.length) {
+        data.forEach(file => {
+          const url = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl
+          const li = document.createElement('li')
+          li.innerHTML = 'Uploaded <a href="' + url + '" target="_blank">' + file.name + '</a>'
+          feed.appendChild(li)
+        })
+      } else {
+        feed.innerHTML = '<li>No activity yet.</li>'
+      }
+    }
+    loadActivity()
+
+    document.getElementById('logout-link').onclick = async () => {
+      await supabase.auth.signOut()
+      window.location.href = '/login.html'
+    }
+  </script>
+</body>
+</html>
