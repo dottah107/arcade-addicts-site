@@ -165,13 +165,6 @@
       </ul>
     </div>
 
-    <div class="card">
-      <h2> Recent Activity</h2>
-      <ul id="activity-feed">
-        <li>No activity yet.</li>
-      </ul>
-    </div>
-
   </div>
 
   <script type="module">
@@ -295,7 +288,6 @@
       }
       document.getElementById('upload-message').textContent = 'Upload complete!'
       loadUploads()
-      loadActivity()
     }
 
     async function loadUploads() {
@@ -314,23 +306,6 @@
       }
     }
     loadUploads()
-
-    async function loadActivity() {
-      const { data } = await supabase.storage.from('user_uploads').list(user.id + '/')
-      const feed = document.getElementById('activity-feed')
-      feed.innerHTML = ''
-      if (data && data.length) {
-        data.forEach(file => {
-          const url = supabase.storage.from('user_uploads').getPublicUrl(user.id + '/' + file.name).data.publicUrl
-          const li = document.createElement('li')
-          li.innerHTML = 'Uploaded <a href="' + url + '" target="_blank">' + file.name + '</a>'
-          feed.appendChild(li)
-        })
-      } else {
-        feed.innerHTML = '<li>No activity yet.</li>'
-      }
-    }
-    loadActivity()
 
     document.getElementById('logout-link').onclick = async () => {
       await supabase.auth.signOut()
