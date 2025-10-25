@@ -6,109 +6,27 @@
   <title>Friends - Arcade Addicts</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #0b0c10;
-      color: #eee;
-      font-family: "Segoe UI", Arial, sans-serif;
-    }
+    body { background: #0b0c10; color: #eee; font-family: "Segoe UI", Arial, sans-serif; }
 
-    .top-nav {
-      background: #fff;
-      padding: 15px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #ddd;
-    }
-    .top-nav .logo {
-      font-size: 22px;
-      font-weight: bold;
-      color: #0b0c10;
-      text-decoration: none;
-      transition: 0.2s;
-    }
+    .top-nav { background: #fff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ddd; }
+    .top-nav .logo { font-size: 22px; font-weight: bold; color: #0b0c10; text-decoration: none; transition: 0.2s; }
     .top-nav .logo:hover { color: #00e0ff; }
-    .top-nav .nav-links {
-      display: flex;
-      gap: 25px;
-    }
-    .top-nav .nav-links a {
-      color: #555;
-      text-decoration: none;
-      font-size: 15px;
-      transition: 0.2s;
-    }
+    .top-nav .nav-links { display: flex; gap: 25px; }
+    .top-nav .nav-links a { color: #555; text-decoration: none; font-size: 15px; transition: 0.2s; }
     .top-nav .nav-links a:hover { color: #00e0ff; }
 
-    .container {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .section {
-      background: #171717;
-      border: 1px solid #00e0ff;
-      border-radius: 10px;
-      padding: 30px;
-      margin-bottom: 30px;
-    }
-    .section h2 {
-      color: #00e0ff;
-      margin-bottom: 20px;
-    }
-
-    .user-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .user-card {
-      background: #0b0c10;
-      border: 1px solid #00e0ff;
-      border-radius: 8px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    .user-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #00e0ff;
-    }
-    .user-card .name {
-      font-size: 16px;
-      font-weight: bold;
-      color: #00e0ff;
-    }
-    .user-card button {
-      background: #00e0ff;
-      color: #0b0c10;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
-    .user-card button:hover {
-      background: #fff;
-    }
-    .user-card button.pending {
-      background: #888;
-      cursor: not-allowed;
-    }
-    .user-card button.accept {
-      background: #28a745;
-    }
-    .user-card button.decline {
-      background: #dc3545;
-      margin-left: 5px;
-    }
+    .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    .section { background: #171717; border: 1px solid #00e0ff; border-radius: 10px; padding: 30px; margin-bottom: 30px; }
+    .section h2 { color: #00e0ff; margin-bottom: 20px; }
+    .user-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+    .user-card { background: #0b0c10; border: 1px solid #00e0ff; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .user-card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #00e0ff; }
+    .user-card .name { font-size: 16px; font-weight: bold; color: #00e0ff; }
+    .user-card button { background: #00e0ff; color: #0b0c10; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+    .user-card button:hover { background: #fff; }
+    .user-card button.pending { background: #888; cursor: not-allowed; }
+    .user-card button.accept { background: #28a745; }
+    .user-card button.decline { background: #dc3545; margin-left: 5px; }
   </style>
 </head>
 <body>
@@ -124,60 +42,39 @@
   </div>
 
   <div class="container">
-
     <div class="section">
       <h2> Friend Requests</h2>
-      <div class="user-list" id="friend-requests">
-        <p>No friend requests.</p>
-      </div>
+      <div class="user-list" id="friend-requests"><p>No friend requests.</p></div>
     </div>
 
     <div class="section">
       <h2> Your Friends</h2>
-      <div class="user-list" id="friends-list">
-        <p>No friends yet.</p>
-      </div>
+      <div class="user-list" id="friends-list"><p>No friends yet.</p></div>
     </div>
 
     <div class="section">
       <h2> Find Friends</h2>
-      <div class="user-list" id="all-users">
-        <p>Loading users...</p>
-      </div>
+      <div class="user-list" id="all-users"><p>Loading users...</p></div>
     </div>
-
   </div>
 
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-    const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
-    const supabase = createClient(supabaseUrl, supabaseKey)
+    const supabase = createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8')
 
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) window.location.href = '/login.html'
     const user = session.user
 
     async function sendFriendRequest(receiverId) {
-      const { error } = await supabase.from('friend_requests').insert({
-        sender_id: user.id,
-        receiver_id: receiverId,
-        status: 'pending',
-        created_at: new Date().toISOString()
-      })
+      const { error } = await supabase.from('friend_requests').insert({ sender_id: user.id, receiver_id: receiverId, status: 'pending', created_at: new Date().toISOString() })
       if (error) alert('Error: ' + error.message)
-      else {
-        alert('Friend request sent!')
-        loadUsers()
-      }
+      else { alert('Friend request sent!'); loadUsers() }
     }
 
     async function acceptFriendRequest(requestId, senderId) {
       await supabase.from('friend_requests').update({ status: 'accepted' }).eq('id', requestId)
-      await supabase.from('friend_links').insert([
-        { user_id: user.id, friend_id: senderId },
-        { user_id: senderId, friend_id: user.id }
-      ])
+      await supabase.from('friend_links').insert([{ user_id: user.id, friend_id: senderId }, { user_id: senderId, friend_id: user.id }])
       alert('Friend request accepted!')
       loadFriendRequests()
       loadFriends()
@@ -190,84 +87,56 @@
     }
 
     async function loadFriendRequests() {
-      const { data } = await supabase.from('friend_requests')
-        .select('*, sender:profiles!sender_id(*)')
-        .eq('receiver_id', user.id)
-        .eq('status', 'pending')
-
+      const { data } = await supabase.from('friend_requests').select('id, sender_id').eq('receiver_id', user.id).eq('status', 'pending')
       const container = document.getElementById('friend-requests')
       container.innerHTML = ''
-
       if (data && data.length) {
+        const senderIds = data.map(r => r.sender_id)
+        const { data: profiles } = await supabase.from('profiles').select('id, username, avatar_url').in('id', senderIds)
+        const profileMap = {}
+        if (profiles) profiles.forEach(p => { profileMap[p.id] = p })
         data.forEach(req => {
+          const sender = profileMap[req.sender_id]
           const card = document.createElement('div')
           card.className = 'user-card'
-          card.innerHTML = `
-            <img src="${req.sender.avatar_url || 'https://placehold.co/80x80?text=User'}" alt="${req.sender.first_name}">
-            <div class="name">${req.sender.first_name || 'User'} ${req.sender.last_name || ''}</div>
-            <div>
-              <button class="accept" onclick="window.acceptRequest(${req.id}, '${req.sender_id}')">Accept</button>
-              <button class="decline" onclick="window.declineRequest(${req.id})">Decline</button>
-            </div>
-          `
+          card.innerHTML = `<img src="${sender?.avatar_url || 'https://placehold.co/80x80?text=User'}" alt="${sender?.username || 'User'}"><div class="name">${sender?.username || 'User'}</div><div><button class="accept" onclick="window.acceptRequest(${req.id}, '${req.sender_id}')">Accept</button><button class="decline" onclick="window.declineRequest(${req.id})">Decline</button></div>`
           container.appendChild(card)
         })
-      } else {
-        container.innerHTML = '<p>No friend requests.</p>'
-      }
+      } else container.innerHTML = '<p>No friend requests.</p>'
     }
 
     async function loadFriends() {
-      const { data } = await supabase.from('friend_links')
-        .select('friend:profiles!friend_id(*)')
-        .eq('user_id', user.id)
-
+      const { data } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
       const container = document.getElementById('friends-list')
       container.innerHTML = ''
-
       if (data && data.length) {
-        data.forEach(link => {
+        const friendIds = data.map(f => f.friend_id)
+        const { data: profiles } = await supabase.from('profiles').select('id, username, avatar_url').in('id', friendIds)
+        if (profiles) profiles.forEach(friend => {
           const card = document.createElement('div')
           card.className = 'user-card'
-          card.innerHTML = `
-            <img src="${link.friend.avatar_url || 'https://placehold.co/80x80?text=User'}" alt="${link.friend.first_name}">
-            <div class="name">${link.friend.first_name || 'User'} ${link.friend.last_name || ''}</div>
-          `
+          card.innerHTML = `<img src="${friend.avatar_url || 'https://placehold.co/80x80?text=User'}" alt="${friend.username || 'User'}"><div class="name">${friend.username || 'User'}</div>`
           container.appendChild(card)
         })
-      } else {
-        container.innerHTML = '<p>No friends yet.</p>'
-      }
+      } else container.innerHTML = '<p>No friends yet.</p>'
     }
 
     async function loadUsers() {
-      const { data: allUsers } = await supabase.from('profiles').select('*')
+      const { data: allUsers } = await supabase.from('profiles').select('id, username, avatar_url')
       const { data: sentRequests } = await supabase.from('friend_requests').select('receiver_id').eq('sender_id', user.id).eq('status', 'pending')
       const { data: friends } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
-
       const sentIds = sentRequests ? sentRequests.map(r => r.receiver_id) : []
       const friendIds = friends ? friends.map(f => f.friend_id) : []
-
       const container = document.getElementById('all-users')
       container.innerHTML = ''
-
-      if (allUsers) {
-        allUsers.filter(u => u.id !== user.id).forEach(u => {
-          const isFriend = friendIds.includes(u.id)
-          const isPending = sentIds.includes(u.id)
-
-          const card = document.createElement('div')
-          card.className = 'user-card'
-          card.innerHTML = `
-            <img src="${u.avatar_url || 'https://placehold.co/80x80?text=User'}" alt="${u.first_name}">
-            <div class="name">${u.first_name || 'User'} ${u.last_name || ''}</div>
-            ${isFriend ? '<button class="pending">Friends </button>' : 
-              isPending ? '<button class="pending">Pending</button>' :
-              `<button onclick="window.sendRequest('${u.id}')">Add Friend</button>`}
-          `
-          container.appendChild(card)
-        })
-      }
+      if (allUsers) allUsers.filter(u => u.id !== user.id).forEach(u => {
+        const isFriend = friendIds.includes(u.id)
+        const isPending = sentIds.includes(u.id)
+        const card = document.createElement('div')
+        card.className = 'user-card'
+        card.innerHTML = `<img src="${u.avatar_url || 'https://placehold.co/80x80?text=User'}" alt="${u.username || 'User'}"><div class="name">${u.username || 'User'}</div>${isFriend ? '<button class="pending">Friends </button>' : isPending ? '<button class="pending">Pending</button>' : `<button onclick="window.sendRequest('${u.id}')">Add Friend</button>`}`
+        container.appendChild(card)
+      })
     }
 
     window.sendRequest = sendFriendRequest
@@ -278,10 +147,7 @@
     loadFriends()
     loadUsers()
 
-    document.getElementById('logout-link').onclick = async () => {
-      await supabase.auth.signOut()
-      window.location.href = '/login.html'
-    }
+    document.getElementById('logout-link').onclick = async () => { await supabase.auth.signOut(); window.location.href = '/login.html' }
   </script>
 </body>
 </html>
