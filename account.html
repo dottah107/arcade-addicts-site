@@ -82,14 +82,21 @@
       background: #ff4444;
       color: #fff;
       border: none;
-      padding: 5px 12px;
-      border-radius: 5px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: 0.2s;
+      line-height: 1;
     }
     .card ul li .delete-btn:hover {
       background: #cc0000;
+      transform: scale(1.1);
     }
     .card label {
       display: block;
@@ -329,7 +336,7 @@
           const li = document.createElement('li')
           li.innerHTML = `
             <a href="${url}" target="_blank">${file.name}</a>
-            <button class="delete-btn" onclick="deleteFile('${file.name}')">Delete</button>
+            <button class="delete-btn" onclick="deleteFile('${file.name}')"></button>
           `
           list.appendChild(li)
         })
