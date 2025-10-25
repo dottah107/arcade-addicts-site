@@ -91,6 +91,46 @@
       object-fit: cover;
       z-index: 0;
     }
+
+    .activity-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .activity-section h2 {
+      color: #00e0ff;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .activity-item {
+      background: #171717;
+      border: 1px solid #00e0ff;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: 0.2s;
+    }
+    .activity-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 224, 255, 0.3);
+    }
+    .activity-item img,
+    .activity-item video {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    .activity-item .info {
+      padding: 15px;
+    }
+    .activity-item .time {
+      font-size: 12px;
+      color: #888;
+    }
   </style>
 </head>
 <body>
@@ -107,6 +147,13 @@
     <img class="avatar" id="avatar-preview" src="https://placehold.co/140x140?text=Avatar" alt="Profile Picture">
     <h1 id="display-name-hero">Your Gamertag</h1>
     <p id="member-since">Member Since <span id="join-date">January 1st, 2025</span></p>
+  </div>
+
+  <div class="activity-section">
+    <h2> Recent Activity</h2>
+    <div class="activity-grid" id="activity-feed">
+      <p>No activity yet.</p>
+    </div>
   </div>
 
   <script type="module">
@@ -145,6 +192,42 @@
       }
     }
     loadProfile()
+
+    async function loadActivity() {
+      const { data } = await supabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(20)
+
+      const feed = document.getElementById('activity-feed')
+      feed.innerHTML = ''
+
+      if (data && data.length) {
+        data.forEach(post => {
+          const item = document.createElement('div')
+          item.className = 'activity-item'
+
+          const isVideo = post.media_type === 'video' || post.content_type === 'video'
+          const media = isVideo 
+            ? `<video src="${post.media_url}" muted></video>`
+            : `<img src="${post.media_url}" alt="Activity post">`
+
+          const timeAgo = new Date(post.created_at).toLocaleDateString()
+
+          item.innerHTML = `
+            ${media}
+            <div class="info">
+              <p class="time">${timeAgo}</p>
+            </div>
+          `
+          feed.appendChild(item)
+        })
+      } else {
+        feed.innerHTML = '<p>No activity yet.</p>'
+      }
+    }
+    loadActivity()
 
     document.getElementById('logout-link').onclick = async () => {
       await supabase.auth.signOut()
