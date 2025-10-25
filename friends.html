@@ -121,15 +121,15 @@
       } else container.innerHTML = '<p>No friends yet.</p>'
     }
 
-    async function loadUsers() {
-      const { data: allUsers } = await supabase.from('profiles').select('id, username, avatar_url')
+    async function loadUsers() { console.log("Loading users...")  {
+      const { data: allUsers, error: usersError } = await supabase.from('profiles').select('id, username, avatar_url')
       const { data: sentRequests } = await supabase.from('friend_requests').select('receiver_id').eq('sender_id', user.id).eq('status', 'pending')
       const { data: friends } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
       const sentIds = sentRequests ? sentRequests.map(r => r.receiver_id) : []
       const friendIds = friends ? friends.map(f => f.friend_id) : []
       const container = document.getElementById('all-users')
       container.innerHTML = ''
-      if (allUsers) allUsers.filter(u => u.id !== user.id).forEach(u => {
+      console.log("All users:", allUsers, "Error:", usersError); if (allUsers) allUsers.filter(u => u.id !== user.id).forEach(u => {
         const isFriend = friendIds.includes(u.id)
         const isPending = sentIds.includes(u.id)
         const card = document.createElement('div')
