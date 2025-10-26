@@ -50,183 +50,144 @@
     <div class="section"><h2>🔍 Find Friends</h2><div class="user-list" id="all-users"><p>Loading users...</p></div></div>
   </div>
   <script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-    const supabase = createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8')
-    
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      window.location.href = '/login.html'
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+  const supabase = createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8')
+
+  // Auth/session check
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) window.location.href = '/login.html'
+  const user = session.user
+
+  async function sendFriendRequest(receiverId) {
+    const { data: existing, error: existingError } = await supabase
+      .from('friend_requests')
+      .select('id,status')
+      .eq('requester', user.id)
+      .eq('recipient', receiverId)
+    if (existingError) { alert('Error: ' + existingError.message); return }
+    if (existing && existing.length > 0) {
+      if(existing[0].status === 'pending') alert('You have already sent a friend request to this user. Wait for them to respond.')
+      else if(existing[0].status === 'declined') alert('Your previous friend request was declined. You can remove and resend if you wish.')
+      else if(existing[0].status === 'accepted') alert('You are already friends!')
+      else alert('A friend request already exists with status: ' + existing[0].status)
+      return
     }
-    const user = session.user
+    const { error } = await supabase.from('friend_requests').insert({ 
+      requester: user.id, recipient: receiverId, status: 'pending'
+    })
+    if (error) alert('Error: ' + error.message)
+    else { alert('Friend request sent!'); loadUsers() }
+  }
 
-    async function sendFriendRequest(receiverId) {
-      const { data: existing, error: existingError } = await supabase
-        .from('friend_requests')
-        .select('id,status')
-        .eq('requester', user.id)
-        .eq('recipient', receiverId);
-
-      if (existingError) {
-        alert('Error: ' + existingError.message)
-        return
-      }
-      if (existing && existing.length > 0) {
-        if(existing[0].status === 'pending') {
-          alert('You have already sent a friend request to this user. Wait for them to respond.')
-        } else if(existing[0].status === 'declined') {
-          alert('Your previous friend request was declined. You can remove and resend if you wish.')
-        } else if(existing[0].status === 'accepted') {
-          alert('You are already friends!')
-        } else {
-          alert('A friend request already exists with status: ' + existing[0].status)
-        }
-        return
-      }
-      const { error } = await supabase.from('friend_requests').insert({ 
-        requester: user.id, 
-        recipient: receiverId, 
-        status: 'pending'
-      })
-      if (error) alert('Error: ' + error.message)
-      else { alert('Friend request sent!'); loadUsers() }
-    }
-    
-    async function acceptFriendRequest(requestId, requesterId) {
-      const { data: existing, error: checkError } = await supabase
-        .from('friend_links')
-        .select('id')
-        .or(`and(user_id.eq.${user.id},friend_id.eq.${requesterId}),and(user_id.eq.${requesterId},friend_id.eq.${user.id})`);
-
-      if (checkError) {
-        alert('An error occurred checking for existing friendship.')
-        console.error(checkError)
-        return
-      }
-
-      if (existing && existing.length > 0) {
-        alert('You are already friends with this user!')
-        await supabase.from('friend_requests').update({ status: 'accepted' }).eq('id', requestId)
-        loadFriendRequests()
-        loadFriends()
-        return
-      }
-
-      const { error: updateError } = await supabase.from('friend_requests').update({ status: 'accepted' }).eq('id', requestId)
-      if (updateError) {
-        alert('Error accepting request: ' + updateError.message)
-        console.error(updateError)
-        return
-      }
-
-      const { error: linkError } = await supabase.from('friend_links').insert([
-        { user_id: user.id, friend_id: requesterId },
-        { user_id: requesterId, friend_id: user.id }
-      ])
-
-      if (linkError) {
-        alert('Error creating friend link: ' + linkError.message)
-        console.error(linkError)
-        return
-      }
-
-      alert('Friend request accepted!')
+  async function acceptFriendRequest(requestId, requesterId) {
+    const { data: existing, error: checkError } = await supabase
+      .from('friend_links')
+      .select('id')
+      .or(`and(user_id.eq.${user.id},friend_id.eq.${requesterId}),and(user_id.eq.${requesterId},friend_id.eq.${user.id})`)
+    if (checkError) { alert('An error occurred checking for existing friendship.'); console.error(checkError); return }
+    if (existing && existing.length > 0) {
+      alert('You are already friends with this user!')
+      await supabase.from('friend_requests').update({ status: 'accepted' }).eq('id', requestId)
       loadFriendRequests()
       loadFriends()
+      return
     }
-
-    async function declineFriendRequest(requestId) {
-      const { error } = await supabase.from('friend_requests').update({ status: 'declined' }).eq('id', requestId)
-      if (error) alert('Error: ' + error.message)
-      else { alert('Friend request declined.'); loadFriendRequests() }
-    }
-
-    async function loadFriendRequests() {
-      const { data, error } = await supabase.from('friend_requests').select('id, requester').eq('recipient', user.id).eq('status', 'pending')
-      const container = document.getElementById('friend-requests')
-      container.innerHTML = ''
-      if (error) {
-        container.innerHTML = '<p>Error loading requests: ' + error.message + '</p>'
-      } else if (data && data.length) {
-        const requesterIds = data.map(r => r.requester)
-        const { data: profiles } = await supabase.from('profiles').select('id, username, avatar_url').in('id', requesterIds)
-        const profileMap = {}
-        if (profiles) profiles.forEach(p => { profileMap[p.id] = p })
-        data.forEach(req => {
-          const requester = profileMap[req.requester]
-          const card = document.createElement('div')
-          card.className = 'user-card'
-          card.innerHTML = '<img src="' + (requester?.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (requester?.username || 'User') + '"><div class="name">' + (requester?.username || 'User') + '</div><div><button class="accept" onclick="window.acceptRequest(' + req.id + ', \'' + req.requester + '\')">Accept</button><button class="decline" onclick="window.declineRequest(' + req.id + ')">Decline</button></div>'
-          container.appendChild(card)
-        })
-      } else {
-        container.innerHTML = '<p>No friend requests.</p>'
-      }
-    }
-
-    async function loadFriends() {
-      const { data, error } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
-      const container = document.getElementById('friends-list')
-      container.innerHTML = ''
-      if (error) {
-        container.innerHTML = '<p>Error loading friends: ' + error.message + '</p>'
-      } else if (data && data.length) {
-        const friendIds = data.map(f => f.friend_id)
-        const { data: profiles } = await supabase.from('profiles').select('id, username, avatar_url').in('id', friendIds)
-        if (profiles) profiles.forEach(friend => {
-          const card = document.createElement('div')
-          card.className = 'user-card'
-          card.innerHTML = '<img src="' + (friend.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (friend.username || 'User') + '"><div class="name">' + (friend.username || 'User') + '</div>'
-          container.appendChild(card)
-        })
-      } else {
-        container.innerHTML = '<p>No friends yet.</p>'
-      }
-    }
-
-    async function loadUsers() {
-      const { data: allUsers, error: usersError } = await supabase.from('profiles').select('id, username, avatar_url')
-      const container = document.getElementById('all-users')
-      container.innerHTML = ''
-      if (usersError) {
-        container.innerHTML = '<p>Error loading users: ' + usersError.message + '</p>'
-        return
-      }
-      const { data: sentRequests } = await supabase.from('friend_requests').select('recipient').eq('requester', user.id).eq('status', 'pending')
-      const { data: friends } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
-      const sentIds = sentRequests ? sentRequests.map(r => r.recipient) : []
-      const friendIds = friends ? friends.map(f => f.friend_id) : []
-      if (allUsers && allUsers.length > 0) {
-        const otherUsers = allUsers.filter(u => u.id !== user.id)
-        if (otherUsers.length === 0) {
-          container.innerHTML = '<p>No other users found. Create more accounts to see them here!</p>'
-          return
-        }
-        otherUsers.forEach(u => {
-          const isFriend = friendIds.includes(u.id)
-          const isPending = sentIds.includes(u.id)
-          const card = document.createElement('div')
-          card.className = 'user-card'
-          let buttonHTML = isFriend ? '<button class="pending">Friends ✓</button>' : (isPending ? '<button class="pending">Pending</button>' : '<button onclick="window.sendRequest(\'' + u.id + '\')">Add Friend</button>')
-          card.innerHTML = '<img src="' + (u.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (u.username || 'User') + '"><div class="name">' + (u.username || 'User') + '</div>' + buttonHTML
-          container.appendChild(card)
-        })
-      } else {
-        container.innerHTML = '<p>No users found. Create more accounts!</p>'
-      }
-    }
-
-    window.sendRequest = sendFriendRequest
-    window.acceptRequest = acceptFriendRequest
-    window.declineRequest = declineFriendRequest
-
+    const { error: updateError } = await supabase.from('friend_requests').update({ status: 'accepted' }).eq('id', requestId)
+    if (updateError) { alert('Error accepting request: ' + updateError.message); console.error(updateError); return }
+    const { error: linkError } = await supabase.from('friend_links').insert([
+      { user_id: user.id, friend_id: requesterId },
+      { user_id: requesterId, friend_id: user.id }
+    ])
+    if (linkError) { alert('Error creating friend link: ' + linkError.message); console.error(linkError); return }
+    alert('Friend request accepted!')
     loadFriendRequests()
     loadFriends()
-    loadUsers()
+  }
 
-    document.getElementById('logout-link').onclick = async () => { 
-      await supabase.auth.signOut(); 
-      window.location.href = '/login.html' 
+  async function declineFriendRequest(requestId) {
+    const { error } = await supabase.from('friend_requests').update({ status: 'declined' }).eq('id', requestId)
+    if (error) alert('Error: ' + error.message)
+    else { alert('Friend request declined.'); loadFriendRequests() }
+  }
+
+  async function loadFriendRequests() {
+    const { data, error } = await supabase.from('friend_requests').select('id, requester').eq('recipient', user.id).eq('status', 'pending')
+    const container = document.getElementById('friend-requests')
+    container.innerHTML = ''
+    if (error) container.innerHTML = '<p>Error loading requests: ' + error.message + '</p>'
+    else if (data && data.length) {
+      const requesterIds = data.map(r => r.requester)
+      const { data: profiles } = await supabase.from('profiles').select('id, username, avatar_url').in('id', requesterIds)
+      const profileMap = {}; if (profiles) profiles.forEach(p => { profileMap[p.id] = p })
+      data.forEach(req => {
+        const requester = profileMap[req.requester]
+        const card = document.createElement('div')
+        card.className = 'user-card'
+        card.innerHTML = '<img src="' + (requester?.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (requester?.username || 'User') + '"><div class="name">' + (requester?.username || 'User') + '</div><div><button class="accept" onclick="window.acceptRequest(' + req.id + ', \'' + req.requester + '\')">Accept</button><button class="decline" onclick="window.declineRequest(' + req.id + ')">Decline</button></div>'
+        container.appendChild(card)
+      })
+    } else container.innerHTML = '<p>No friend requests.</p>'
+  }
+
+  async function loadFriends() {
+    const { data, error } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
+    const container = document.getElementById('friends-list')
+    container.innerHTML = ''
+    if (error) container.innerHTML = '<p>Error loading friends: ' + error.message + '</p>'
+    else if (data && data.length) {
+      const friendIds = data.map(f => f.friend_id)
+      const { data: profiles } = await supabase.from('profiles').select('id, username, avatar_url').in('id', friendIds)
+      if (profiles) profiles.forEach(friend => {
+        const card = document.createElement('div')
+        card.className = 'user-card'
+        card.innerHTML = '<img src="' + (friend.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (friend.username || 'User') + '"><div class="name">' + (friend.username || 'User') + '</div>'
+        container.appendChild(card)
+      })
+    } else container.innerHTML = '<p>No friends yet.</p>'
+  }
+
+  async function loadUsers() {
+    const { data: allUsers, error: usersError } = await supabase.from('profiles').select('id, username, avatar_url')
+    const container = document.getElementById('all-users')
+    container.innerHTML = ''
+    if (usersError) { container.innerHTML = '<p>Error loading users: ' + usersError.message + '</p>'; return }
+    const { data: sentRequests } = await supabase.from('friend_requests').select('recipient').eq('requester', user.id).eq('status', 'pending')
+    const { data: friends } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
+    const sentIds = sentRequests ? sentRequests.map(r => r.recipient) : []
+    const friendIds = friends ? friends.map(f => f.friend_id) : []
+    if (allUsers && allUsers.length > 0) {
+      const otherUsers = allUsers.filter(u => u.id !== user.id)
+      if (otherUsers.length === 0) {
+        container.innerHTML = '<p>No other users found. Create more accounts to see them here!</p>'
+        return
+      }
+      otherUsers.forEach(u => {
+        const isFriend = friendIds.includes(u.id)
+        const isPending = sentIds.includes(u.id)
+        const card = document.createElement('div')
+        card.className = 'user-card'
+        let buttonHTML = isFriend ? '<button class="pending">Friends ✓</button>' : (isPending ? '<button class="pending">Pending</button>' : '<button onclick="window.sendRequest(\'' + u.id + '\')">Add Friend</button>')
+        card.innerHTML = '<img src="' + (u.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (u.username || 'User') + '"><div class="name">' + (u.username || 'User') + '</div>' + buttonHTML
+        container.appendChild(card)
+      })
+    } else {
+      container.innerHTML = '<p>No users found. Create more accounts!</p>'
     }
-  </script>
+  }
+
+  window.sendRequest = sendFriendRequest
+  window.acceptRequest = acceptFriendRequest
+  window.declineRequest = declineFriendRequest
+
+  loadFriendRequests()
+  loadFriends()
+  loadUsers()
+
+  document.getElementById('logout-link').onclick = async () => { 
+    await supabase.auth.signOut(); 
+    window.location.href = '/login.html' 
+  }
+</script>
+
 </body>
 </html>
