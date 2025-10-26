@@ -72,28 +72,53 @@
         loadUsers() 
       }
     }
+async function acceptFriendRequest(requestId, requesterId) {
+  // Check if friendship already exists in either user_id/friend_id direction
+  const { data: existing, error: checkError } = await supabase
+    .from('friend_links')
+    .select('id')
+    .or(`and(user_id.eq.${user.id},friend_id.eq.${requesterId}),and(user_id.eq.${requesterId},friend_id.eq.${user.id})`)
+  
+  if (checkError) {
+    console.error('Error checking existing friendship:', checkError)
+    alert('An error occurred checking for existing friendship.')
+    return
+  }
 
-    async function acceptFriendRequest(requestId, requesterId) {
-      console.log('Accepting friend request:', requestId)
-      const { error: updateError } = await supabase.from('friend_requests').update({ status: 'accepted' }).eq('id', requestId)
-      if (updateError) {
-        console.error('Error updating request:', updateError)
-        alert('Error accepting request: ' + updateError.message)
-        return
-      }
-      const { error: linkError } = await supabase.from('friend_links').insert([
-        { user_id: user.id, friend_id: requesterId }, 
-        { user_id: requesterId, friend_id: user.id }
-      ])
-      if (linkError) {
-        console.error('Error creating friend links:', linkError)
-        alert('Error creating friend link: ' + linkError.message)
-        return
-      }
-      alert('Friend request accepted!')
-      loadFriendRequests()
-      loadFriends()
-    }
+  if (existing && existing.length > 0) {
+    alert('You are already friends with this user!')
+    // Optionally, still mark request as accepted so it disappears
+    await supabase.from('friend_requests').update({ status: 'accepted' }).eq('id', requestId)
+    loadFriendRequests()
+    loadFriends()
+    return
+  }
+
+  // Accept the request and insert the two friend link rows
+  const { error: updateError } = await supabase
+    .from('friend_requests')
+    .update({ status: 'accepted' })
+    .eq('id', requestId)
+  
+  if (updateError) {
+    alert('Error: ' + updateError.message)
+    console.error(updateError)
+    return
+  }
+
+  const { error: linkError } = await supabase.from('friend_links').insert([
+    { user_id: user.id, friend_id: requesterId },
+    { user_id: requesterId, friend_id: user.id }
+  ])
+  if (linkError) {
+    alert('Error: ' + linkError.message)
+    console.error(linkError)
+    return
+  }
+  alert('Friend request accepted!')
+  loadFriendRequests()
+  loadFriends()
+}
 
     async function declineFriendRequest(requestId) {
       console.log('Declining friend request:', requestId)
