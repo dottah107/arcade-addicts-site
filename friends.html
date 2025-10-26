@@ -72,8 +72,9 @@
           alert('You are already friends!')
         } else {
           alert('A friend request already exists with status: ' + existing[0].status)
+          return
         }
-        return
+        
       }
       const { error } = await supabase.from('friend_requests').insert({ 
         requester: user.id, 
