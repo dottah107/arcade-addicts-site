@@ -57,21 +57,40 @@
     console.log('Logged in user:', user.id)
 
     async function sendFriendRequest(receiverId) {
-      console.log('Sending friend request to:', receiverId)
-      const { data, error } = await supabase.from('friend_requests').insert({ 
-        requester: user.id, 
-        recipient: receiverId, 
-        status: 'pending'
-      })
-      if (error) {
-        console.error('Error sending friend request:', error)
-        alert('Error: ' + error.message)
-      } else { 
-        console.log('Friend request sent successfully')
-        alert('Friend request sent!'); 
-        loadUsers() 
-      }
+  // Check for existing friend request (any status)
+  const { data: existing, error: existingError } = await supabase
+    .from('friend_requests')
+    .select('id,status')
+    .eq('requester', user.id)
+    .eq('recipient', receiverId);
+
+  if (existingError) {
+    alert('Error: ' + existingError.message)
+    return
+  }
+  if (existing && existing.length > 0) {
+    if(existing[0].status === 'pending') {
+      alert('You have already sent a friend request to this user. Wait for them to respond.')
+    } else if(existing[0].status === 'declined') {
+      alert('Your previous friend request was declined. You can remove and resend if you wish.')
+      // Optional: Add a button to delete/cancel so you can try again
+    } else if(existing[0].status === 'accepted') {
+      alert('You are already friends!')
+    } else {
+      alert('A friend request already exists with status: ' + existing[0].status)
     }
+    return
+  }
+  // No request found, proceed with new request
+  const { error } = await supabase.from('friend_requests').insert({ 
+    requester: user.id, 
+    recipient: receiverId, 
+    status: 'pending'
+  })
+  if (error) alert('Error: ' + error.message)
+  else { alert('Friend request sent!'); loadUsers() }
+}
+    
 async function acceptFriendRequest(requestId, requesterId) {
   // Check if friendship already exists in either user_id/friend_id direction
   const { data: existing, error: checkError } = await supabase
