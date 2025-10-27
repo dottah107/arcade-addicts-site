@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -29,7 +29,7 @@
 </head>
 <body>
   <div class="top-nav">
-    <a href="/index.html" class="logo">🎮 Arcade Addicts</a>
+    <a href="/index.html" class="logo">ðŸŽ® Arcade Addicts</a>
     <div class="nav-links">
       <a href="/members.html">Dashboard</a>
       <a href="/friends.html">Friends</a>
@@ -38,9 +38,9 @@
     </div>
   </div>
   <div class="container">
-    <div class="section"><h2>👥 Friend Requests</h2><div class="user-list" id="friend-requests"><p>No friend requests.</p></div></div>
-    <div class="section"><h2>✅ Your Friends</h2><div class="user-list" id="friends-list"><p>No friends yet.</p></div></div>
-    <div class="section"><h2>🔍 Find Friends</h2><div class="user-list" id="all-users"><p>Loading users...</p></div></div>
+    <div class="section"><h2>ðŸ‘¥ Friend Requests</h2><div class="user-list" id="friend-requests"><p>No friend requests.</p></div></div>
+    <div class="section"><h2>âœ… Your Friends</h2><div class="user-list" id="friends-list"><p>No friends yet.</p></div></div>
+    <div class="section"><h2>ðŸ” Find Friends</h2><div class="user-list" id="all-users"><p>Loading users...</p></div></div>
   </div>
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
@@ -236,7 +236,7 @@
           const isPending = sentIds.includes(u.id)
           const card = document.createElement('div')
           card.className = 'user-card'
-          let buttonHTML = isFriend ? '<button class="pending">Friends ✓</button>' : (isPending ? '<button class="pending">Pending</button>' : '<button onclick="window.sendRequest(\'' + u.id + '\')">Add Friend</button>')
+          let buttonHTML = isFriend ? '<button class="pending">Friends âœ“</button>' : (isPending ? '<button class="pending">Pending</button>' : '<button onclick="window.sendRequest(\'' + u.id + '\')">Add Friend</button>')
           card.innerHTML = '<img src="' + (u.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (u.username || 'User') + '"><div class="name">' + (u.username || 'User') + '</div>' + buttonHTML
           container.appendChild(card)
         })
