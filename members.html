@@ -210,7 +210,7 @@
 
           const isVideo = post.media_type === 'video' || post.content_type === 'video'
           const media = isVideo 
-            ? `<video src="${post.media_url}" muted></video>`
+            ? `<video src="${post.media_url}" controls autoplay muted loop playsinline style="object-fit:cover;background:black;" muted></video>`
             : `<img src="${post.media_url}" alt="Activity post">`
 
           const timeAgo = new Date(post.created_at).toLocaleDateString()
