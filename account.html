@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -159,7 +159,6 @@
     <a href="/index.html" class="logo"> Arcade Addicts</a>
     <div class="nav-links">
       <a href="/members.html">Dashboard</a>
-      <a href="/friends.html">Friends</a>
       <a href="/account.html">Your Account</a>
       <a href="#" id="logout-link">Log Out</a>
     </div>
@@ -180,10 +179,10 @@
       <h2> Update Profile Info</h2>
       <p>You can update your profile by filling out the form below.</p>
       <form id="profile-form">
-        <label>Username:</label>
-        <input type="text" id="username" placeholder="Username">
-        <label>Game Platform:</label>
-        <input type="text" id="game-platform" placeholder="e.g., PlayStation, Xbox, PC">
+        <label>First Name:</label>
+        <input type="text" id="first-name" placeholder="First Name">
+        <label>Last Name:</label>
+        <input type="text" id="last-name" placeholder="Last Name">
         <button type="submit">Update Profile</button>
       </form>
       <p id="profile-message" style="margin-top:10px; color:#00e0ff;"></p>
@@ -208,15 +207,15 @@
     if (!session) window.location.href = '/login.html'
     const user = session.user
 
-    const usernameEl = document.getElementById('username')
-    const gamePlatformEl = document.getElementById('game-platform')
+    const firstNameEl = document.getElementById('first-name')
+    const lastNameEl = document.getElementById('last-name')
     const profileMsg = document.getElementById('profile-message')
 
     async function loadProfile() {
       const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
       if (data) {
-        usernameEl.value = data.username || ""
-        gamePlatformEl.value = data.game_platform || ""
+        firstNameEl.value = data.first_name || ""
+        lastNameEl.value = data.last_name || ""
       }
     }
     loadProfile()
@@ -227,8 +226,8 @@
 
       const updates = {
         id: user.id,
-        username: usernameEl.value || null,
-        game_platform: gamePlatformEl.value || null,
+        first_name: firstNameEl.value || null,
+        last_name: lastNameEl.value || null,
         updated_at: new Date().toISOString()
       }
 
