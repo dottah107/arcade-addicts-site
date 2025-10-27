@@ -294,7 +294,7 @@
       const item = document.createElement('div')
       item.className = 'upload-item'
       
-      // FIXED VIDEO PREVIEW LINE BELOW
+      // THIS IS THE FIXED LINE FOR VIDEO PREVIEW
       const media = isVideo ? `<video src="${url}" autoplay muted loop playsinline style="object-fit:cover;background:black;"></video>` : `<img src="${url}" alt="${file.name}">`
       
       const dropdown = document.createElement('div')
@@ -329,6 +329,7 @@
   } else {
     gallery.innerHTML = '<p>No uploads yet.</p>'
   }
+}
 }
     
     window.setAsBackground = setAsBackground
