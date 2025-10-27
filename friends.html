@@ -1,11 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://xvhkwyhncuivsfwfmvbg.supabase.co https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in https://cdn.jsdelivr.net; img-src 'self' data: blob: https://xvhkwyhncuivsfwfmvbg.supabase.co https://*.supabase.co; media-src 'self' data: blob: https://xvhkwyhncuivsfwfmvbg.supabase.co https://*.supabase.co; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; upgrade-insecure-requests">
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://esm.sh; connect-src 'self' https://*.supabase.co; img-src 'self' https: data:; style-src 'self' 'unsafe-inline';">
   <title>Friends - Arcade Addicts</title>
   <style>
     body { background: #0b0c10; color: #eee; font-family: "Segoe UI", Arial, sans-serif; margin: 0; padding: 0; }
@@ -31,7 +29,7 @@
 </head>
 <body>
   <div class="top-nav">
-    <a href="/index.html" class="logo">ðŸŽ® Arcade Addicts</a>
+    <a href="/index.html" class="logo">🎮 Arcade Addicts</a>
     <div class="nav-links">
       <a href="/members.html">Dashboard</a>
       <a href="/friends.html">Friends</a>
@@ -40,70 +38,62 @@
     </div>
   </div>
   <div class="container">
-    <div class="section"><h2>ðŸ‘¥ Friend Requests</h2><div class="user-list" id="friend-requests"><p>No friend requests.</p></div></div>
-    <div class="section"><h2>âœ… Your Friends</h2><div class="user-list" id="friends-list"><p>No friends yet.</p></div></div>
-    <div class="section"><h2>ðŸ” Find Friends</h2><div class="user-list" id="all-users"><p>Loading users...</p></div></div>
+    <div class="section"><h2>👥 Friend Requests</h2><div class="user-list" id="friend-requests"><p>No friend requests.</p></div></div>
+    <div class="section"><h2>✅ Your Friends</h2><div class="user-list" id="friends-list"><p>No friends yet.</p></div></div>
+    <div class="section"><h2>🔍 Find Friends</h2><div class="user-list" id="all-users"><p>Loading users...</p></div></div>
   </div>
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-    const supabase = createClient(
-      'https://xvhkwyhncuivsfwfmvbg.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
-    );
-
+    const supabase = createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8')
+    
     const { data: { session } } = await supabase.auth.getSession()
-    if (!session) window.location.href = '/login.html'
+    if (!session) {
+      window.location.href = '/login.html'
+    }
     const user = session.user
 
     async function sendFriendRequest(receiverId) {
       const { data: existing, error: existingError } = await supabase
         .from('friend_requests')
-        .select('status')
+        .select('id,status')
         .eq('requester', user.id)
-        .eq('recipient', receiverId)
-      if (existingError) { alert('Error: ' + existingError.message); return }
+        .eq('recipient', receiverId);
+
+      if (existingError) {
+        alert('Error: ' + existingError.message)
+        return
+      }
       if (existing && existing.length > 0) {
         if(existing[0].status === 'pending') {
-          alert('You have already sent a friend request to this user. Wait for them to respond.');
-          return;
+          alert('You have already sent a friend request to this user. Wait for them to respond.')
         } else if(existing[0].status === 'declined') {
-          alert('Your previous friend request was declined. You can remove and resend if you wish.');
-          return;
+          alert('Your previous friend request was declined. You can remove and resend if you wish.')
         } else if(existing[0].status === 'accepted') {
-          alert('You are already friends!');
-          return;
+          alert('You are already friends!')
         } else {
-          alert('A friend request already exists with status: ' + existing[0].status);
-          return;
+          alert('A friend request already exists with status: ' + existing[0].status)
         }
+        return
       }
       const { error } = await supabase.from('friend_requests').insert({ 
         requester: user.id, 
         recipient: receiverId, 
         status: 'pending'
       })
-      if (error) {
-        if (error.message && error.message.includes('duplicate key value')) {
-          alert('You already have a pending friend request or friendship with this user.');
-        } else {
-          alert('Error: ' + error.message);
-        }
-        return;
-      } else { 
-        alert('Friend request sent!');
-        loadUsers();
-      }
+      if (error) alert('Error: ' + error.message)
+      else { alert('Friend request sent!'); loadUsers() }
     }
     
     async function acceptFriendRequest(requestId, requesterId) {
       const { data: existing, error: checkError } = await supabase
         .from('friend_links')
-        .select('user_id,friend_id')
+        .select('id')
         .or(`and(user_id.eq.${user.id},friend_id.eq.${requesterId}),and(user_id.eq.${requesterId},friend_id.eq.${user.id})`);
 
       if (checkError) {
-        alert('An error occurred checking for existing friendship.');
-        return;
+        alert('An error occurred checking for existing friendship.')
+        console.error(checkError)
+        return
       }
 
       if (existing && existing.length > 0) {
@@ -117,6 +107,7 @@
       const { error: updateError } = await supabase.from('friend_requests').update({ status: 'accepted' }).eq('id', requestId)
       if (updateError) {
         alert('Error accepting request: ' + updateError.message)
+        console.error(updateError)
         return
       }
 
@@ -124,9 +115,11 @@
         { user_id: user.id, friend_id: requesterId },
         { user_id: requesterId, friend_id: user.id }
       ])
+
       if (linkError) {
-        alert('Error creating friend link: ' + linkError.message);
-        return;
+        alert('Error creating friend link: ' + linkError.message)
+        console.error(linkError)
+        return
       }
 
       alert('Friend request accepted!')
@@ -163,35 +156,14 @@
       }
     }
 
-    // ---- NEW BI-DIRECTIONAL FRIENDS FUNCTION ----
     async function loadFriends() {
-      // Select both directions: user is either user_id or friend_id
-      const { data, error } = await supabase
-        .from('friend_links')
-        .select('user_id, friend_id')
-        .or(`user_id.eq.${user.id},friend_id.eq.${user.id}`)
-
+      const { data, error } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
       const container = document.getElementById('friends-list')
       container.innerHTML = ''
       if (error) {
         container.innerHTML = '<p>Error loading friends: ' + error.message + '</p>'
-        return
-      }
-
-      // Extract the other user from each pair
-      let friendIds = []
-      if (data && data.length > 0) {
-        data.forEach(row => {
-          if (row.user_id === user.id)
-            friendIds.push(row.friend_id)
-          else if (row.friend_id === user.id)
-            friendIds.push(row.user_id)
-        })
-      }
-      // Remove duplicates just in case
-      friendIds = [...new Set(friendIds)]
-
-      if (friendIds.length) {
+      } else if (data && data.length) {
+        const friendIds = data.map(f => f.friend_id)
         const { data: profiles } = await supabase.from('profiles').select('id, username, avatar_url').in('id', friendIds)
         if (profiles) profiles.forEach(friend => {
           const card = document.createElement('div')
@@ -212,21 +184,10 @@
         container.innerHTML = '<p>Error loading users: ' + usersError.message + '</p>'
         return
       }
-      // Use the new bi-directional query here too (optional):
-      const { data: friendLinks } = await supabase
-        .from('friend_links')
-        .select('user_id, friend_id')
-        .or(`user_id.eq.${user.id},friend_id.eq.${user.id}`)
-      let friendIds = []
-      if (friendLinks && friendLinks.length) {
-        friendLinks.forEach(row => {
-          if (row.user_id === user.id) friendIds.push(row.friend_id)
-          else if (row.friend_id === user.id) friendIds.push(row.user_id)
-        })
-      }
-      friendIds = [...new Set(friendIds)]
       const { data: sentRequests } = await supabase.from('friend_requests').select('recipient').eq('requester', user.id).eq('status', 'pending')
+      const { data: friends } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
       const sentIds = sentRequests ? sentRequests.map(r => r.recipient) : []
+      const friendIds = friends ? friends.map(f => f.friend_id) : []
       if (allUsers && allUsers.length > 0) {
         const otherUsers = allUsers.filter(u => u.id !== user.id)
         if (otherUsers.length === 0) {
@@ -238,7 +199,7 @@
           const isPending = sentIds.includes(u.id)
           const card = document.createElement('div')
           card.className = 'user-card'
-          let buttonHTML = isFriend ? '<button class="pending">Friends âœ“</button>' : (isPending ? '<button class="pending">Pending</button>' : '<button onclick="window.sendRequest(\'' + u.id + '\')">Add Friend</button>')
+          let buttonHTML = isFriend ? '<button class="pending">Friends ✓</button>' : (isPending ? '<button class="pending">Pending</button>' : '<button onclick="window.sendRequest(\'' + u.id + '\')">Add Friend</button>')
           card.innerHTML = '<img src="' + (u.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (u.username || 'User') + '"><div class="name">' + (u.username || 'User') + '</div>' + buttonHTML
           container.appendChild(card)
         })
@@ -262,5 +223,3 @@
   </script>
 </body>
 </html>
-
-
