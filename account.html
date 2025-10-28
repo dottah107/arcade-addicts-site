@@ -254,10 +254,23 @@
       else alert('Profile picture updated! Refresh your dashboard to see it.')
     }
     async function deleteFileHandler(fileName) {
-      if (!confirm('Delete this file?')) return
-      const { error } = await supabase.storage.from('user_uploads').remove([`${user.id}/${fileName}`])
-      if (error) alert('Delete failed: ' + error.message)
-      else loadUploads()
+  if (!confirm('Delete this file?')) return
+  const { error } = await supabase.storage.from('user_uploads').remove([`${user.id}/${fileName}`])
+  if (error) {
+    alert('Delete failed: ' + error.message)
+    return
+  }
+  // Remove any matching activity_feed entries for this file
+  const { error: activityError } = await supabase
+    .from('activity_feed')
+    .delete()
+    .eq('user_id', user.id)
+    .eq('name', fileName)
+  if (activityError) {
+    alert('Upload deleted, but could not remove from recent activity: ' + activityError.message)
+  }
+  loadUploads()
+}
     }
     // ADD TO RECENT ACTIVITY FUNCTION
     async function addToRecentActivity(fileUrl, fileName) {
