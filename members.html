@@ -200,6 +200,47 @@
     loadProfile()
 
     async function loadActivity() {
+  const feed = document.getElementById('activity-feed')
+  feed.innerHTML = ''
+
+  // Pull recent activity ONLY for this user from 'activity_feed' table
+  const { data: activities, error } = await supabase
+    .from('activity_feed')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('timestamp', { ascending: false })
+    .limit(20)
+
+  if (error) {
+    feed.innerHTML = '<p>Error loading recent activity.</p>'
+    return
+  }
+
+  if (activities && activities.length) {
+    for (let act of activities) {
+      const item = document.createElement('div')
+      item.className = 'activity-item'
+
+      // Optional: Handle different types if you store videos or images uploads differently
+      let mediaBlock = ''
+      if (act.media_url) {
+        // simple: show as image for this example
+        mediaBlock = `<img src="${act.media_url}" alt="Activity media">`
+      }
+
+      item.innerHTML = `
+        ${mediaBlock}
+        <div class="info">
+          <p class="author">${act.type ? act.type : 'Activity'}</p>
+          <p class="time">${new Date(act.timestamp || act.created_at).toLocaleString()}</p>
+        </div>
+      `
+      feed.appendChild(item)
+    }
+  } else {
+    feed.innerHTML = '<p>No activity yet.</p>'
+  }
+}
       // Get friend IDs
       const { data: friendLinks } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
       const friendIds = friendLinks ? friendLinks.map(f => f.friend_id) : []
@@ -274,3 +315,4 @@
   </script>
 </body>
 </html>
+
