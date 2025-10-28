@@ -208,7 +208,7 @@
       const feed = document.getElementById('activity-feed')
       feed.innerHTML = ''
 
-      // Pull recent activity from activity_feed table
+      // Use "url" field from your Supabase table for preview/click
       const { data: activities, error } = await supabase
         .from('activity_feed')
         .select('*')
@@ -223,19 +223,15 @@
 
       if (activities && activities.length) {
         for (let act of activities) {
-          // Use act.media_url for previews
           let mediaBlock = ''
-          if (act.media_url) {
-            if ((/\.(mp4|webm|ogg)$/i).test(act.media_url)) {
-              mediaBlock = `<video src="${act.media_url}" muted autoplay loop></video>`
+          if (act.url) {
+            if ((/\.(mp4|webm|ogg)$/i).test(act.url)) {
+              mediaBlock = `<video src="${act.url}" muted autoplay loop></video>`
             } else {
-              mediaBlock = `<img src="${act.media_url}" alt="Activity media">`
+              mediaBlock = `<img src="${act.url}" alt="Activity media">`
             }
           }
-          // Link to open the media in a new tab
-          const linkUrl = act.media_url ? act.media_url : '#'
-
-          // Each card is clickable, wraps the image/video and info
+          const linkUrl = act.url ? act.url : '#'
           const item = document.createElement('a')
           item.className = 'activity-item'
           item.href = linkUrl
