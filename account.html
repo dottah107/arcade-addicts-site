@@ -254,28 +254,29 @@
       else alert('Profile picture updated! Refresh your dashboard to see it.')
     }
     async function deleteFileHandler(fileName) {
-  if (!confirm('Delete this file?')) return
+  if (!confirm('Delete this file?')) return;
 
-  // Remove file from Supabase Storage
-  const { error } = await supabase.storage.from('user_uploads').remove([`${user.id}/${fileName}`])
+  // Delete the file from storage
+  const { error } = await supabase.storage.from('user_uploads').remove([`${user.id}/${fileName}`]);
   if (error) {
-    alert('Delete failed: ' + error.message)
-    return
+    alert('Delete failed: ' + error.message);
+    return;
   }
 
-  // Only delete recent activity records for THIS file and user
+  // Delete only the matching activity record(s) for the file for this user
   const { error: activityError } = await supabase
     .from('activity_feed')
     .delete()
     .eq('user_id', user.id)
-    .eq('name', fileName)
+    .eq('name', fileName);
 
   if (activityError) {
-    alert('Upload deleted, but could not remove from recent activity: ' + activityError.message)
+    alert('Upload deleted, but could not remove from recent activity: ' + activityError.message);
   }
 
-  loadUploads()
+  loadUploads();
 }
+
     }
     // ADD TO RECENT ACTIVITY FUNCTION
     async function addToRecentActivity(fileUrl, fileName) {
