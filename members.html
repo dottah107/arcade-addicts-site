@@ -110,19 +110,28 @@
       border-radius: 10px;
       overflow: hidden;
       transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
     .activity-item:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 20px rgba(0, 224, 255, 0.3);
+      text-decoration: none;
     }
     .activity-item img,
     .activity-item video {
       width: 100%;
       height: 250px;
       object-fit: cover;
+      display: block;
     }
     .activity-item .info {
       padding: 15px;
+      flex: 1 1 auto;
     }
     .activity-item .author {
       font-weight: bold;
@@ -153,7 +162,7 @@
   </div>
 
   <div class="activity-section">
-    <h2> Recent Activity</h2>
+    <h2>Recent Activity</h2>
     <div class="activity-grid" id="activity-feed">
       <p>No activity yet.</p>
     </div>
@@ -199,7 +208,7 @@
       const feed = document.getElementById('activity-feed')
       feed.innerHTML = ''
 
-      // Pull from activity_feed for this user
+      // Pull recent activity from activity_feed table
       const { data: activities, error } = await supabase
         .from('activity_feed')
         .select('*')
@@ -214,12 +223,23 @@
 
       if (activities && activities.length) {
         for (let act of activities) {
-          const item = document.createElement('div')
-          item.className = 'activity-item'
+          // Use act.media_url for previews
           let mediaBlock = ''
           if (act.media_url) {
-            mediaBlock = `<img src="${act.media_url}" alt="Activity media">`
+            if ((/\.(mp4|webm|ogg)$/i).test(act.media_url)) {
+              mediaBlock = `<video src="${act.media_url}" muted autoplay loop></video>`
+            } else {
+              mediaBlock = `<img src="${act.media_url}" alt="Activity media">`
+            }
           }
+          // Link to open the media in a new tab
+          const linkUrl = act.media_url ? act.media_url : '#'
+
+          // Each card is clickable, wraps the image/video and info
+          const item = document.createElement('a')
+          item.className = 'activity-item'
+          item.href = linkUrl
+          item.target = '_blank'
           item.innerHTML = `
             ${mediaBlock}
             <div class="info">
