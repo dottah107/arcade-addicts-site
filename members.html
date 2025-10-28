@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -11,7 +11,6 @@
       color: #eee;
       font-family: "Segoe UI", Arial, sans-serif;
     }
-
     .top-nav {
       background: #fff;
       padding: 15px 40px;
@@ -39,7 +38,6 @@
       transition: 0.2s;
     }
     .top-nav .nav-links a:hover { color: #00e0ff; }
-
     .hero {
       background: linear-gradient(135deg, #0070b8, #005a8a);
       background-size: cover;
@@ -91,7 +89,6 @@
       object-fit: cover;
       z-index: 0;
     }
-
     .activity-section {
       max-width: 1200px;
       margin: 40px auto;
@@ -181,7 +178,6 @@
       if (data) {
         displayNameHero.textContent = data.username || 'Gamer'
         avatarEl.src = data.avatar_url || avatarEl.src
-        
         if (data.background_url) {
           const isVideo = data.background_url.match(/\.(mp4|webm|ogg)$/i)
           if (isVideo) {
@@ -200,69 +196,41 @@
     loadProfile()
 
     async function loadActivity() {
-      // Get friend IDs
-      const { data: friendLinks } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
-      const friendIds = friendLinks ? friendLinks.map(f => f.friend_id) : []
-      
-      // Always include yourself
-      const userIds = [user.id, ...friendIds]
-
-      console.log('Loading posts for user IDs:', userIds)
-
-      // Get posts from you and your friends
-      const { data: posts, error } = await supabase
-        .from('posts')
-        .select('*')
-        .in('user_id', userIds)
-        .order('created_at', { ascending: false })
-        .limit(20)
-
-      console.log('Posts query result:', posts, 'Error:', error)
-
       const feed = document.getElementById('activity-feed')
       feed.innerHTML = ''
 
-      if (posts && posts.length) {
-        // Get all unique user IDs from posts
-        const postUserIds = [...new Set(posts.map(p => p.user_id))]
-        
-        // Fetch profiles for all post authors
-        const { data: profiles } = await supabase
-          .from('profiles')
-          .select('id, username')
-          .in('id', postUserIds)
-        
-        // Create a map of user_id to username
-        const profileMap = {}
-        if (profiles) {
-          profiles.forEach(p => {
-            profileMap[p.id] = p.username || 'User'
-          })
-        }
+      // Pull from activity_feed for this user
+      const { data: activities, error } = await supabase
+        .from('activity_feed')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('timestamp', { ascending: false })
+        .limit(20)
 
-        posts.forEach(post => {
+      if (error) {
+        feed.innerHTML = '<p>Error loading recent activity.</p>'
+        return
+      }
+
+      if (activities && activities.length) {
+        for (let act of activities) {
           const item = document.createElement('div')
           item.className = 'activity-item'
-
-          const isVideo = post.media_type === 'video' || post.content_type === 'video'
-          const media = isVideo 
-            ? `<video src="${post.media_url}" muted></video>`
-            : `<img src="${post.media_url}" alt="Activity post">`
-
-          const authorName = profileMap[post.user_id] || 'Unknown'
-          const timeAgo = new Date(post.created_at).toLocaleDateString()
-
+          let mediaBlock = ''
+          if (act.media_url) {
+            mediaBlock = `<img src="${act.media_url}" alt="Activity media">`
+          }
           item.innerHTML = `
-            ${media}
+            ${mediaBlock}
             <div class="info">
-              <p class="author">${authorName}</p>
-              <p class="time">${timeAgo}</p>
+              <p class="author">${act.type ? act.type : 'Activity'}</p>
+              <p class="time">${new Date(act.timestamp || act.created_at).toLocaleString()}</p>
             </div>
           `
           feed.appendChild(item)
-        })
+        }
       } else {
-        feed.innerHTML = '<p>No activity yet. Add friends or post something!</p>'
+        feed.innerHTML = '<p>No activity yet.</p>'
       }
     }
     loadActivity()
