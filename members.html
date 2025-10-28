@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Dashboard - Arcade Addicts</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0b0c10;
+      color: #eee;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .top-nav {
+      background: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ddd;
+    }
+    .top-nav .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #0b0c10;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .top-nav .logo:hover { color: #00e0ff; }
+    .top-nav .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    .top-nav .nav-links a {
+      color: #555;
+      text-decoration: none;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+    .top-nav .nav-links a:hover { color: #00e0ff; }
+
+    .hero {
+      background: linear-gradient(135deg, #0070b8, #005a8a);
+      background-size: cover;
+      background-position: center;
+      padding: 60px 20px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+    .hero .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero p {
+      font-size: 16px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+    .hero video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .activity-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .activity-section h2 {
+      color: #00e0ff;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .activity-item {
+      background: #171717;
+      border: 1px solid #00e0ff;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: 0.2s;
+    }
+    .activity-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 224, 255, 0.3);
+    }
+    .activity-item img,
+    .activity-item video {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    .activity-item .info {
+      padding: 15px;
+    }
+    .activity-item .author {
+      font-weight: bold;
+      color: #00e0ff;
+      margin-bottom: 5px;
+    }
+    .activity-item .time {
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-nav">
+    <a href="/index.html" class="logo"> Arcade Addicts</a>
+    <div class="nav-links">
+      <a href="/friends.html">Friends</a>
+      <a href="/account.html">Your Account</a>
+      <a href="#" id="logout-link">Log Out</a>
+    </div>
+  </div>
+
+  <div class="hero" id="hero-section">
+    <img class="avatar" id="avatar-preview" src="https://placehold.co/140x140?text=Avatar" alt="Profile Picture">
+    <h1 id="display-name-hero">Your Gamertag</h1>
+    <p id="member-since">Member Since <span id="join-date">January 1st, 2025</span></p>
+  </div>
+
+  <div class="activity-section">
+    <h2> Recent Activity</h2>
+    <div class="activity-grid" id="activity-feed">
+      <p>No activity yet.</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+    const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) window.location.href = '/login.html'
+    const user = session.user
+
+    const avatarEl = document.getElementById('avatar-preview')
+    const displayNameHero = document.getElementById('display-name-hero')
+    const heroSection = document.getElementById('hero-section')
+
+    async function loadProfile() {
+      const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+      if (data) {
+        displayNameHero.textContent = data.username || 'Gamer'
+        avatarEl.src = data.avatar_url || avatarEl.src
+        
+        if (data.background_url) {
+          const isVideo = data.background_url.match(/\.(mp4|webm|ogg)$/i)
+          if (isVideo) {
+            const video = document.createElement('video')
+            video.src = data.background_url
+            video.autoplay = true
+            video.loop = true
+            video.muted = true
+            heroSection.appendChild(video)
+          } else {
+            heroSection.style.backgroundImage = `url(${data.background_url})`
+          }
+        }
+      }
+    }
+    loadProfile()
+
+    async function loadActivity() {
+      // Get friend IDs
+      const { data: friendLinks } = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
+      const friendIds = friendLinks ? friendLinks.map(f => f.friend_id) : []
+      
+      // Always include yourself
+      const userIds = [user.id, ...friendIds]
+
+      console.log('Loading posts for user IDs:', userIds)
+
+      // Get posts from you and your friends
+      const { data: posts, error } = await supabase
+        .from('posts')
+        .select('*')
+        .in('user_id', userIds)
+        .order('created_at', { ascending: false })
+        .limit(20)
+
+      console.log('Posts query result:', posts, 'Error:', error)
+
+      const feed = document.getElementById('activity-feed')
+      feed.innerHTML = ''
+
+      if (posts && posts.length) {
+        // Get all unique user IDs from posts
+        const postUserIds = [...new Set(posts.map(p => p.user_id))]
+        
+        // Fetch profiles for all post authors
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('id, username')
+          .in('id', postUserIds)
+        
+        // Create a map of user_id to username
+        const profileMap = {}
+        if (profiles) {
+          profiles.forEach(p => {
+            profileMap[p.id] = p.username || 'User'
+          })
+        }
+
+        posts.forEach(post => {
+          const item = document.createElement('div')
+          item.className = 'activity-item'
+
+          const isVideo = post.media_type === 'video' || post.content_type === 'video'
+          const media = isVideo 
+            ? `<video src="${post.media_url}" muted></video>`
+            : `<img src="${post.media_url}" alt="Activity post">`
+
+          const authorName = profileMap[post.user_id] || 'Unknown'
+          const timeAgo = new Date(post.created_at).toLocaleDateString()
+
+          item.innerHTML = `
+            ${media}
+            <div class="info">
+              <p class="author">${authorName}</p>
+              <p class="time">${timeAgo}</p>
+            </div>
+          `
+          feed.appendChild(item)
+        })
+      } else {
+        feed.innerHTML = '<p>No activity yet. Add friends or post something!</p>'
+      }
+    }
+    loadActivity()
+
+    document.getElementById('logout-link').onclick = async () => {
+      await supabase.auth.signOut()
+      window.location.href = '/login.html'
+    }
+  </script>
+</body>
+</html>
