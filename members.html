@@ -171,7 +171,7 @@
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
     const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
     const supabase = createClient(supabaseUrl, supabaseKey)
 
     const { data: { session } } = await supabase.auth.getSession()
@@ -208,28 +208,13 @@
       const feed = document.getElementById('activity-feed')
       feed.innerHTML = ''
 
-      // 1. Get all friend IDs (both directions), include yourself
-      let { data: outFriends } = await supabase
-        .from('friend_links')
-        .select('friend_id')
-        .eq('user_id', user.id)
-      let { data: inFriends } = await supabase
-        .from('friend_links')
-        .select('user_id')
-        .eq('friend_id', user.id)
-      const friendIds = new Set()
-      outFriends?.forEach(f => friendIds.add(f.friend_id))
-      inFriends?.forEach(f => friendIds.add(f.user_id))
-      friendIds.add(user.id)
-      const idsArray = Array.from(friendIds)
-
-      // 2. Fetch activities for you and all friends, join with profiles for username
+      // Use "url" field from your Supabase table for preview/click
       const { data: activities, error } = await supabase
         .from('activity_feed')
-        .select('*, profiles:profiles(username)')
-        .in('user_id', idsArray)
+        .select('*')
+        .eq('user_id', user.id)
         .order('timestamp', { ascending: false })
-        .limit(25)
+        .limit(20)
 
       if (error) {
         feed.innerHTML = '<p>Error loading recent activity.</p>'
@@ -247,9 +232,6 @@
             }
           }
           const linkUrl = act.url ? act.url : '#'
-          // Use the real uploader's username
-          const username = act.profiles?.username || act.user_id
-
           const item = document.createElement('a')
           item.className = 'activity-item'
           item.href = linkUrl
@@ -257,7 +239,7 @@
           item.innerHTML = `
             ${mediaBlock}
             <div class="info">
-              <p class="author">${username}</p>
+              <p class="author">${act.type ? act.type : 'Activity'}</p>
               <p class="time">${new Date(act.timestamp || act.created_at).toLocaleString()}</p>
             </div>
           `
