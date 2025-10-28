@@ -1,123 +1,260 @@
-<script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-  const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
-  const supabase = createClient(supabaseUrl, supabaseKey)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Dashboard - Arcade Addicts</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0b0c10;
+      color: #eee;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+    .top-nav {
+      background: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ddd;
+    }
+    .top-nav .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #0b0c10;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .top-nav .logo:hover { color: #00e0ff; }
+    .top-nav .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    .top-nav .nav-links a {
+      color: #555;
+      text-decoration: none;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+    .top-nav .nav-links a:hover { color: #00e0ff; }
+    .hero {
+      background: linear-gradient(135deg, #0070b8, #005a8a);
+      background-size: cover;
+      background-position: center;
+      padding: 60px 20px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+    .hero .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero p {
+      font-size: 16px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+    .hero video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .activity-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .activity-section h2 {
+      color: #00e0ff;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .activity-item {
+      background: #171717;
+      border: 1px solid #00e0ff;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .activity-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 224, 255, 0.3);
+      text-decoration: none;
+    }
+    .activity-item img,
+    .activity-item video {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+    }
+    .activity-item .info {
+      padding: 15px;
+      flex: 1 1 auto;
+    }
+    .activity-item .author {
+      font-weight: bold;
+      color: #00e0ff;
+      margin-bottom: 5px;
+    }
+    .activity-item .time {
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
 
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) window.location.href = '/login.html'
-  const user = session.user
+  <div class="top-nav">
+    <a href="/index.html" class="logo"> Arcade Addicts</a>
+    <div class="nav-links">
+      <a href="/friends.html">Friends</a>
+      <a href="/account.html">Your Account</a>
+      <a href="#" id="logout-link">Log Out</a>
+    </div>
+  </div>
 
-  const avatarEl = document.getElementById('avatar-preview')
-  const displayNameHero = document.getElementById('display-name-hero')
-  const heroSection = document.getElementById('hero-section')
+  <div class="hero" id="hero-section">
+    <img class="avatar" id="avatar-preview" src="https://placehold.co/140x140?text=Avatar" alt="Profile Picture">
+    <h1 id="display-name-hero">Your Gamertag</h1>
+    <p id="member-since">Member Since <span id="join-date">January 1st, 2025</span></p>
+  </div>
 
-  async function loadProfile() {
-    const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
-    if (data) {
-      displayNameHero.textContent = data.username || 'Gamer'
-      avatarEl.src = data.avatar_url || avatarEl.src
-      if (data.background_url) {
-        const isVideo = data.background_url.match(/\.(mp4|webm|ogg)$/i)
-        if (isVideo) {
-          const video = document.createElement('video')
-          video.src = data.background_url
-          video.autoplay = true
-          video.loop = true
-          video.muted = true
-          heroSection.appendChild(video)
-        } else {
-          heroSection.style.backgroundImage = `url(${data.background_url})`
+  <div class="activity-section">
+    <h2>Recent Activity</h2>
+    <div class="activity-grid" id="activity-feed">
+      <p>No activity yet.</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+    const supabaseUrl = 'https://xvhkwyhncuivsfwfmvbg.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2aGt3eWhuY3VpdnNmd2ZtdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MzQxNjgsImV4cCI6MjA3NDQxMDE2OH0.oeCz6LHCCzLvHqO7q9cNiiiotrUm8kzmzdJjfzBIA-8'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) window.location.href = '/login.html'
+    const user = session.user
+
+    const avatarEl = document.getElementById('avatar-preview')
+    const displayNameHero = document.getElementById('display-name-hero')
+    const heroSection = document.getElementById('hero-section')
+
+    async function loadProfile() {
+      const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+      if (data) {
+        displayNameHero.textContent = data.username || 'Gamer'
+        avatarEl.src = data.avatar_url || avatarEl.src
+        if (data.background_url) {
+          const isVideo = data.background_url.match(/\.(mp4|webm|ogg)$/i)
+          if (isVideo) {
+            const video = document.createElement('video')
+            video.src = data.background_url
+            video.autoplay = true
+            video.loop = true
+            video.muted = true
+            heroSection.appendChild(video)
+          } else {
+            heroSection.style.backgroundImage = `url(${data.background_url})`
+          }
         }
       }
     }
-  }
-  loadProfile()
+    loadProfile()
 
-  async function loadActivity() {
-    const feed = document.getElementById('activity-feed')
-    feed.innerHTML = ''
+    async function loadActivity() {
+      const feed = document.getElementById('activity-feed')
+      feed.innerHTML = ''
 
-    // Get all friend user IDs (yourself included)
-    let outFriends = []
-    let inFriends = []
-    try {
-      const outRes = await supabase.from('friend_links').select('friend_id').eq('user_id', user.id)
-      if (outRes.data) outFriends = outRes.data
-      const inRes = await supabase.from('friend_links').select('user_id').eq('friend_id', user.id)
-      if (inRes.data) inFriends = inRes.data
-    } catch {}
-
-    const userIds = new Set()
-    outFriends.forEach(f => userIds.add(f.friend_id))
-    inFriends.forEach(f => userIds.add(f.user_id))
-    userIds.add(user.id) // always include self
-
-    const idsArray = Array.from(userIds)
-    if (!idsArray.length) {
-      feed.innerHTML = '<p>No activity yet.</p>'
-      return
-    }
-
-    // Fetch all activities
-    let activities = []
-    try {
-      const actRes = await supabase
+      // Use "url" field from your Supabase table for preview/click
+      const { data: activities, error } = await supabase
         .from('activity_feed')
         .select('*')
-        .in('user_id', idsArray)
+        .eq('user_id', user.id)
         .order('timestamp', { ascending: false })
-        .limit(25)
-      if (actRes.data) activities = actRes.data
-    } catch {}
-    if (!activities.length) {
-      feed.innerHTML = '<p>No activity yet.</p>'
-      return
-    }
+        .limit(20)
 
-    // Fetch all usernames
-    let usernameMap = {}
-    try {
-      const uniqueUserIds = [...new Set(activities.map(a => a.user_id))]
-      const profRes = await supabase
-        .from('profiles')
-        .select('id,username')
-        .in('id', uniqueUserIds)
-      if (profRes.data) {
-        profRes.data.forEach(p => { usernameMap[p.id] = p.username })
+      if (error) {
+        feed.innerHTML = '<p>Error loading recent activity.</p>'
+        return
       }
-    } catch {}
 
-    // Render activities
-    for (let act of activities) {
-      let mediaBlock = ''
-      if (act.url) {
-        if ((/\.(mp4|webm|ogg)$/i).test(act.url)) {
-          mediaBlock = `<video src="${act.url}" muted autoplay loop></video>`
-        } else {
-          mediaBlock = `<img src="${act.url}" alt="Activity media">`
+      if (activities && activities.length) {
+        for (let act of activities) {
+          let mediaBlock = ''
+          if (act.url) {
+            if ((/\.(mp4|webm|ogg)$/i).test(act.url)) {
+              mediaBlock = `<video src="${act.url}" muted autoplay loop></video>`
+            } else {
+              mediaBlock = `<img src="${act.url}" alt="Activity media">`
+            }
+          }
+          const linkUrl = act.url ? act.url : '#'
+          const item = document.createElement('a')
+          item.className = 'activity-item'
+          item.href = linkUrl
+          item.target = '_blank'
+          item.innerHTML = `
+            ${mediaBlock}
+            <div class="info">
+              <p class="author">${act.type ? act.type : 'Activity'}</p>
+              <p class="time">${new Date(act.timestamp || act.created_at).toLocaleString()}</p>
+            </div>
+          `
+          feed.appendChild(item)
         }
+      } else {
+        feed.innerHTML = '<p>No activity yet.</p>'
       }
-      const linkUrl = act.url ? act.url : '#'
-      const username = usernameMap[act.user_id] || act.user_id
-      const item = document.createElement('a')
-      item.className = 'activity-item'
-      item.href = linkUrl
-      item.target = '_blank'
-      item.innerHTML = `
-        ${mediaBlock}
-        <div class="info">
-          <p class="author">${username}</p>
-          <p class="time">${new Date(act.timestamp || act.created_at).toLocaleString()}</p>
-        </div>
-      `
-      feed.appendChild(item)
     }
-  }
-  loadActivity()
+    loadActivity()
 
-  document.getElementById('logout-link').onclick = async () => {
-    await supabase.auth.signOut()
-    window.location.href = '/login.html'
-  }
-</script>
+    document.getElementById('logout-link').onclick = async () => {
+      await supabase.auth.signOut()
+      window.location.href = '/login.html'
+    }
+  </script>
+</body>
+</html>
