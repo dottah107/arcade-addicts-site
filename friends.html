@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -199,7 +199,7 @@
           const isPending = sentIds.includes(u.id)
           const card = document.createElement('div')
           card.className = 'user-card'
-          let buttonHTML = isFriend ? '<button class="pending">Friends âœ“</button>' : (isPending ? '<button class="pending">Pending</button>' : '<button onclick="window.sendRequest(\'' + u.id + '\')">Add Friend</button>')
+          let buttonHTML = isFriend ? '<button class="pending">Friends ✓</button>' : (isPending ? '<button class="pending">Pending</button>' : '<button onclick="window.sendRequest(\'' + u.id + '\')">Add Friend</button>')
           card.innerHTML = '<img src="' + (u.avatar_url || 'https://placehold.co/80x80?text=User') + '" alt="' + (u.username || 'User') + '"><div class="name">' + (u.username || 'User') + '</div>' + buttonHTML
           container.appendChild(card)
         })
