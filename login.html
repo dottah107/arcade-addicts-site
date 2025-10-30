@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login - Arcade Addicts</title>
+<link rel='stylesheet' href='styles.css'>
+</head>
+<body>
+<header>
+    <nav>
+        <a href='home.html'>Home</a>
+        <a href='tournaments.html'>Tournaments</a>
+        <a href='members.html'>Members</a>
+        <a href='friends.html'>Friends</a>
+        <a href='account.html'>Account</a>
+        <a href='AAAlounge.html'>Lounge</a>
+        <a href='pay.html'>Pay</a>
+        <a href='logout.html'>Logout</a>
+    </nav>
+</header>
+<header><h1>Arcade Addicts Login</h1></header>
+<nav>
+  <a href='home.html'>Home</a>
+  <a href='tournaments.html'>Tournaments</a>
+  <a href='members.html'>Members</a>
+  <a href='friends.html'>Friends</a>
+  <a href='account.html'>Account</a>
+  <a href='AAAlounge.html'>Lounge</a>
+  <a href='pay.html'>Pay</a>
+  <a href='logout.html'>Logout</a>
+</nav>
+<div class='container'>
+    <h2>Member Login</h2>
+    <form id='loginForm'>
+        <input type='email' placeholder='Email' required /><br>
+        <input type='password' placeholder='Password' required /><br>
+        <input type='submit' value='Login'>
+    </form>
+    <button onclick='location.href=\"reset.html\"'>Forgot Password?</button>
+    <button onclick='location.href=\"register.html\"'>Register Here</button>
+</div>
+<script src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js'></script>
+<script>
+const supabase = supabase.createClient('https://xvhkwyhncuivsfwfmvbg.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz...');
+// Add Supabase login logic here
+</script>
+<div class='footer'>© Arcade Addicts</div>
+</body>
+</html>
+
