@@ -1,0 +1,38 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Friends — Arcade Addicts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <script defer src="/assets/js/supabase-init.js"></script>
+  <script defer src="/assets/js/header.js"></script>
+  <script defer src="/assets/js/friends.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+  <header id="aa-header"></header>
+  <main class="container">
+    <h1>Friends</h1>
+
+    <section class="grid-3">
+      <div class="card">
+        <h2>Friend Requests</h2>
+        <div id="requests"></div>
+      </div>
+
+      <div class="card">
+        <h2>Your Friends</h2>
+        <div id="friends"></div>
+      </div>
+
+      <div class="card">
+        <h2>Find Members</h2>
+        <input id="search" placeholder="Search username..." />
+        <div id="all-members"></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
+

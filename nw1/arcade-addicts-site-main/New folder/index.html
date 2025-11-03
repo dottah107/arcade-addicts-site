@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Arcade Addicts - Home</title>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel='stylesheet' href='styles.css'>
+<style>
+body { background:#181820; font-family:'Segoe UI',Arial,sans-serif; margin:0; }
+.hero-welcome {
+  background: linear-gradient(95deg,#212133 70%,#15ff95 135%);
+  color: #fff15f;
+  text-align: center;
+  padding: 38px 16px 27px 16px;
+  border-radius: 18px;
+  box-shadow:0 2px 24px #111b;
+  margin-top:35px;
+  animation:glow 2s infinite alternate;
+}
+@keyframes glow{
+  from{box-shadow:0 2px 24px #111b;}
+  to{box-shadow:0 2px 28px #32ffb2a0;}
+}
+.hero-welcome h1 { font-size:1.65em; margin-bottom:16px;}
+.hero-welcome p { color:#fff; margin-bottom:18px; font-size:1.11em;}
+.cta-btn {
+  background:#15ff95;
+  color:#2e294a;
+  font-weight:700;
+  border-radius:10px;
+  border:none;
+  padding:12px 36px;
+  margin:16px 9px 0 9px;
+  font-size:1.13em;
+  text-decoration:none;
+  box-shadow:0 2px 8px #1117;
+  transition:.19s;
+  display:inline-block;
+}
+.cta-btn:hover{background:#fff15f; color:#181820;}
+.section {
+  background: #232345;
+  color: #fff;
+  border-radius: 17px;
+  box-shadow: 0 4px 18px #111b;
+  max-width:440px;
+  margin:28px auto 0 auto;
+  padding:22px 17px 18px 17px;
+}
+.section h2{color:#15ff95;margin-bottom:12px;font-size:1.15em;}
+.tournament-card{
+  background:#16163d;border-radius:12px;padding:17px 15px 11px 15px;
+  box-shadow:0 6px 18px #111b;text-align:center;position:relative;max-width:320px;margin:15px auto 0 auto;
+  border:1.2px solid #15ff95;
+}
+.tournament-card img{
+  width:100%;max-width:290px;height:135px;object-fit:cover;border-radius:10px;border:2.5px solid #fff15f;
+  margin-bottom:7px; box-shadow:0 4px 12px #1818;
+}
+.tournament-title{font-weight:800;color:#fff15f;font-size:1.08em;margin-bottom:7px;}
+.tournament-countdown{color:#23c48c;font-size:.98em;margin-bottom:10px;border-radius:6px;}
+.support-label{
+  color:#fff15f;font-weight:700;font-size:1.1em;margin-bottom:5px;
+}
+.support-icons img{width:30px;height:30px;margin-right:7px;vertical-align:middle;}
+.contact-block{background:#222237;border-radius:8px;padding:8px 12px;margin-top:13px;box-shadow:0 2px 11px #111;}
+.contact-block p{margin:4px 0;}
+@media(max-width:590px){
+  .section,.hero-welcome{max-width:98vw;padding:13px 2vw;}
+  .tournament-card img{height:66px;max-width:96vw;}
+}
+</style>
+</head>
+<body>
+<div class='hero-welcome'>
+  <h1>Welcome to Arcade Addicts!</h1>
+  <p>Where competitive gaming meets community.<br>Battle the best, earn your place, and join the excitement!</p>
+  <a class='cta-btn' href='register.html'>Register</a>
+  <a class='cta-btn' href='tournaments.html'>Join Tournament</a>
+</div>
+<div class='section'>
+  <h2>Featured Tournament</h2>
+  <div class='tournament-card'>
+    <img src='arcade-addicts-site-main/images/mk1.jpg' alt='Tournament Spotlight'>
+    <div class='tournament-title'>Mortal Kombat 1 – LIVE BRACKET</div>
+    <div class='tournament-countdown'>Next Event Starts In: <span id='countdown'>03:25:18</span></div>
+    <a href='tournaments.html' class='cta-btn' style='margin-top:7px;'>View Tournament</a>
+  </div>
+</div>
+<div class='section'>
+  <span class='support-label'>Support & Contact</span>
+  <div class='support-icons'>
+    <img src='arcade-addicts-site-main/images/bo6.jpg' title='Donate'>
+    <img src='arcade-addicts-site-main/images/sf6.jpg' title='Sponsor'>
+    <img src='arcade-addicts-site-main/images/dragon-ball-fighterz.jpg' title='Share'>
+  </div>
+  <div class='contact-block'>
+    <p>Email: arcadeaddicts07@gmail.com</p>
+    <p>Phone: (252) 341-3318</p>
+    <p>Hours: Mon–Sat, 10a–8p ET</p>
+    <p>Questions about rules, formats, or sponsorships? Hit us up!</p>
+    <a class='cta-btn' href='pay.html'>Support Arcade Addicts</a>
+  </div>
+</div>
+<script>
+  // Demo countdown, can be wired dynamically later
+  function updateCountdown(){
+    var cd = document.getElementById('countdown');
+    var t = new Date();
+    cd.textContent = t.getHours().toString().padStart(2,'0')+':' +
+      t.getMinutes().toString().padStart(2,'0')+':' +
+      t.getSeconds().toString().padStart(2,'0');
+  }
+  setInterval(updateCountdown,1000);
+</script>
+</body>
+</html>

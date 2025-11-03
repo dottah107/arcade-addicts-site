@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Arcade Addicts - Home</title>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel='stylesheet' href='styles.css'>
+<style>
+.topnav {
+  position:absolute;
+  top:22px; right:32px;
+  z-index:99;
+  background:rgba(30,32,56,0.94);
+  padding:7px 13px;
+  border-radius:13px;
+  box-shadow:0 3px 12px #10105a33;
+}
+.topnav a {
+  color:#15ff95;
+  font-weight:600;
+  margin-left:17px;
+  text-decoration:none;
+  font-size:1.03em;
+  padding:3px 5px;
+  transition:.15s;
+  border-radius:5px;
+}
+.topnav a:first-child {margin-left:0;}
+.topnav a:hover {
+  color:#fff15f;
+  background:rgba(21,255,149,0.19);
+}
+@media(max-width:700px){.topnav{right:4vw;top:16px;}}
+body { background:#181820; font-family:'Segoe UI',Arial,sans-serif; margin:0; }
+.hero-welcome {
+  background: linear-gradient(95deg,#212133 70%,#15ff95 135%);
+  color:#fff15f;
+  text-align:center;
+  padding:33px 14px 21px 14px;
+  border-radius:18px;
+  box-shadow:0 2px 24px #111b;
+  margin-top:33px;
+}
+.hero-welcome h1 { font-size:1.55em; margin-bottom:13px;}
+.hero-welcome p { color:#fff; margin-bottom:15px; font-size:1.06em;}
+.cta-btn {
+  background:#15ff95;color:#2e294a;font-weight:700;
+  border-radius:10px;border:none;padding:10px 26px;margin:12px 7px 0 7px;font-size:1.09em;text-decoration:none;transition:.18s;display:inline-block;
+}
+.cta-btn:hover{background:#fff15f;color:#181820;}
+.section {
+  background:#232345;color:#fff;border-radius:16px;box-shadow:0 3px 17px #111b;max-width:990px;margin:22px auto 0 auto;padding:15px 11px 17px 11px;
+}
+.section h2{color:#15ff95;margin-bottom:11px;font-size:1.09em;}
+.tournament-flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top:13px;
+}
+.tournament-card{
+  background:#16163d;border-radius:11px;padding:9px 8px 7px 8px;box-shadow: 0 3px 9px #111b;text-align:center;position:relative;width:150px;
+  min-width:140px;max-width:190px;margin:2px 0;border:1px solid #15ff95;
+  display:flex;flex-direction:column;align-items:center;
+}
+.tournament-card img{
+  width:95%;max-width:178px;height:55px;object-fit:cover;border-radius:8px;border:1px solid #fff15f;margin-bottom:4px;box-shadow:0 2px 8px #1818;
+}
+.tournament-title{font-weight:700;color:#fff15f;font-size:.98em;margin-bottom:3px;}
+@media(max-width:900px){.section{max-width:99vw;}.tournament-flex-row{gap:7px;}.tournament-card img{height:38px;}}
+@media(max-width:680px){.tournament-flex-row{flex-direction:column;align-items:center;max-width:97vw;padding:0;}}
+</style>
+</head>
+<body>
+<nav class='topnav'>
+  <a href='tournaments.html'>Tournaments</a>
+  <a href='login.html'>Login</a>
+  <a href='register.html'>Register</a>
+  <a href='AAA-Arcade-Addicts-Anonymous-Lounge.html'>Lounge</a>
+  <a href='#contact'>Contact</a>
+</nav>
+<div class='hero-welcome'>
+  <h1>Welcome to Arcade Addicts!</h1>
+  <p>Where competitive gaming meets community.<br>Battle the best, earn your place, and join the excitement!</p>
+  <a class='cta-btn' href='register.html'>Register</a>
+  <a class='cta-btn' href='tournaments.html'>Join Tournament</a>
+</div>
+<div class='section'>
+  <h2>Featured Tournaments</h2>
+  <div class='tournament-flex-row'>
+  <div class='tournament-card'>
+    <img src='arcade-addicts-site-main/images/mk1.jpg' alt='Mortal Kombat 1'>
+    <div class='tournament-title'>Mortal Kombat 1</div>
+    <a href='tournaments.html' class='cta-btn'>Details</a>
+  </div>
+  <div class='tournament-card'>
+    <img src='arcade-addicts-site-main/images/sf6.jpg' alt='Street Fighter 6'>
+    <div class='tournament-title'>Street Fighter 6</div>
+    <a href='tournaments.html' class='cta-btn'>Details</a>
+  </div>
+  <div class='tournament-card'>
+    <img src='arcade-addicts-site-main/images/dragon-ball-fighterz.jpg' alt='Dragon Ball FighterZ'>
+    <div class='tournament-title'>Dragon Ball FighterZ</div>
+    <a href='tournaments.html' class='cta-btn'>Details</a>
+  </div>
+  <div class='tournament-card'>
+    <img src='arcade-addicts-site-main/images/bo6.jpg' alt='Call of Duty Black Ops 6'>
+    <div class='tournament-title'>Call of Duty Black Ops 6</div>
+    <a href='tournaments.html' class='cta-btn'>Details</a>
+  </div>
+  <div class='tournament-card'>
+    <img src='arcade-addicts-site-main/images/mk1.jpg' alt='Bonus Game'>
+    <div class='tournament-title'>Mystery Game</div>
+    <a href='tournaments.html' class='cta-btn'>Details</a>
+  </div>
+</div>
+</div>
+<div class='section'>
+  <span style='color:#fff15f;font-weight:700;font-size:1.1em;margin-bottom:5px;'>Support & Contact</span>
+  <div style='margin-top:11px;'>
+    <p>Email: arcadeaddicts07@gmail.com</p>
+    <p>Phone: (252) 341-3318</p>
+    <p>Hours: Mon–Sat, 10a–8p ET</p>
+    <a class='cta-btn' href='pay.html'>Support Arcade Addicts</a>
+  </div>
+</div>
+<script>
+const isLoggedIn = false; // Replace this later with Supabase client auth state check!
+window.addEventListener('DOMContentLoaded', function() {
+  if (!isLoggedIn) {
+    // All nav links, hero, buttons, tournament section, support
+    document.querySelectorAll('a, button').forEach(function(el) {
+      if (!el.href.includes('register.html')) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.location.href = 'register.html';
+        });
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>
+
+
