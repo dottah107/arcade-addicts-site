@@ -1,99 +1,23 @@
 ﻿(async function(){
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) { location.replace("/login.html"); return; }
-  const user = session.user;
+  const supa = window.supabaseClient;
+  const { data:{ user } } = await supa.auth.getUser(); if(!user){location.href="login.html";return;}
+  const set = (id,html)=>{ const el=document.getElementById(id); if(el) el.innerHTML=html; };
 
-  // Ensure profile to search by username
-  await supabase.from("profiles").upsert({ id: user.id, username: user.email.split("@")[0] }, { onConflict: "id" });
+  // requests
+  const req = await supa.from("friend_requests").select("*").eq("to_id", user.id);
+  set("friend-requests", (req.error||!req.data?.length) ? `<div class="body mono">No requests.</div>` :
+    req.data.map(x=>`<div class="feed-item">${x.from_name||x.from_id}
+      <button class="btn" data-a="${x.id}">Accept</button>
+      <button class="btn" data-d="${x.id}">Decline</button></div>`).join(""));
 
-  async function render() {
-    await renderRequests();
-    await renderFriends();
-    await renderMembers();
-  }
+  // your friends
+  const fr = await supa.from("friends").select("*").or(`a.eq.${user.id},b.eq.${user.id}`);
+  set("your-friends", (fr.error||!fr.data?.length) ? `<div class="body mono">No friends yet.</div>` :
+    fr.data.map(x=>`<div class="feed-item">${x.a===user.id?x.b_name||x.b:x.a_name||x.a}</div>`).join(""));
 
-  async function renderRequests(){
-    const root = document.getElementById("requests");
-    root.innerHTML = "";
-    const { data } = await supabase
-      .from("friendships_view") /* view provides usernames */
-      .select("*")
-      .eq("addressee_id", user.id)
-      .eq("status", "pending");
-
-    for (const r of (data||[])) {
-      const row = document.createElement("div");
-      row.className = "feed-item";
-      row.innerHTML = `
-        <div class="meta">@${r.requester_username} wants to connect</div>
-        <div class="row">
-          <button class="btn" data-act="accept" data-id="${r.id}">Accept</button>
-          <button class="btn danger" data-act="decline" data-id="${r.id}">Decline</button>
-        </div>
-      `;
-      root.appendChild(row);
-    }
-
-    root.querySelectorAll("[data-act]").forEach(btn=>{
-      btn.addEventListener("click", async ()=>{
-        const id = btn.getAttribute("data-id");
-        const act = btn.getAttribute("data-act");
-        if (act === "accept") {
-          await supabase.from("friendships").update({ status: "accepted" }).eq("id", id);
-        } else {
-          await supabase.from("friendships").delete().eq("id", id);
-        }
-        await renderRequests();
-        await renderFriends();
-      });
-    });
-  }
-
-  async function renderFriends(){
-    const root = document.getElementById("friends");
-    root.innerHTML = "";
-    const { data } = await supabase
-      .from("friends_of_user_view")
-      .select("*")
-      .eq("user_id", user.id);
-    for (const f of (data||[])) {
-      const row = document.createElement("div");
-      row.className = "feed-item";
-      row.innerHTML = `<div class="meta">@${f.username}</div>`;
-      root.appendChild(row);
-    }
-  }
-
-  async function renderMembers(){
-    const root = document.getElementById("all-members");
-    root.innerHTML = "";
-    const q = document.getElementById("search").value?.toLowerCase() || "";
-    let query = supabase.from("profiles").select("id, username").order("username");
-    if (q) query = query.ilike("username", `%${q}%`);
-    const { data } = await query.limit(100);
-    for (const m of (data||[])) {
-      if (m.id === user.id) continue;
-      const row = document.createElement("div");
-      row.className = "feed-item";
-      row.innerHTML = `
-        <div class="meta">@${m.username}</div>
-        <button class="btn" data-send="${m.id}">Add Friend</button>
-      `;
-      root.appendChild(row);
-    }
-    root.querySelectorAll("[data-send]").forEach(btn=>{
-      btn.addEventListener("click", async ()=>{
-        const addressee = btn.getAttribute("data-send");
-        await supabase.from("friendships").insert({
-          requester_id: user.id,
-          addressee_id: addressee,
-          status: "pending"
-        });
-        alert("Request sent.");
-      });
-    });
-  }
-
-  document.getElementById("search")?.addEventListener("input", render);
-  await render();
+  // find
+  const all = await supa.from("profiles").select("id,username").neq("id",user.id).limit(24);
+  set("find-friends", (all.error||!all.data?.length) ? `<div class="body mono">No members found.</div>` :
+    all.data.map(p=>`<div class="card"><div class="body"><b>${p.username||p.id}</b>
+      <button class="btn" data-send="${p.id}">Add</button></div></div>`).join(""));
 })();
