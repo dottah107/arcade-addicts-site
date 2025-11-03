@@ -1,27 +1,18 @@
-﻿<!doctype html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Register — Arcade Addicts</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <script defer src="/assets/js/supabase-init.js"></script>
-  <script defer src="/assets/js/header.js"></script>
-  <script defer src="/assets/js/auth.js"></script>
+  <meta charset="UTF-8">
+  <title>Register - Arcade Addicts</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/auth.js"></script>
 </head>
 <body>
-  <header id="aa-header"></header>
-  <main class="container narrow">
-    <h1>Create your account</h1>
-    <form id="register-form" class="card form">
-      <label>Email <input type="email" id="reg-email" required></label>
-      <label>Password <input type="password" id="reg-password" minlength="6" required></label>
-      <button class="btn" type="submit">Register now</button>
-    </form>
-    <p class="hint">We’ll email you a verification link. After verifying, log in normally.</p>
-    <p id="reg-msg" class="msg"></p>
-  </main>
+  <h1>Register</h1>
+  <form id="register-form">
+    <input type="email" id="reg-email" placeholder="Email" required><br>
+    <input type="password" id="reg-password" placeholder="Password" required><br>
+    <button type="submit">Register Now</button>
+  </form>
 </body>
 </html>
-
