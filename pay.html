@@ -1,27 +1,31 @@
-﻿<!doctype html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Pay — Arcade Addicts</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <script defer src="/assets/js/supabase-init.js"></script>
-  <script defer src="/assets/js/header.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pay · Arcade Addicts</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
 </head>
 <body>
-  <header id="aa-header"></header>
-  <main class="container narrow">
-    <h1>Support & Entry Fees</h1>
-    <div class="card">
-      <h2>Options</h2>
-      <ul class="list">
-        <li><a class="btn" href="https://cash.app/$ArcadeAddicts" target="_blank">Cash App</a></li>
-        <li><a class="btn" href="https://www.paypal.me/ArcadeAddicts" target="_blank">PayPal</a></li>
-        <li><a class="btn" href="#" onclick="alert('Apple Pay on the web requires domain verification + a payment processor. Add later.'); return false;">Apple Pay</a></li>
-      </ul>
-    </div>
+  <div id="site-header"></div>
+  <main class="container grid cards">
+    <div class="card"><div class="body">
+      <h2>Cash App</h2>
+      <p class="mono">$ArcadeAddicts</p>
+      <a class="btn" href="https://cash.app/" target="_blank" rel="noopener">Open Cash App</a>
+    </div></div>
+    <div class="card"><div class="body">
+      <h2>PayPal</h2>
+      <p class="mono">paypal.me/arcadeaddicts</p>
+      <a class="btn" href="https://paypal.me/" target="_blank" rel="noopener">Open PayPal</a>
+    </div></div>
+    <div class="card"><div class="body">
+      <h2>Apple Pay</h2>
+      <p class="mono">Use Apple Wallet to send to our business number.</p>
+    </div></div>
   </main>
+  <script src="assets/js/header.js"></script>
 </body>
 </html>
-

@@ -1,55 +1,70 @@
-﻿:root {
-  --primary: #00FFFF;
-  --bg: #000000;
-  --muted: #101316;
-  --text: #E8F1F2;
-  --accent: #00FFFF;
-  --danger: #ff3b30;
+﻿/* Arcade Addicts UI — dark neon theme */
+:root{
+  --bg:#000; --panel:#0a0f14; --card:#0e1620;
+  --text:#e6f7ff; --muted:#8ba3ad; --accent:#00ffff; --accent-2:#22d3ee;
+  --ok:#10b981; --warn:#f59e0b; --err:#ef4444; --ring:0 0 0 .25rem rgba(0,255,255,.25);
+  --radius:18px; --gap:14px; --shadow:0 10px 30px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.03);
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: var(--bg); color: var(--text);
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
+  background: radial-gradient(1200px 600px at 80% -10%, rgba(0,255,255,.15), transparent 60%), var(--bg);
+  color:var(--text);
 }
-a { color: var(--accent); text-decoration: none; }
-.container { width: min(1100px, 92%); margin: 32px auto; }
-.container.narrow { width: min(680px, 92%); }
-.hero { text-align: center; padding: 40px 0; }
-.btn {
-  background: var(--primary); color: #000; border: none; padding: 12px 16px;
-  border-radius: 14px; font-weight: 700; display: inline-block; cursor: pointer;
+a{color:var(--accent); text-decoration:none}
+a:hover{color:var(--accent-2)}
+.container{max-width:1100px; margin:0 auto; padding:28px}
+.header{
+  position:sticky; top:0; z-index:30; backdrop-filter: blur(8px);
+  background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.4));
+  border-bottom:1px solid rgba(0,255,255,.15);
 }
-.btn.secondary { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-.btn.danger { background: var(--danger); color: #fff; }
-.card { background: var(--muted); border: 1px solid #0f1a1e; border-radius: 16px; padding: 16px; margin: 16px 0; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-@media (max-width: 900px){ .grid-2, .grid-3 { grid-template-columns: 1fr; } }
-.form label { display: block; margin-bottom: 10px; }
-.form input, .form select {
-  width: 100%; padding: 10px; border-radius: 12px; border: 1px solid #1f2a2e; background: #0a0d10; color: var(--text);
+.nav{
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  padding:14px 28px;
 }
-.row-links { display: flex; gap: 16px; justify-content: center; margin-top: 12px; }
-.msg { margin-top: 12px; min-height: 20px; }
-.profile-banner { position: relative; }
-.banner-img { height: 180px; border-radius: 12px; background: #0b0f12 center/cover no-repeat; }
-.avatar { width: 96px; height: 96px; border-radius: 50%; background: #0b0f12 center/cover no-repeat;
-  border: 3px solid var(--primary); position: relative; top: -48px; margin-left: 16px; }
-#member-username { margin: -32px 0 0 128px; }
-.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-.thumb { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid #172027; }
-.thumb video, .thumb img { width: 100%; height: 140px; object-fit: cover; display: block; }
-.hover-menu {
-  position: absolute; inset: 0; background: rgba(0,0,0,.7);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; opacity: 0;
-  transition: opacity .2s;
+.brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.5px}
+.brand .dot{width:10px; height:10px; border-radius:50%; background:var(--accent); box-shadow:0 0 18px var(--accent)}
+.nav a, .nav button{
+  color:var(--text); background:transparent; border:none; font-weight:600; padding:10px 14px; border-radius:12px;
 }
-.thumb:hover .hover-menu { opacity: 1; }
-.feed { display: flex; flex-direction: column; gap: 12px; }
-.feed-item { background: #0b0f12; border: 1px solid #18222a; border-radius: 12px; padding: 12px; }
-.feed-item .meta { opacity: .7; font-size: 14px; }
-.header-bar { display: flex; justify-content: flex-end; gap: 10px; padding: 12px; border-bottom: 1px solid #10161a; background: #06090c; }
-.header-bar a, .header-bar button { color: var(--text); }
-.link { color: var(--primary); font-weight: 600; }
-.list { list-style: none; padding-left: 0; }
-.row { display: flex; gap: 8px; }
+.nav a.active{background:rgba(0,255,255,.12)}
+.nav button{cursor:pointer}
+.btn{
+  background:linear-gradient(180deg, rgba(0,255,255,.18), rgba(0,255,255,.08));
+  border:1px solid rgba(0,255,255,.35); color:var(--text); border-radius:14px;
+  padding:12px 16px; font-weight:700; letter-spacing:.2px; box-shadow: var(--shadow);
+}
+.btn:hover{transform:translateY(-1px); border-color:rgba(0,255,255,.6)}
+.grid{display:grid; gap:var(--gap)}
+.grid.cards{grid-template-columns: repeat(auto-fill, minmax(240px,1fr))}
+.card{
+  background:var(--card); border:1px solid rgba(0,255,255,.12); border-radius:var(--radius);
+  box-shadow: var(--shadow); overflow:hidden;
+}
+.card .body{padding:16px}
+.hero{
+  display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:center; margin-top:28px;
+}
+.hero .panel{
+  background:linear-gradient(180deg, rgba(0,255,255,.07), rgba(0,255,255,.03));
+  border:1px solid rgba(0,255,255,.2); border-radius:var(--radius); padding:26px;
+  box-shadow: var(--shadow);
+}
+.kicker{color:var(--accent-2); text-transform:uppercase; font-size:.8rem; letter-spacing:.18rem}
+h1{margin:10px 0 8px; font-size: clamp(28px, 2.8vw + 12px, 44px)}
+h2{margin:6px 0 10px}
+.mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; color:var(--muted)}
+.input, input, select{
+  width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(0,255,255,.2);
+  background:#0a121a; color:var(--text); outline:none;
+}
+input:focus, select:focus{box-shadow:var(--ring); border-color:var(--accent)}
+.form{display:grid; gap:12px}
+.row{display:flex; gap:12px; flex-wrap:wrap}
+.badge{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:rgba(0,255,255,.12); border:1px solid rgba(0,255,255,.25)}
+.feed-item{padding:14px 16px; border-bottom:1px dashed rgba(0,255,255,.12)}
+.feed-item img{max-width:100%; border-radius:12px; margin-top:8px; border:1px solid rgba(0,255,255,.15)}
+.menu button{margin-right:8px}
+footer{opacity:.8; padding:30px 0; text-align:center; color:var(--muted)}

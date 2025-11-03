@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - Arcade Addicts</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/auth.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <h1>Register</h1>
+  <form id="register-form">
+    <input type="email" id="reg-email" placeholder="Email" required><br>
+    <input type="password" id="reg-password" placeholder="Password" required><br>
+    <button type="submit">Register Now</button>
+  </form>
+  <script src="assets/js/header.js"></script>
+</body>
+</html>
+

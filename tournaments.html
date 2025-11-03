@@ -1,20 +1,24 @@
-﻿<!doctype html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Tournaments — Arcade Addicts</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <script defer src="/assets/js/supabase-init.js"></script>
-  <script defer src="/assets/js/header.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tournaments · Arcade Addicts</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
 </head>
 <body>
-  <header id="aa-header"></header>
+  <div id="site-header"></div>
   <main class="container">
-    <h1>Tournaments</h1>
-    <p class="hint">We’ll hook this up last, per your plan.</p>
+    <div class="panel card">
+      <div class="body">
+        <h2>Upcoming Tournaments</h2>
+        <p class="mono">We’ll wire this up last. For now, use Friends + AAALounge to set up matches.</p>
+        <div id="tourney-list" class="grid cards"></div>
+      </div>
+    </div>
   </main>
+  <script src="assets/js/header.js"></script>
 </body>
 </html>
-

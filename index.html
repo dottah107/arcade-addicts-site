@@ -1,29 +1,42 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Arcade Addicts - Home</title>
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arcade Addicts — Home</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
   <script src="assets/js/supabase-init.js"></script>
 </head>
 <body>
-  <header>
-    <h1>ðŸŽ® Arcade Addicts</h1>
-    <nav>
-      <a href="login.html">Login</a> |
-      <a href="register.html">Register</a> |
-      <a href="members.html">Members</a> |
-      <a href="friends.html">Friends</a> |
-      <a href="account.html">Account</a>
-    </nav>
-  </header>
-
-  <main>
-    <h2>Welcome to the Arena</h2>
-    <p>Connect with other gamers, share highlights, and compete in tournaments.</p>
+  <div id="site-header"></div>
+  <main class="container">
+    <section class="hero">
+      <div class="panel">
+        <div class="kicker">Welcome to</div>
+        <h1>Arcade Addicts</h1>
+        <p class="mono">Compete, connect, and flex your highlights. Log in or register to join the hub.</p>
+        <div class="row" style="margin-top:14px">
+          <a class="btn" href="register.html">Create account</a>
+          <a class="btn" href="tournaments.html">Browse tournaments</a>
+        </div>
+        <div class="row" style="margin-top:16px">
+          <span class="badge">🎮 Cross-platform</span>
+          <span class="badge">📸 Upload highlights</span>
+          <span class="badge">🤝 Friends & activity</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="grid cards">
+          <div class="card"><div class="body"><h3>AAALounge</h3><p class="mono">Talk wins, losses, & rematches.</p></div></div>
+          <div class="card"><div class="body"><h3>Tournaments</h3><p class="mono">Join events and climb the ladder.</p></div></div>
+          <div class="card"><div class="body"><h3>Friends</h3><p class="mono">Send, accept, and challenge friends.</p></div></div>
+          <div class="card"><div class="body"><h3>Payouts</h3><p class="mono">Cash App · PayPal · Apple Pay</p></div></div>
+        </div>
+      </div>
+    </section>
   </main>
-
-  <footer>Â© 2025 Arcade Addicts</footer>
+  <footer>© 2025 Arcade Addicts — NORTH CAROLINA</footer>
+  <script src="assets/js/header.js"></script>
 </body>
 </html>

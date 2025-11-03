@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Arcade Addicts - Home</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <header>
+    <h1>ðŸŽ® Arcade Addicts</h1>
+    <nav>
+      <a href="login.html">Login</a> |
+      <a href="register.html">Register</a> |
+      <a href="members.html">Members</a> |
+      <a href="friends.html">Friends</a> |
+      <a href="account.html">Account</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Welcome to the Arena</h2>
+    <p>Connect with other gamers, share highlights, and compete in tournaments.</p>
+  </main>
+
+  <footer>Â© 2025 Arcade Addicts</footer>
+  <script src="assets/js/header.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,57 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Account — Arcade Addicts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <script defer src="/assets/js/supabase-init.js"></script>
+  <script defer src="/assets/js/header.js"></script>
+  <script defer src="/assets/js/account.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <header id="aa-header"></header>
+  <main class="container">
+    <h1>Account</h1>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2>Update Profile</h2>
+        <form id="profile-form" class="form">
+          <label>Username / Gamertag <input type="text" id="pf-username" required></label>
+          <label>Platform <input type="text" id="pf-platform" placeholder="PS, Xbox, PC, Switch..."></label>
+          <button class="btn" type="submit">Save Profile</button>
+        </form>
+        <div id="pf-msg" class="msg"></div>
+      </div>
+
+      <div class="card">
+        <h2>Upload Content</h2>
+        <form id="upload-form" class="form">
+          <input type="file" id="upload-file" accept="image/*,video/*" required />
+          <button class="btn" type="submit">Upload</button>
+        </form>
+        <p class="hint">Images & short clips supported. Uploaded to Supabase Storage.</p>
+        <div id="up-msg" class="msg"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>My Uploads</h2>
+      <div id="my-uploads" class="thumbs"></div>
+      <template id="upload-menu">
+        <div class="hover-menu">
+          <button data-action="set-profile">Set as Profile</button>
+          <button data-action="set-background">Set as Background</button>
+          <button data-action="post-activity">Post to Activity</button>
+          <button class="danger" data-action="delete">Delete</button>
+        </div>
+      </template>
+    </section>
+  </main>
+</body>
+</html>
+
+

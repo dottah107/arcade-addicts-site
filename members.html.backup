@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Members — Arcade Addicts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <script defer src="/assets/js/supabase-init.js"></script>
+  <script defer src="/assets/js/header.js"></script>
+  <script defer src="/assets/js/activity.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <header id="aa-header"></header>
+  <main class="container">
+    <section class="profile-banner">
+      <div class="banner-img" id="banner-img"></div>
+      <div class="avatar" id="avatar"></div>
+      <h1 id="member-username">@member</h1>
+      <p id="member-platform"></p>
+    </section>
+
+    <section class="card">
+      <h2>Recent Activity (You + Friends)</h2>
+      <div id="activity-feed" class="feed"></div>
+    </section>
+  </main>
+</body>
+</html>
+
+
