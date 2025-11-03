@@ -1,36 +1,50 @@
 ﻿(function(){
   const supa = window.supabaseClient;
-  const errbar = (msg)=>{ const e=document.getElementById("errbar"); if(e){e.textContent=msg; e.style.display="block";}};
-  // login
-  const lf = document.getElementById("login-form");
-  if(lf){ lf.addEventListener("submit", async (ev)=>{
+  const errbar = (msg)=>{ const e=document.getElementById("errbar"); if(e){e.textContent=msg; e.style.display="block";} else {alert(msg);} };
+
+  // bind to your existing "Forgot password" link/button
+  const forgotEl =
+    document.getElementById("forgot-btn") ||
+    document.getElementById("forgot") ||
+    document.getElementById("forgot-password") ||
+    document.querySelector("[data-forgot]") ||
+    document.querySelector('a[href*="forgot"],a[href*="reset"]');
+
+  if (forgotEl && !forgotEl.dataset.wired) {
+    forgotEl.dataset.wired = "1";
+    forgotEl.addEventListener("click", async (ev)=>{
       ev.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const { error } = await supa.auth.signInWithPassword({ email, password });
-      if(error) return errbar(error.message);
-      location.href = "members.html";
-  });}
-  // register
-  const rf = document.getElementById("register-form");
-  if(rf){ rf.addEventListener("submit", async (ev)=>{
+      try {
+        // use the email already typed on the login form
+        const emailInput = document.getElementById("email") || document.getElementById("login-email");
+        const email = (emailInput?.value || "").trim();
+        if(!email) return errbar("Enter your email, then click Forgot password.");
+
+        // IMPORTANT: this is where we force the redirect page from the email
+        const { error } = await supa.auth.resetPasswordForEmail(email, {
+          redirectTo: "https://arcade-addicts.com/change-password/"
+        });
+        if (error) return errbar(error.message);
+
+        alert("Password reset email sent. Check your inbox (and spam).");
+      } catch (e) {
+        errbar(e.message || String(e));
+      }
+    });
+  }
+
+  // change-password page handler (user lands here from email)
+  const resetForm = document.getElementById("reset-form");
+  if(resetForm){
+    resetForm.addEventListener("submit", async (ev)=>{
       ev.preventDefault();
-      const email = document.getElementById("reg-email").value.trim();
-      const password = document.getElementById("reg-password").value;
-      const { error } = await supa.auth.signUp({ email, password, options:{ emailRedirectTo: "https://arcade-addicts.com/login/" }});
-      if(error) return errbar(error.message);
-      alert("Check your email to confirm your account, then log in.");
-      location.href = "login.html";
-  });}
-  // reset-password
-  const rs = document.getElementById("reset-form");
-  if(rs){ rs.addEventListener("submit", async (ev)=>{
-      ev.preventDefault();
-      const newPass = document.getElementById("new-password").value;
-      const { data:{ user }, error:ue } = await supa.auth.getUser();
-      if(ue || !user) return errbar("Open this page from your email link after requesting reset.");
+      const newPass = document.getElementById("new-password")?.value || "";
+      if(newPass.length < 6) return errbar("New password must be at least 6 characters.");
+      const { data:{ user }, error: ge } = await supa.auth.getUser();
+      if(ge || !user) return errbar("Open this page from the email link to reset your password.");
       const { error } = await supa.auth.updateUser({ password: newPass });
       if(error) return errbar(error.message);
-      alert("Password updated. Log in now."); location.href="login.html";
-  });}
+      alert("Password updated. Log in now."); location.href="https://arcade-addicts.com/login/";
+    });
+  }
 })();
