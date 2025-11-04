@@ -1,84 +1,88 @@
-(function () {
-  const supa = window.supabaseClient;
-  const showError = (msg) => {
-    const bar = document.getElementById("errbar");
-    if (bar) {
-      bar.textContent = msg;
-      bar.style.display = "block";
-    } else alert(msg);
-  };
-  const showOK = (msg) => {
-    const bar = document.getElementById("okbar");
-    if (bar) {
-      bar.textContent = msg;
-      bar.style.display = "block";
-    } else alert(msg);
-  };
+﻿(() => {
+  // We expect window.supabaseClient to be created by assets/js/supabase-init.js
+  const sb = window.supabaseClient;
+  if (!sb) {
+    console.warn("supabaseClient not found. Check supabase-init.js include order.");
+    return;
+  }
 
-  // ---- FORGOT PASSWORD ----
-  const forgotBtn =
-    document.getElementById("forgot-btn") ||
-    document.getElementById("forgot") ||
-    document.getElementById("forgot-password") ||
+  const $ = (sel) => document.querySelector(sel);
+  const show = (id, msg) => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = msg || ""; el.style.display = "block"; }
+  };
+  const hide = (id) => { const el = document.getElementById(id); if (el) el.style.display = "none"; };
+  const err = (m) => show("errbar", m);
+  const ok  = (m) => show("okbar",  m);
+
+  // ---------- FORGOT PASSWORD: send a reset email (NOT a login magic link) ----------
+  // Looks for common buttons/links on your login page.
+  const forgotEl =
+    $("#forgot-btn") ||
+    $("#forgot") ||
+    $("#forgot-password") ||
     document.querySelector("[data-forgot]") ||
     document.querySelector('a[href*="forgot"],a[href*="reset"]');
 
-  if (forgotBtn && !forgotBtn.dataset.ready) {
-    forgotBtn.dataset.ready = "1";
-    forgotBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      const email =
-        (document.getElementById("email")?.value ||
-          document.getElementById("login-email")?.value ||
-          "").trim();
-      if (!email) return showError("Enter your email before clicking reset.");
+  if (forgotEl && !forgotEl.dataset.wired) {
+    forgotEl.dataset.wired = "1";
+    forgotEl.addEventListener("click", async (ev) => {
+      ev.preventDefault();
+      hide("errbar"); hide("okbar");
 
-      const { error } = await supa.auth.resetPasswordForEmail(email, {
+      // Try typical email inputs on your login page
+      const email =
+        ($("#email") && $("#email").value) ||
+        ($("#login-email") && $("#login-email").value) ||
+        ($("#reg-email") && $("#reg-email").value) ||
+        "";
+
+      if (!email.trim()) return err("Enter your email, then click Forgot password.");
+
+      // Send the Supabase **password reset** email (not magic-link login)
+      const { error } = await sb.auth.resetPasswordForEmail(email.trim(), {
         redirectTo: "https://arcade-addicts.com/reset-password.html",
       });
-      if (error) return showError(error.message);
-      showOK("Check your email for a reset link to change your password.");
+      if (error) return err(error.message);
+
+      ok("Check your email for the reset link. Open it and you'll be returned here to set a new password.");
+      alert("Check your email for the reset link.");
     });
   }
 
-  // ---- RESET PASSWORD PAGE ----
-  const isResetPage = /reset-password/i.test(location.pathname);
-  if (isResetPage) {
+  // ---------- RESET PAGE: /reset-password.html ----------
+  const onReset = /\/reset-password(\.html)?$/i.test(location.pathname);
+  if (onReset) {
+    // If the user arrived via the emailed link, Supabase will attach a recovery session.
+    // We listen just in case, but we also try getUser() on submit.
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY") {
+        ok("Recovery session detected. You can set a new password.");
+      }
+    });
+
     const form = document.getElementById("reset-form");
-    if (form && !form.dataset.ready) {
-      form.dataset.ready = "1";
+    if (form && !form.dataset.wired) {
+      form.dataset.wired = "1";
+      form.addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        hide("errbar"); hide("okbar");
 
-      // handle Supabase token after clicking email link
-      (async () => {
-        const hash = new URLSearchParams(window.location.hash.slice(1));
-        const access_token = hash.get("access_token");
-        const refresh_token = hash.get("refresh_token");
-        if (access_token && refresh_token) {
-          await supa.auth.setSession({ access_token, refresh_token });
-        }
-      })();
+        const newPassEl = document.getElementById("new-password");
+        const newPass = (newPassEl && newPassEl.value) || "";
+        if (newPass.length < 6) return err("New password must be at least 6 characters.");
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const newPass = document
-          .getElementById("new-password")
-          ?.value.trim();
-        if (newPass.length < 6)
-          return showError("Password must be at least 6 characters.");
+        // Must have a user session created by the recovery link
+        const { data: { user }, error: ge } = await sb.auth.getUser();
+        if (ge) return err(ge.message);
+        if (!user) return err("Open this page from the reset email link, then set your new password.");
 
-        const { data, error: getErr } = await supa.auth.getUser();
-        if (getErr || !data.user)
-          return showError(
-            "Session missing or expired. Please click the email link again."
-          );
+        const { error: ue } = await sb.auth.updateUser({ password: newPass });
+        if (ue) return err(ue.message);
 
-        const { error } = await supa.auth.updateUser({ password: newPass });
-        if (error) return showError(error.message);
-
-        showOK("Password updated successfully. You can now log in.");
-        location.href = "/login/";
+        ok("Password updated. Redirecting to login…");
+        setTimeout(() => { location.href = "https://arcade-addicts.com/login/"; }, 800);
       });
     }
   }
 })();
-
