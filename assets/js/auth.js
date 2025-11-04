@@ -1,9 +1,9 @@
 ﻿(function(){
   const supa = window.supabaseClient;
-  const show = (id, msg)=>{const el=document.getElementById(id); if(el){el.textContent=msg; el.style.display="block";}};
-  const err = (m)=> show("errbar", m);
+  const showMsg = (id, msg)=>{ const el=document.getElementById(id); if(el){ el.textContent=msg; el.style.display="block";}};
+  const err = (m)=> showMsg("errbar", m);
 
-  // ---------- FORGOT PASSWORD: send email only ----------
+  // ---------------- Forgot password (email only) ----------------
   const forgotEl =
     document.getElementById("forgot-btn") ||
     document.getElementById("forgot") ||
@@ -16,70 +16,90 @@
     forgotEl.addEventListener("click", async (ev)=>{
       ev.preventDefault();
       const email = (document.getElementById("email")?.value || document.getElementById("login-email")?.value || "").trim();
-      if(!email) return err("Enter your email, then click Forgot password.");
+      if(!email){ return err("Enter your email, then click Forgot password."); }
       const { error } = await supa.auth.resetPasswordForEmail(email, {
         redirectTo: "https://arcade-addicts.com/change-password/"
       });
-      if(error) return err(error.message);
+      if(error){ return err(error.message); }
       alert("Password reset email sent. Check your inbox (and spam).");
     });
   }
 
-  // ---------- CHANGE-PASSWORD PAGE HANDLER ----------
-  const onChangePasswordPage =
-    /\/change-password\/?(\.html)?$/i.test(location.pathname);
+  // ---------------- change-password page ----------------
+  const onChangePasswordPage = /\/change-password\/?(\.html)?$/i.test(location.pathname);
+  if (!onChangePasswordPage) return;
 
-  if (onChangePasswordPage) {
-    (async () => {
-      // 1) Turn URL fragments into a session if present
-      const hash = new URLSearchParams(location.hash.slice(1));
+  (async ()=>{
+    // 1) Try to establish a session from URL (both new and legacy formats)
+    try {
+      const hash  = new URLSearchParams(location.hash.slice(1));
       const query = new URLSearchParams(location.search);
 
-      try {
-        // v2 magic link (code=...)
-        const code = query.get("code") || hash.get("code");
-        if (code) {
-          const { error } = await supa.auth.exchangeCodeForSession({ code });
-          if (error) err(error.message);
-        }
-
-        // legacy style returns access/refresh in hash
-        const at = hash.get("access_token");
-        const rt = hash.get("refresh_token");
-        if (at && rt) {
-          const { error } = await supa.auth.setSession({ access_token: at, refresh_token: rt });
-          if (error) err(error.message);
-        }
-
-        // if Supabase redirected with error in hash, surface it nicely
-        const ecode = hash.get("error_code");
-        if (ecode) {
-          if (ecode === "otp_expired") {
-            err("Reset link is invalid or expired. Click “Forgot password” again to get a new email.");
-          } else {
-            err(hash.get("error_description") || "Link error.");
-          }
-        }
-      } catch (e) {
-        err(e.message || String(e));
+      // new code flow (email → redirectTo + ?code=...)
+      const code = query.get("code") || hash.get("code");
+      if (code) {
+        const { error } = await supa.auth.exchangeCodeForSession({ code });
+        if (error) err(error.message);
       }
 
-      // 2) Handle the actual password update form
-      const form = document.getElementById("reset-form");
-      if (form && !form.dataset.wired) {
-        form.dataset.wired = "1";
-        form.addEventListener("submit", async (ev)=>{
-          ev.preventDefault();
-          const newPass = document.getElementById("new-password")?.value || "";
-          if(newPass.length < 6) return err("New password must be at least 6 characters.");
-          const { data:{ user }, error: ge } = await supa.auth.getUser();
-          if(ge || !user) return err("Open this page from the email link (or request a new link).");
-          const { error } = await supa.auth.updateUser({ password: newPass });
-          if(error) return err(error.message);
-          alert("Password updated. Log in now.");
-          location.href = "https://arcade-addicts.com/login/";
+      // legacy hash flow
+      const at = hash.get("access_token");
+      const rt = hash.get("refresh_token");
+      if (at && rt) {
+        const { error } = await supa.auth.setSession({ access_token: at, refresh_token: rt });
+        if (error) err(error.message);
+      }
+
+      // if Supabase already appended an error in the hash, surface it
+      const ecode = hash.get("error_code");
+      if (ecode) {
+        if (ecode === "otp_expired") {
+          err("Reset link is invalid or expired. Click “Resend reset email” to get a fresh link.");
+        } else {
+          err(hash.get("error_description") || "Link error.");
+        }
+      }
+    } catch(e) {
+      err(e.message || String(e));
+    }
+
+    // 2) Also listen for PASSWORD_RECOVERY event; some providers prefetch links
+    supa.auth.onAuthStateChange(async (event)=>{
+      if (event === "PASSWORD_RECOVERY") {
+        showMsg("info", "Session ready. Set your new password below.");
+      }
+    });
+
+    // 3) Wire the password update form
+    const form = document.getElementById("reset-form");
+    if (form && !form.dataset.wired) {
+      form.dataset.wired = "1";
+      form.addEventListener("submit", async (ev)=>{
+        ev.preventDefault();
+        const newPass = document.getElementById("new-password")?.value || "";
+        if (newPass.length < 6) return err("New password must be at least 6 characters.");
+        const { data:{ user }, error: ge } = await supa.auth.getUser();
+        if (ge || !user) return err("Open this page from the latest email link (or resend a new one).");
+        const { error } = await supa.auth.updateUser({ password: newPass });
+        if (error) return err(error.message);
+        alert("Password updated. Log in now.");
+        location.href = "https://arcade-addicts.com/login/";
+      });
+    }
+
+    // 4) Resend reset email from the page if the link expired
+    const resendBtn = document.getElementById("resend-reset");
+    if (resendBtn && !resendBtn.dataset.wired) {
+      resendBtn.dataset.wired = "1";
+      resendBtn.addEventListener("click", async ()=>{
+        const email = prompt("Enter the account email to send a fresh reset link:");
+        if(!email) return;
+        const { error } = await supa.auth.resetPasswordForEmail(email.trim(), {
+          redirectTo: "https://arcade-addicts.com/change-password/"
         });
-      }
-    })();
-  }
+        if (error) return err(error.message);
+        alert("New reset email sent. Check your inbox.");
+      });
+    }
+  })();
 })();
