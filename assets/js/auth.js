@@ -1,88 +1,91 @@
-﻿(() => {
-  // We expect window.supabaseClient to be created by assets/js/supabase-init.js
-  const sb = window.supabaseClient;
-  if (!sb) {
-    console.warn("supabaseClient not found. Check supabase-init.js include order.");
-    return;
-  }
-
-  const $ = (sel) => document.querySelector(sel);
-  const show = (id, msg) => {
-    const el = document.getElementById(id);
-    if (el) { el.textContent = msg || ""; el.style.display = "block"; }
-  };
-  const hide = (id) => { const el = document.getElementById(id); if (el) el.style.display = "none"; };
-  const err = (m) => show("errbar", m);
-  const ok  = (m) => show("okbar",  m);
-
-  // ---------- FORGOT PASSWORD: send a reset email (NOT a login magic link) ----------
-  // Looks for common buttons/links on your login page.
-  const forgotEl =
-    $("#forgot-btn") ||
-    $("#forgot") ||
-    $("#forgot-password") ||
-    document.querySelector("[data-forgot]") ||
-    document.querySelector('a[href*="forgot"],a[href*="reset"]');
-
-  if (forgotEl && !forgotEl.dataset.wired) {
-    forgotEl.dataset.wired = "1";
-    forgotEl.addEventListener("click", async (ev) => {
-      ev.preventDefault();
-      hide("errbar"); hide("okbar");
-
-      // Try typical email inputs on your login page
-      const email =
-        ($("#email") && $("#email").value) ||
-        ($("#login-email") && $("#login-email").value) ||
-        ($("#reg-email") && $("#reg-email").value) ||
-        "";
-
-      if (!email.trim()) return err("Enter your email, then click Forgot password.");
-
-      // Send the Supabase **password reset** email (not magic-link login)
-      const { error } = await sb.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: "https://arcade-addicts.com/reset-password.html",
-      });
-      if (error) return err(error.message);
-
-      ok("Check your email for the reset link. Open it and you'll be returned here to set a new password.");
-      alert("Check your email for the reset link.");
-    });
-  }
-
-  // ---------- RESET PAGE: /reset-password.html ----------
-  const onReset = /\/reset-password(\.html)?$/i.test(location.pathname);
-  if (onReset) {
-    // If the user arrived via the emailed link, Supabase will attach a recovery session.
-    // We listen just in case, but we also try getUser() on submit.
-    sb.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY") {
-        ok("Recovery session detected. You can set a new password.");
-      }
-    });
-
-    const form = document.getElementById("reset-form");
-    if (form && !form.dataset.wired) {
-      form.dataset.wired = "1";
-      form.addEventListener("submit", async (ev) => {
-        ev.preventDefault();
-        hide("errbar"); hide("okbar");
-
-        const newPassEl = document.getElementById("new-password");
-        const newPass = (newPassEl && newPassEl.value) || "";
-        if (newPass.length < 6) return err("New password must be at least 6 characters.");
-
-        // Must have a user session created by the recovery link
-        const { data: { user }, error: ge } = await sb.auth.getUser();
-        if (ge) return err(ge.message);
-        if (!user) return err("Open this page from the reset email link, then set your new password.");
-
-        const { error: ue } = await sb.auth.updateUser({ password: newPass });
-        if (ue) return err(ue.message);
-
-        ok("Password updated. Redirecting to login…");
-        setTimeout(() => { location.href = "https://arcade-addicts.com/login/"; }, 800);
-      });
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Reset Password • Arcade Addicts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <base href="/" />
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <style>
+    body {
+      display: flex;
+      min-height: 100svh;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: #000;
+      font-family: system-ui, sans-serif;
     }
-  }
-})();
+    .card {
+      max-width: 480px;
+      width: 100%;
+      padding: 20px;
+      border: 1px solid #222;
+      border-radius: 14px;
+      background: #0b0b0b;
+      color: #fafafa;
+      box-shadow: 0 0 20px #00ffff30;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .btn {
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #00ffff;
+      color: #000;
+      font-weight: 700;
+    }
+    .input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      background: #111;
+      color: #fff;
+    }
+    #errbar {
+      display: none;
+      color: #d33;
+      margin: 8px 0;
+    }
+    #okbar {
+      display: none;
+      color: #0f0;
+      margin: 8px 0;
+    }
+  </style>
+
+  <!-- Load Supabase + your site’s auth logic -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script defer src="/assets/js/supabase-init.js"></script>
+  <script defer src="/assets/js/auth.js"></script>
+</head>
+
+<body>
+  <div class="card">
+    <h2>Reset Your Password</h2>
+
+    <div id="errbar"></div>
+    <div id="okbar"></div>
+
+    <form id="reset-form" autocomplete="off">
+      <label for="new-password">New Password</label>
+      <input id="new-password" class="input" type="password" placeholder="Enter new password" required />
+      <div class="row">
+        <button class="btn btn-primary" type="submit">Update Password</button>
+        <a class="btn" href="/login/">Back to Login</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Connect to Supabase + run the password reset -->
+  <script src="/assets/js/auth.js" defer></script>
+</body>
+</html>
