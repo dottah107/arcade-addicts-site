@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   const sb = window.supabaseClient;
   const $ = (s)=>document.querySelector(s);
   const show = (id, m)=>{const el=document.getElementById(id); if(el){el.textContent=m; el.style.display="block";} else alert(m);};
