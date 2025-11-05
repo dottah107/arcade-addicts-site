@@ -1,91 +1,60 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Reset Password • Arcade Addicts</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <base href="/" />
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <style>
-    body {
-      display: flex;
-      min-height: 100svh;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: #000;
-      font-family: system-ui, sans-serif;
-    }
-    .card {
-      max-width: 480px;
-      width: 100%;
-      padding: 20px;
-      border: 1px solid #222;
-      border-radius: 14px;
-      background: #0b0b0b;
-      color: #fafafa;
-      box-shadow: 0 0 20px #00ffff30;
-    }
-    .row {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .btn {
-      padding: 10px 14px;
-      border: 0;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: #00ffff;
-      color: #000;
-      font-weight: 700;
-    }
-    .input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #333;
-      background: #111;
-      color: #fff;
-    }
-    #errbar {
-      display: none;
-      color: #d33;
-      margin: 8px 0;
-    }
-    #okbar {
-      display: none;
-      color: #0f0;
-      margin: 8px 0;
-    }
-  </style>
+(() => {
+  const sb = window.supabaseClient;
+  const $ = (s)=>document.querySelector(s);
+  const show = (id, m)=>{const el=document.getElementById(id); if(el){el.textContent=m; el.style.display="block";} else alert(m);};
+  const ok  = (m)=>show("okbar", m);
+  const err = (m)=>show("errbar", m);
 
-  <!-- Load Supabase + your site’s auth logic -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-  <script defer src="/assets/js/supabase-init.js"></script>
-  <script defer src="/assets/js/auth.js"></script>
-</head>
+  // ---- Forgot Password: send a real reset email (NO navigation) ----
+  const forgotBtn =
+    $("#forgot-btn") || $("#forgot") || $("#forgot-password") ||
+    document.querySelector("[data-forgot]") ||
+    document.querySelector('a[href*="forgot"],a[href*="reset"]');
 
-<body>
-  <div class="card">
-    <h2>Reset Your Password</h2>
+  if (forgotBtn && !forgotBtn.dataset.wired) {
+    forgotBtn.dataset.wired = "1";
+    forgotBtn.addEventListener("click", async (e) => {
+      // stop any link navigation
+      e.preventDefault(); e.stopPropagation();
 
-    <div id="errbar"></div>
-    <div id="okbar"></div>
+      const email = (
+        $("#email")?.value ||
+        $("#login-email")?.value ||
+        $("#reg-email")?.value ||
+        ""
+      ).trim();
 
-    <form id="reset-form" autocomplete="off">
-      <label for="new-password">New Password</label>
-      <input id="new-password" class="input" type="password" placeholder="Enter new password" required />
-      <div class="row">
-        <button class="btn btn-primary" type="submit">Update Password</button>
-        <a class="btn" href="/login/">Back to Login</a>
-      </div>
-    </form>
-  </div>
+      if (!email) return err("Enter your email first, then click Forgot Password.");
 
-  <!-- Connect to Supabase + run the password reset -->
-  <script src="/assets/js/auth.js" defer></script>
-</body>
-</html>
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: "https://arcade-addicts.com/reset-password.html"
+      });
+      if (error) return err(error.message);
+
+      ok("Check your email for a password reset link.");
+    });
+  }
+
+  // ---- Reset page: update password after clicking the email link ----
+  const onReset = /\/reset-password(\.html)?$/i.test(location.pathname);
+  if (onReset) {
+    const form = document.getElementById("reset-form");
+    if (form && !form.dataset.wired) {
+      form.dataset.wired = "1";
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const newPass = (document.getElementById("new-password")?.value || "").trim();
+        if (newPass.length < 6) return err("Password must be at least 6 characters.");
+
+        const { data: { user }, error: ge } = await sb.auth.getUser();
+        if (ge || !user) return err("Open this page from the reset email link, then try again.");
+
+        const { error } = await sb.auth.updateUser({ password: newPass });
+        if (error) return err(error.message);
+
+        ok("Password updated. Redirecting to login…");
+        setTimeout(()=>{ location.href="/login/"; }, 900);
+      });
+    }
+  }
+})();
