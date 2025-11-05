@@ -6,7 +6,7 @@
   <title>Login · Arcade Addicts</title>
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-  <script src="/assets/js/supabase-init.js"></script>
+  <script src="/assets/js/supabase-init.js" defer></script>
 </head>
 <body>
   <div id="site-header"></div>
@@ -14,22 +14,29 @@
     <div class="panel card">
       <div class="body">
         <h2>Sign in</h2>
+
+        <!-- optional status bars -->
+        <div id="errbar" style="display:none;color:#d33;margin:8px 0;"></div>
+        <div id="okbar"  style="display:none;color:#2a6;margin:8px 0;"></div>
+
         <form id="login-form" class="form">
-          <input class="input" id="email" type="email" placeholder="Email" required />
+          <!-- FIXED: one id only -->
+          <input class="input" id="login-email" type="email" placeholder="Email" required />
           <input class="input" id="password" type="password" placeholder="Password" required />
           <button class="btn" type="submit">Login</button>
         </form>
+
         <div class="row" style="margin-top:10px">
           <a href="register.html">Register here</a>
-          <a href="reset-password.html" style="margin-left:auto">Forgot password?</a>
+          <!-- FIXED: give it an id and no navigation; JS handles sending reset email -->
+          <a id="forgot-password" href="#" style="margin-left:auto">Forgot password?</a>
         </div>
       </div>
     </div>
   </main>
-  <script src="/assets/js/auth.js?v=aa4"></script>
-  <script src="/assets/js/header.js"></script>
+
+  <!-- Load page scripts once, with defer -->
   <script src="/assets/js/auth.js" defer></script>
+  <script src="/assets/js/header.js" defer></script>
 </body>
 </html>
-
-
