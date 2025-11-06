@@ -16,12 +16,17 @@
       if (!email || !password) return err("Enter email and password.");
 
       const { error } = await sb.auth.signInWithPassword({ email, password });
+<<<<<<< HEAD
+      if (error) return err(error.message || "Login failed.");
+      ok("Welcome back!");
+=======
       if (error) {
         // Common messages: Invalid login credentials, Email not confirmed, etc.
         return err(error.message || "Login failed.");
       }
       ok("Welcome back!");
       // go to your members/dashboard page
+>>>>>>> 7e67c1f (Inject guard.js + logout link to protected pages)
       location.href = "/members/";
     });
   }
