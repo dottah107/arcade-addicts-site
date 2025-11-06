@@ -4,35 +4,76 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login · Arcade Addicts</title>
+
   <link rel="stylesheet" href="/assets/css/styles.css" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #000;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+    }
+    .card {
+      background: #0b0b0b;
+      border: 1px solid #222;
+      border-radius: 14px;
+      padding: 24px;
+      max-width: 400px;
+      width: 100%;
+    }
+    .input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #111;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .btn {
+      padding: 10px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-primary {
+      background: #00ffff;
+      color: #000;
+      width: 100%;
+    }
+    #errbar {
+      display: none;
+      color: #d33;
+      margin: 8px 0;
+    }
+    #okbar {
+      display: none;
+      color: #2a6;
+      margin: 8px 0;
+    }
+    .links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+  </style>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-  <script src="/assets/js/supabase-init.js" defer></script>
+  <script defer src="/assets/js/supabase-init.js"></script>
+  <script defer src="/assets/js/auth.js"></script>
 </head>
 <body>
-  <div id="site-header"></div>
-  <main class="container" style="max-width:520px">
-    <div class="panel card">
-      <div class="body">
-        <h2>Sign in</h2>
+  <div class="card">
+    <h2>Sign In</h2>
 
-        <div id="errbar" style="display:none;color:#d33;margin:8px 0;"></div>
-        <div id="okbar"  style="display:none;color:#2a6;margin:8px 0;"></div>
+    <div id="errbar"></div>
+    <div id="okbar"></div>
 
-        <form id="login-form" class="form">
-          <input class="input" id="login-email" type="email" placeholder="Email" required />
-          <input class="input" id="password" type="password" placeholder="Password" required />
-          <button class="btn" type="submit">Login</button>
-        </form>
-
-        <div class="row" style="margin-top:10px">
-          <a href="register.html">Register here</a>
-          <a id="forgot-password" href="#" style="margin-left:auto">Forgot password?</a>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <script src="/assets/js/auth.js" defer></script>
-  <script src="/assets/js/header.js" defer></script>
-</body>
-</html>
+    <form id="login-form" autocomplete="off">
+      <input class="input" id="email" type="email" placeholder="Email" required />
+      <input class="input" id="password" type="password" placeholder="Password" required />
+      <button class="btn btn-primary" type="subm
