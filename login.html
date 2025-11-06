@@ -15,12 +15,10 @@
       <div class="body">
         <h2>Sign in</h2>
 
-        <!-- optional status bars -->
         <div id="errbar" style="display:none;color:#d33;margin:8px 0;"></div>
         <div id="okbar"  style="display:none;color:#2a6;margin:8px 0;"></div>
 
         <form id="login-form" class="form">
-          <!-- FIXED: one id only -->
           <input class="input" id="login-email" type="email" placeholder="Email" required />
           <input class="input" id="password" type="password" placeholder="Password" required />
           <button class="btn" type="submit">Login</button>
@@ -28,20 +26,13 @@
 
         <div class="row" style="margin-top:10px">
           <a href="register.html">Register here</a>
-          <!-- FIXED: give it an id and no navigation; JS handles sending reset email -->
           <a id="forgot-password" href="#" style="margin-left:auto">Forgot password?</a>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Load page scripts once, with defer -->
   <script src="/assets/js/auth.js" defer></script>
   <script src="/assets/js/header.js" defer></script>
 </body>
 </html>
-
-
-
-
-
